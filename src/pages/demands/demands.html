@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-buttons end>
+      <button ion-button menuToggle="right">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title align="center">
+      <i class="fa fa-envelope"></i>
+      {{ 'DEMAND' | translate }}
+      <span class="label label-primary">{{ counts.demands }}</span>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <div class="container">
+    <div *ngIf="loaded">
+
+      <div class="border" *ngIf="conversations.length > 0">
+        <div class="row conversation border border-bottom"
+             *ngFor="let message of conversations">
+          <div col-8 (click)="openConversation(message.user.id, message.id)">
+            <div class="seen" *ngIf="!message.lastMessage.seen"><span class="seen-circle"></span></div>
+            <div class="avatar">
+              <ion-avatar>
+                <img src="{{ message.user.avatar }}" alt="{{ message.user.name }}">
+              </ion-avatar>
+            </div>
+            <div class="data">
+              <div class="user-name text text-heading">{{ message.user.name }}</div>
+              <div class="message-body" [innerHtml]="message.lastMessage.body"></div>
+            </div>
+          </div>
+          <div col-4>
+            <button class="btn btn-transparent float-right" (click)="deleteDemand(message.id)">
+              <i class="fa fa-trash"></i></button>
+            <span class="text text-sm">{{ message.lastMessage.created | date:'dd.MM.yyyy' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="alrt alrt-danger" *ngIf="conversations.length == 0">
+      {{ 'YOU_HAVE_NO_DEMAND' | translate }}
+    </div>
+  </div>
+  <div *ngIf="!loaded" class="text text-center">
+    <div class="fa fa-spin fa-spinner fa-4x"></div>
+  </div>
+</ion-content>

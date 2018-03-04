@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-buttons end>
+      <button ion-button menuToggle="right">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title align="center">{{ 'SETTINGS' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form (submit)="submitEmail()" class="container bg bg-gray padding">
+    <div class="form-group">
+      <ion-label class="text text-bold text-grey text-uppercase">E-mail</ion-label>
+      <ion-input type="email" [(ngModel)]="settings.email" name="email" placeholder="Emailová adresa" value="{{ loggedUser }}"></ion-input>
+    </div>
+    <div class="form-group">
+      <button ion-button class="btn btn-primary" type="submit">{{ 'SAVE' | translate }}</button>
+    </div>
+  </form>
+  <form (submit)="submitPassword()" class="container bg bg-gray offset offset-top padding">
+    <div class="form-group">
+      <ion-label class="text text-bold text-grey text-uppercase">{{ 'NEW_PASSWORD' | translate }}</ion-label>
+      <ion-input type="password" [(ngModel)]="settings.password" name="password" placeholder="{{ 'NEW_PASSWORD' | translate }}"></ion-input>
+    </div>
+    <div class="form-group">
+      <button ion-button class="btn btn-primary" type="submit">{{ 'SAVE' | translate }}</button>
+    </div>
+  </form>
+</ion-content>

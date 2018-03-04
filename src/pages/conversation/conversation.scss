@@ -1,0 +1,86 @@
+page-conversation {
+  ion-avatar {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    img {
+      left: -9999px;
+      top: -9999px;
+      bottom: -9999px;
+      right: -9999px;
+      position: absolute;
+      margin: auto;
+      display: block;
+      width: 100%;
+      height: auto;
+      min-height: 100%;
+      max-width: none;
+    }
+  }
+  .message {
+    padding: 10px;
+    border: 1px solid rgb(204, 204, 204);
+    width: 80%;
+    margin: 20px 0;
+    float: right;
+    .message-body {
+      width: 91%;
+      margin-left: 5%;
+      .text.text-sm {
+        font-size: 0.9em;
+        color: #999;
+      }
+    }
+    ion-avatar {
+      position: absolute;
+      right: -30px;
+      top: 0;
+    }
+    &.message-my {
+      float: left;
+      margin-left: 0;
+      border: none;
+      ion-avatar {
+        left: -30px;
+        top: 0;
+      }
+      background-color: rgba(220, 220, 203, 0.7);
+    }
+  }
+  .message-body {
+    display: inline-block;
+  }
+  .message-inner {
+    display: block;
+    position: relative;
+    width: 100%;
+  }
+  p {
+    margin: 0;
+  }
+
+  .bottom {
+    position: fixed;
+    bottom: 60px;
+    left: 0;
+    width: 100%;
+    padding-right: 25px;
+    .btn .fa {
+      color: #fff;
+      margin-right: 0;
+    }
+    ion-input {
+      width: 70%;
+    }
+  }
+
+  .bg.bg-white {
+    margin-bottom: -5px;
+    padding-bottom: 3px;
+  }
+  .scroll-content {
+    margin-bottom: 90px;
+  }
+}

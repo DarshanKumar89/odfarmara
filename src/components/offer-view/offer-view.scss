@@ -1,0 +1,31 @@
+offer-view {
+  .product {
+    .product-photo {
+      height: 200px;
+    }
+    .border {
+      margin-bottom: 5px;
+      padding-bottom: 5px;
+      padding-top: 5px;
+    }
+
+    color: #333;
+    strong {
+      font-family: 'Roboto Slab', sans-serif;
+    }
+    span {
+      font-size: 10px;
+    }
+  }
+  .btn-edit {
+    margin-top: 5px;
+    padding-bottom: 4px;
+    float: left;
+    color: #9aa !important;
+    border-bottom: 1px solid #9aa !important;
+  }
+  .fa {
+    color: #9aa;
+    font-size: 14px;
+  }
+}

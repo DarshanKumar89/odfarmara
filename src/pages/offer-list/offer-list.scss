@@ -1,0 +1,94 @@
+page-offer-list {
+  .btn.item-button {
+    height: auto;
+    text-align: left;
+    padding: 10px;
+    display: block;
+    margin-bottom: 10px;
+    span {
+      text-transform: none;
+    }
+    strong {
+      text-transform: uppercase;
+    }
+    * {
+      display: block;
+    }
+  }
+
+  .btn-segment, .btn-white {
+    font-family: 'Open Sans', sans-serif !important;
+    color: #000 !important;
+    font-size: 1.1rem !important;
+    letter-spacing: 0 !important;
+    strong {
+      text-transform: none !important;
+    }
+    .btn-remove-fav {
+      float: right;
+      background-color: #fff;
+      padding: 0;
+      width: 20px;
+      height: 20px;
+      line-height: 10px;
+      border-radius: 50%;
+      text-align: center;
+      margin-top: 10px;
+
+      .fa {
+        color: map_get($colors, primary);
+        display: inline-block;
+        margin-left: 4px;
+        font-size: 0.9em;
+      }
+    }
+  }
+
+  .item-range.item-md {
+    background-color: transparent;
+  }
+
+  .item-range {
+    .range-bar {
+      background-color: #fff !important;
+    }
+    .range-md .range-knob {
+      width: 30px;
+      height: 30px;
+      background-color: rgb(255, 255, 255);
+      border-width: 2px;
+      border-style: solid;
+      border-color: rgb(238, 81, 81);
+      border-image: initial;
+      border-radius: 40px;
+      transform: none !important;
+      margin-top: -6px;
+    }
+  }
+
+  .segment-top {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: #888;
+  }
+
+  .btn-white-o {
+    &:focus {
+      background: transparent !important;
+    }
+    display: inline-block !important;
+    background-color: transparent;
+    border-color: #fff;
+    color: #333;
+    .fa {
+      background-color: #fff;
+      padding: 3px;
+      border-radius: 50%;
+      display: inline-block;
+      color: #fff;
+      &.text-primary {
+        color: map_get($colors, primary) !important;
+      }
+    }
+  }
+}

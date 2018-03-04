@@ -1,1 +1,166 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-menu [content]="content">
+  <ion-content>
+    <ion-buttons end class="buttons-main">
+      <button menuClose class="btn btn-transparent">
+        <i class="fa fa-times"></i>
+      </button>
+    </ion-buttons>
+    <ion-list class="nav-custom">
+      <ion-item>
+      </ion-item>
+      <div *ngIf="getLoggedUser() != null">
+        <ion-item (click)="openProfile(getLoggedUser().slug)" menuClose>
+          <ion-avatar>
+            <img src="{{ getLoggedUser().avatar }}" alt="{{ getLoggedUser().name }}">
+          </ion-avatar>
+          <div class="text text-gray text-uppercase text-bold text-nl">{{ getLoggedUser().name }}</div>
+        </ion-item>
+        <ion-item>
+          <button class="btn btn-transparent btn-menu" menuClose (click)="showAccount()">
+            <i class="fa fa-user-o"></i>
+            <strong>{{ 'PROFILE' | translate }}</strong>
+          </button>
+        </ion-item>
+        <ion-item>
+          <button class="btn btn-transparent btn-menu" menuClose (click)="openSettings()">
+            <i class="fa fa-sliders"></i>
+            <strong>{{ 'SETTINGS' | translate }}</strong>
+          </button>
+        </ion-item>
+      </div>
+      <div *ngIf="getLoggedUser() == null">
+        <ion-item>
+          <button class="btn btn-transparent btn-menu" menuClose (click)="openLogin()">
+            <i class="fa fa-home"></i>
+            <strong>{{ 'LOGIN' | translate }}</strong>
+          </button>
+        </ion-item>
+      </div>
+      <div *ngIf="getLoggedUser() != null">
+        <ion-item>
+          <button class="btn btn-transparent btn-menu" menuClose (click)="logout()">
+            <i class="fa fa-sign-out"></i>
+            <strong>{{ 'LOGOUT' | translate }}</strong>
+          </button>
+        </ion-item>
+      </div>
+      <button menuClose ion-item class="nav-thin" *ngFor="let p of pages" (click)="openPage(p)">
+        {{p.title}}
+      </button>
+      <ion-item>
+        <a href="https://www.facebook.com/sharer.php?u=https://odfarmara.sk/" target="_blank" class="btn btn-sidebar" ion-button>
+          <span class="fa fa-facebook-square"></span>
+        </a>
+        <a href="https://plus.google.com/share?url=https://odfarmara.sk/" target="_blank" class="btn btn-sidebar" ion-button>
+          <span class="fa fa-google-plus"></span>
+        </a>
+        <a href="mailto:?subject=Web OdFarmara.sk&body=Na internete som našiel túto webovú stránku: myslím, že vás bude zaujímať" target="_blank" class="btn btn-sidebar" ion-button>
+          <span class="fa fa-envelope"></span>
+        </a>
+        <a href="viber://forward?text=https://odfarmara.sk" target="_blank" class="btn btn-sidebar" ion-button>
+          <img src="assets/icon/viber.svg" alt="Viber" width="20">
+        </a>
+        <a href="https://twitter.com/intent/tweet?url=https://odfarmara.sk" class="btn btn-sidebar" target="_blank" ion-button>
+          <span class="fa fa-twitter"></span>
+        </a>
+      </ion-item>
+      <ion-item>
+        <button class="btn btn-transparent" (click)="langToggle()">{{ getLang() == 'sk' ? 'CZ' : 'SK' }}</button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-menu [content]="search" side="right" class="menu-search" [persistent]="true">
+  <ion-content>
+    <ion-buttons end class="buttons-main">
+      <button menuClose="right" class="btn btn-transparent">
+        <i class="fa fa-times"></i>
+      </button>
+    </ion-buttons>
+    <form (ngSubmit)="formSearch()">
+      <ion-item>
+        <h2>{{ 'FIND_PRODUCTS_OR_FARMER' | translate }}</h2>
+      </ion-item>
+      <div class="container-fluid">
+        <ion-row>
+          <div col-12 col-sm-4>
+            <div class="form-group">
+              <ion-input type="text"
+                         [(ngModel)]="search.product"
+                         name="search.product"
+                         (ionChange)="updateProduct($event)"
+                         placeholder="{{ 'PRODUCT' | translate }}"></ion-input>
+            </div>
+          </div>
+          <div col-6 col-sm-4>
+            <div class="form-group p-relative">
+              <ion-select [(ngModel)]="search.segment"
+                          name="segment"
+                          placeholder="{{ 'SEGMENT' | translate }}"
+                          (ionChange)="updateSegment($event)">
+                <ion-option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</ion-option>
+              </ion-select>
+            </div>
+          </div>
+          <div col-6 col-sm-4>
+            <div class="form-group p-relative">
+              <ion-select [(ngModel)]="search.locality"
+                          name="locality"
+                          placeholder="{{ 'LOCALITY' | translate }}"
+                          (ionChange)="updateLocality($event)">
+                <ion-option *ngFor="let region of regions" value="{{region.id}}">{{region.name}}</ion-option>
+              </ion-select>
+            </div>
+          </div>
+        </ion-row>
+      </div>
+      <ion-item>
+        <button menuClose="right" ion-button block class="btn btn-transparent text text-primary text-md" type="submit">
+          <ion-icon name="search"></ion-icon>
+        </button>
+      </ion-item>
+    </form>
+  </ion-content>
+</ion-menu>
+
+<ion-nav [root]="rootPage" swipeBackEnabled="false">
+  <div #content></div>
+  <div #search></div>
+</ion-nav>
+<ion-footer align="center" *ngIf="getLoggedUser() != null">
+  <ion-toolbar *ngIf="getOffer() == null">
+    <button class="p-relative btn btn-transparent" (click)="openMessages()">
+      <span class="label label-primary label-round text text-sm" *ngIf="getCounts().messages > 0">{{ getCounts().messages }}</span>
+      <i class="fa fa-envelope-o text text-lg"></i>
+      <strong class="d-block text text-xs text-uppercase">{{ 'MESSAGES' | translate }}</strong>
+    </button>
+    <button class="p-relative btn btn-transparent" (click)="openDemands()">
+      <span class="label label-primary label-round text text-sm" *ngIf="getCounts().demands > 0">{{ getCounts().demands }}</span>
+      <i class="fa fa-flag-o text text-lg"></i>
+      <strong class="d-block text text-xs text-uppercase">{{ 'DEMAND' | translate }}</strong>
+    </button>
+    <button class="p-relative btn btn-transparent" *ngIf="!getLoggedUser().farmer" (click)="openMap()">
+      <i class="fa fa-map-marker text text-lg"></i>
+      <strong class="d-block text text-xs text-uppercase">{{ 'NEARBY' | translate }}</strong>
+    </button>
+    <button class="p-relative btn btn-transparent"
+            *ngIf="!getLoggedUser().farmer"
+            (click)="showList('/neo_content/neo_content_offers/show_favourites', 'Obľúbené')">
+      <i class="fa fa-heart-o text text-lg"></i>
+      <strong class="d-block text text-xs text-uppercase">{{ 'FAVOURITES' | translate }}</strong>
+    </button>
+    <button class="p-relative btn btn-transparent" *ngIf="getLoggedUser().farmer" (click)="showMyList()">
+      <i class="fa fa-leaf text text-lg"></i>
+      <strong class="d-block text text-xs text-uppercase">{{ 'OFFER' | translate }}</strong>
+    </button>
+    <button class="p-relative btn btn-transparent" *ngIf="getLoggedUser().farmer" (click)="openOfferFormModal()">
+      <i class="fa fa-plus text text-lg"></i>
+      <strong class="d-block text text-xs text-uppercase">{{ 'ADD' | translate }}</strong>
+    </button>
+  </ion-toolbar>
+  <ion-toolbar *ngIf="getOffer() != null">
+    <button *ngIf="getLoggedUser().id != getAuthor()" ion-button class="btn btn-primary" (click)="order(getOffer(), getDemandQuantity())">
+      {{ 'SEND_DEMAND' | translate }}
+    </button>
+  </ion-toolbar>
+</ion-footer>

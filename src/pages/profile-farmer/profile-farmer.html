@@ -1,0 +1,100 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-buttons end>
+      <button ion-button menuToggle="right">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title align="center">{{ 'PROFILE' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="user">
+    <div class="bg bg-profile text text-center">
+      <div class="bg bg-green">
+        <h2>{{user.name}}</h2>
+        <strong class="block text text-uppercase">{{ 'OPERATOR' | translate }} {{user.person}}</strong>
+        <button ion-button class="text text-uppercase btn btn-primary">
+          <i class="fa fa-heart-o"></i>
+          {{ 'SAVE' | translate }}
+        </button>
+      </div>
+    </div>
+    <div class="padding">
+      <div class="container container-subpage container-profile">
+        <button ion-button class="btn btn-transparent text text-bold text-primary-hover text-gray text-uppercase" (click)="setTab('profile')">
+          {{ 'PROFILE' | translate }}
+        </button>
+        <button ion-button class="btn btn-transparent text text-bold text-primary-hover text-gray text-uppercase" (click)="setTab('contact')">
+          {{ 'CONTACT' | translate }}
+        </button>
+        <div *ngIf="tab == 'profile'">
+          <ion-avatar>
+            <img src="{{user.avatar}}" alt="User avatar">
+          </ion-avatar>
+          <div class="inline-block">
+            <img src="{{region}}" alt="Region">
+            <strong class="block">{{user.city}}</strong>
+            <span>{{regions[user.region - 1] ? regions[user.region - 1].title : ''}}</span>
+          </div>
+          <div class="inline-block">
+            <span>{{ 'RATING' | translate }}</span>
+            <div class="rating text text-primary">
+              <span *ngFor="let star of stars" [innerHtml]="star"></span>
+            </div>
+          </div>
+          <div class="inline-block">{{user.description}}</div>
+          <hr>
+        </div>
+        <div *ngIf="tab == 'contact'">
+          <div class="border border-bottom offset offset-bottom padding padding-bottom">
+            <strong>{{ user.name }}</strong><br>
+            <span>{{ user.zip }} {{ user.city }}</span>
+          </div>
+          <h4 class="text text-left">
+            <span class="fa fa-envelope-o"></span>
+            {{ 'WRITE_TO_FARMER' | translate }}
+          </h4>
+          <div class="form-group">
+            <ion-textarea [(ngModel)]="message" class="d-block" placeholder="Napíš hocičo sem"></ion-textarea>
+            <button ion-button class="btn btn-primary" (click)="sendMessage()">Odoslať</button>
+          </div>
+          <div class="padding"></div>
+          <h4 class="text text-left">
+            <span class="fa fa-clock"></span>
+            {{ 'OPEN_HOURS' | translate }}
+          </h4>
+          <div>
+            <div class="border border-bottom opening-hour" *ngFor="let day of oh">
+              <div class="d-inline-block w-half text text-heading">{{ openingHours[day] }}</div>
+              <div class="d-inline-block w-half text text-right">
+                <strong *ngIf="user.scopeExtra.opening_hours[day]">
+                  {{ user.scopeExtra.opening_hours[day][0] }} -
+                  {{ user.scopeExtra.opening_hours[day][1] }}
+                </strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bg bg-white row-content">
+      <div class="container">
+        <h4>{{ 'OFFERS' | translate }}</h4>
+        <div class="row">
+          <offer-view col-6 *ngFor="let product of offers" [product]="product"></offer-view>
+        </div>
+      </div>
+    </div>
+    <div class="padding"></div>
+    <div class="padding"></div>
+    <div class="padding"></div>
+  </div>
+  <div *ngIf="!user" class="padding text text-center">
+    <span class="fa fa-spinner fa-spin fa-2x"></span>
+  </div>
+</ion-content>

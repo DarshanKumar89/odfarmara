@@ -1,0 +1,25 @@
+page-profile-farmer {
+  .container-profile {
+    img {
+      max-width: 120px;
+    }
+    .inline-block {
+      margin-left: 16px;
+      margin-bottom: 16px;
+    }
+  }
+  ion-avatar img {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 50%;
+  }
+  .col-sm-6 {
+    margin-bottom: 16px;
+  }
+
+  h4 {
+    margin-top: 0;
+    padding-top:20px;
+  }
+}

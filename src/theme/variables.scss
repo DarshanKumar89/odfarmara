@@ -1,29 +1,233 @@
 // Ionic Variables and Theming. For more info, please see:
-// http://ionicframework.com/docs/theming/
+// http://ionicframework.com/docs/v2/theming/
 
 // Font path is used to include ionicons,
 // roboto, and noto sans fonts
 $font-path: "../assets/fonts";
-
 
 // The app direction is used to include
 // rtl styles in your app. For more info, please see:
 // http://ionicframework.com/docs/theming/rtl-support/
 $app-direction: ltr;
 
-
 @import "ionic.globals";
-
 
 // Shared Variables
 // --------------------------------------------------
 // To customize the look and feel of this app, you can override
 // the Sass variables found in Ionic's source scss files.
 // To view all the possible Ionic variables, see:
-// http://ionicframework.com/docs/theming/overriding-ionic-variables/
+// http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
+
+@import "scss/font-awesome";
+@font-face {
+  font-family: 'FontAwesome';
+  src: url($font-path + '/fontawesome-webfont.eot?v=#{$fa-version}');
+  src: url($font-path + '/fontawesome-webfont.eot?#iefix&v=#{$fa-version}') format('embedded-opentype'),
+  url($font-path + '/fontawesome-webfont.woff2?v=#{$fa-version}') format('woff2'),
+  url($font-path + '/fontawesome-webfont.woff?v=#{$fa-version}') format('woff'),
+  url($font-path + '/fontawesome-webfont.ttf?v=#{$fa-version}') format('truetype'),
+  url($font-path + '/fontawesome-webfont.svg?v=#{$fa-version}#fontawesomeregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* BEGIN Light */
+@font-face {
+  font-family: 'Open Sans';
+  src: url($font-path + "/Light/OpenSans-Light.eot?v=1.1.0");
+  src: url($font-path + "/Light/OpenSans-Light.eot?#iefix&v=1.1.0") format("embedded-opentype"),
+  url($font-path + "/Light/OpenSans-Light.woff2?v=1.1.0") format("woff2"),
+  url($font-path + "/Light/OpenSans-Light.woff?v=1.1.0") format("woff"),
+  url($font-path + "/Light/OpenSans-Light.ttf?v=1.1.0") format("truetype"),
+  url($font-path + "/Light/OpenSans-Light.svg?v=1.1.0#Light") format("svg");
+  font-weight: 300;
+  font-style: normal;
+}
+
+/* END Light */
+/* BEGIN Light Italic */
+@font-face {
+  font-family: 'Open Sans';
+  src: url($font-path + "/LightItalic/OpenSans-LightItalic.eot?v=1.1.0");
+  src: url($font-path + "/LightItalic/OpenSans-LightItalic.eot?#iefix&v=1.1.0") format("embedded-opentype"),
+  url($font-path + "/LightItalic/OpenSans-LightItalic.woff2?v=1.1.0") format("woff2"),
+  url($font-path + "/LightItalic/OpenSans-LightItalic.woff?v=1.1.0") format("woff"),
+  url($font-path + "/LightItalic/OpenSans-LightItalic.ttf?v=1.1.0") format("truetype"),
+  url($font-path + "/LightItalic/OpenSans-LightItalic.svg?v=1.1.0#LightItalic") format("svg");
+  font-weight: 300;
+  font-style: italic;
+}
+
+/* END Light Italic */
+/* BEGIN Regular */
+@font-face {
+  font-family: 'Open Sans';
+  src: url($font-path + "/Regular/OpenSans-Regular.eot?v=1.1.0");
+  src: url($font-path + "/Regular/OpenSans-Regular.eot?#iefix&v=1.1.0") format("embedded-opentype"),
+  url($font-path + "/Regular/OpenSans-Regular.woff2?v=1.1.0") format("woff2"),
+  url($font-path + "/Regular/OpenSans-Regular.woff?v=1.1.0") format("woff"),
+  url($font-path + "/Regular/OpenSans-Regular.ttf?v=1.1.0") format("truetype"),
+  url($font-path + "/Regular/OpenSans-Regular.svg?v=1.1.0#Regular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* END Regular */
+/* BEGIN Italic */
+@font-face {
+  font-family: 'Open Sans';
+  src: url($font-path + "/Italic/OpenSans-Italic.eot?v=1.1.0");
+  src: url($font-path + "/Italic/OpenSans-Italic.eot?#iefix&v=1.1.0") format("embedded-opentype"),
+  url($font-path + "/Italic/OpenSans-Italic.woff2?v=1.1.0") format("woff2"),
+  url($font-path + "/Italic/OpenSans-Italic.woff?v=1.1.0") format("woff"),
+  url($font-path + "/Italic/OpenSans-Italic.ttf?v=1.1.0") format("truetype"),
+  url($font-path + "/Italic/OpenSans-Italic.svg?v=1.1.0#Italic") format("svg");
+  font-weight: normal;
+  font-style: italic;
+}
+
+/* END Italic */
+/* BEGIN Semibold */
+@font-face {
+  font-family: 'Open Sans';
+  src: url($font-path + "/Semibold/OpenSans-Semibold.eot?v=1.1.0");
+  src: url($font-path + "/Semibold/OpenSans-Semibold.eot?#iefix&v=1.1.0") format("embedded-opentype"),
+  url($font-path + "/Semibold/OpenSans-Semibold.woff2?v=1.1.0") format("woff2"),
+  url($font-path + "/Semibold/OpenSans-Semibold.woff?v=1.1.0") format("woff"),
+  url($font-path + "/Semibold/OpenSans-Semibold.ttf?v=1.1.0") format("truetype"),
+  url($font-path + "/Semibold/OpenSans-Semibold.svg?v=1.1.0#Semibold") format("svg");
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* END Semibold */
+/* BEGIN Semibold Italic */
+@font-face {
+  font-family: 'Open Sans';
+  src: url($font-path + "/SemiboldItalic/OpenSans-SemiboldItalic.eot?v=1.1.0");
+  src: url($font-path + "/SemiboldItalic/OpenSans-SemiboldItalic.eot?#iefix&v=1.1.0") format("embedded-opentype"),
+  url($font-path + "/SemiboldItalic/OpenSans-SemiboldItalic.woff2?v=1.1.0") format("woff2"),
+  url($font-path + "/SemiboldItalic/OpenSans-SemiboldItalic.woff?v=1.1.0") format("woff"),
+  url($font-path + "/SemiboldItalic/OpenSans-SemiboldItalic.ttf?v=1.1.0") format("truetype"),
+  url($font-path + "/SemiboldItalic/OpenSans-SemiboldItalic.svg?v=1.1.0#SemiboldItalic") format("svg");
+  font-weight: 600;
+  font-style: italic;
+}
+
+/* END Semibold Italic */
+/* BEGIN Bold */
+@font-face {
+  font-family: 'Open Sans';
+  src: url($font-path + "/Bold/OpenSans-Bold.eot?v=1.1.0");
+  src: url($font-path + "/Bold/OpenSans-Bold.eot?#iefix&v=1.1.0") format("embedded-opentype"),
+  url($font-path + "/Bold/OpenSans-Bold.woff2?v=1.1.0") format("woff2"),
+  url($font-path + "/Bold/OpenSans-Bold.woff?v=1.1.0") format("woff"),
+  url($font-path + "/Bold/OpenSans-Bold.ttf?v=1.1.0") format("truetype"),
+  url($font-path + "/Bold/OpenSans-Bold.svg?v=1.1.0#Bold") format("svg");
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* END Bold */
+/* BEGIN Bold Italic */
+@font-face {
+  font-family: 'Open Sans';
+  src: url($font-path + "/BoldItalic/OpenSans-BoldItalic.eot?v=1.1.0");
+  src: url($font-path + "/BoldItalic/OpenSans-BoldItalic.eot?#iefix&v=1.1.0") format("embedded-opentype"),
+  url($font-path + "/BoldItalic/OpenSans-BoldItalic.woff2?v=1.1.0") format("woff2"),
+  url($font-path + "/BoldItalic/OpenSans-BoldItalic.woff?v=1.1.0") format("woff"),
+  url($font-path + "/BoldItalic/OpenSans-BoldItalic.ttf?v=1.1.0") format("truetype"),
+  url($font-path + "/BoldItalic/OpenSans-BoldItalic.svg?v=1.1.0#BoldItalic") format("svg");
+  font-weight: bold;
+  font-style: italic;
+}
+
+/* END Bold Italic */
+/* BEGIN Extrabold */
+@font-face {
+  font-family: 'Open Sans';
+  src: url($font-path + "/ExtraBold/OpenSans-ExtraBold.eot?v=1.1.0");
+  src: url($font-path + "/ExtraBold/OpenSans-ExtraBold.eot?#iefix&v=1.1.0") format("embedded-opentype"),
+  url($font-path + "/ExtraBold/OpenSans-ExtraBold.woff2?v=1.1.0") format("woff2"),
+  url($font-path + "/ExtraBold/OpenSans-ExtraBold.woff?v=1.1.0") format("woff"),
+  url($font-path + "/ExtraBold/OpenSans-ExtraBold.ttf?v=1.1.0") format("truetype"),
+  url($font-path + "/ExtraBold/OpenSans-ExtraBold.svg?v=1.1.0#ExtraBold") format("svg");
+  font-weight: 800;
+  font-style: normal;
+}
+
+/* END Extrabold */
+/* BEGIN Extrabold Italic */
+@font-face {
+  font-family: 'Open Sans';
+  src: url($font-path + "/ExtraBoldItalic/OpenSans-ExtraBoldItalic.eot?v=1.1.0");
+  src: url($font-path + "/ExtraBoldItalic/OpenSans-ExtraBoldItalic.eot?#iefix&v=1.1.0") format("embedded-opentype"),
+  url($font-path + "/ExtraBoldItalic/OpenSans-ExtraBoldItalic.woff2?v=1.1.0") format("woff2"),
+  url($font-path + "/ExtraBoldItalic/OpenSans-ExtraBoldItalic.woff?v=1.1.0") format("woff"),
+  url($font-path + "/ExtraBoldItalic/OpenSans-ExtraBoldItalic.ttf?v=1.1.0") format("truetype"),
+  url($font-path + "/ExtraBoldItalic/OpenSans-ExtraBoldItalic.svg?v=1.1.0#ExtraBoldItalic") format("svg");
+  font-weight: 800;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Roboto Slab';
+  src: url( $font-path + '/RobotoSlab-Thin.eot');
+  src: url( $font-path + '/RobotoSlab-Thin.eot?#iefix') format('embedded-opentype'),
+  url( $font-path + '/RobotoSlab-Thin.woff') format('woff'),
+  url( $font-path + '/RobotoSlab-Thin.ttf') format('truetype'),
+  url( $font-path + '/RobotoSlab-Thin.svg#RobotoSlab') format('svg');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Roboto Slab';
+  src: url( $font-path + '/RobotoSlab-Light.eot');
+  src: url( $font-path + '/RobotoSlab-Light.eot?#iefix') format('embedded-opentype'),
+  url( $font-path + '/RobotoSlab-Light.woff') format('woff'),
+  url( $font-path + '/RobotoSlab-Light.ttf') format('truetype'),
+  url( $font-path + '/RobotoSlab-Light.svg#RobotoSlab') format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Roboto Slab';
+  src: url( $font-path + '/RobotoSlab-Regular.eot');
+  src: url( $font-path + '/RobotoSlab-Regular.eot?#iefix') format('embedded-opentype'),
+  url( $font-path + '/RobotoSlab-Regular.woff') format('woff'),
+  url( $font-path + '/RobotoSlab-Regular.ttf') format('truetype'),
+  url( $font-path + '/RobotoSlab-Regular.svg#RobotoSlab') format('svg');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Roboto Slab';
+  src: url( $font-path + '/RobotoSlab-Regular.eot');
+  src: url( $font-path + '/RobotoSlab-Regular.eot?#iefix') format('embedded-opentype'),
+  url( $font-path + '/RobotoSlab-Regular.woff') format('woff'),
+  url( $font-path + '/RobotoSlab-Regular.ttf') format('truetype'),
+  url( $font-path + '/RobotoSlab-Regular.svg#RobotoSlab') format('svg');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Roboto Slab';
+  src: url( $font-path + '/RobotoSlab-Bold.eot');
+  src: url( $font-path + '/RobotoSlab-Bold.eot?#iefix') format('embedded-opentype'),
+  url( $font-path + '/RobotoSlab-Bold.woff') format('woff'),
+  url( $font-path + '/RobotoSlab-Bold.ttf') format('truetype'),
+  url( $font-path + '/RobotoSlab-Bold.svg#RobotoSlab') format('svg');
+  font-weight: 700;
+  font-style: normal;
+}
 
 
-
+/* END Extrabold Italic */
 
 // Named Color Variables
 // --------------------------------------------------
@@ -34,34 +238,24 @@ $app-direction: ltr;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #488aff,
-  secondary:  #32db64,
-  danger:     #f53d3d,
-  light:      #f4f4f4,
-  dark:       #222
+        primary: #ee5151,
+        secondary: #9aa,
+        danger: #f53d3d,
+        light: #f4f4f4,
+        dark: #222
 );
-
 
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
 
-
-
-
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
-
-
-
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
-
-
-
 
 // App Theme
 // --------------------------------------------------
@@ -72,14 +266,12 @@ $colors: (
 
 @import "ionic.theme.default";
 
-
 // Ionicons
 // --------------------------------------------------
 // The premium icon font for Ionic. For more info, please see:
-// http://ionicframework.com/docs/ionicons/
+// http://ionicframework.com/docs/v2/ionicons/
 
 @import "ionic.ionicons";
-
 
 // Fonts
 // --------------------------------------------------

@@ -1,0 +1,25 @@
+page-product-detail {
+  h1 {
+    margin: 0;
+  }
+  .product-price {
+    font-size: 3em;
+    display: inline-block;
+    font-weight: 100;
+    color: map-get($colors, primary);
+    padding-right: 15px;
+    margin-right: 15px;
+    border-right: 1px solid #ddd;
+    font-family:'Roboto Slab', serif;
+  }
+  input {
+    text-align: center;
+  }
+  ion-avatar {
+    border-radius: 50%;
+    overflow: hidden;
+    height: 75px;
+    width: 75px;
+    background-size: cover;
+  }
+}

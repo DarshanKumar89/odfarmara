@@ -1,0 +1,193 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-buttons end>
+      <button ion-button menuToggle="right">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title align="center">{{ 'PROFILE' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form (ngSubmit)="saveData()" class="container bg bg-gray">
+    <div class="row">
+      <div col-12>
+        <div class="form-group">
+          <label class="text text-heading" for="data.name">{{ 'NAME_COMPANY' | translate }}</label>
+          <ion-input type="text"
+                     id="data.name"
+                     [(ngModel)]="data.NeoContentFarmersProfile.name"
+                     name="name"
+                     placeholder="{{ 'NAME_COMPANY' | translate }}"></ion-input>
+        </div>
+        <div class="form-group">
+          <label class="text text-heading" for="data.person">{{ 'YOUR_NAME' | translate }}</label>
+          <ion-input type="text"
+                     id="data.person"
+                     [(ngModel)]="data.NeoContentFarmersProfile.contact_name"
+                     name="contact_name"
+                     placeholder="{{ 'YOUR_NAME' | translate }}"
+                     value="{{ data.NeoContentFarmersProfile.contact_name }}"></ion-input>
+        </div>
+        <div class="form-group">
+          <label class="text text-heading" for="data.short_description">{{ 'SHORT_DESC' | translate }}</label>
+          <ion-input type="textarea"
+                     id="data.short_description"
+                     [(ngModel)]="data.NeoContentFarmersProfile.short_description"
+                     name="description"
+                     placeholder="{{ 'SHORT_DESC' | translate }}"
+                     value="{{ data.NeoContentFarmersProfile.short_description }}"></ion-input>
+        </div>
+        <div class="form-group">
+          <label class="text text-heading" for="data.long_description">{{ 'LONG_DESC' | translate }}</label>
+          <ion-input type="textarea"
+                     id="data.long_description"
+                     [(ngModel)]="data.NeoContentFarmersProfile.long_description"
+                     name="description"
+                     placeholder="{{ 'LONG_DESC' | translate }}"
+                     value="{{ data.NeoContentFarmersProfile.long_description }}"></ion-input>
+        </div>
+      </div>
+      <div col-12>
+        <label class="text text-heading">{{ 'PROFILE_PHOTO' | translate }}</label>
+        <div class="d-block">
+          <ion-avatar *ngIf="avatar != null">
+            <img [src]="avatar" alt="Avatar">
+          </ion-avatar>
+          <label ion-button class="btn btn-gray" for="avatar">{{ 'UPLOAD_PHOTO' | translate }}</label>
+          <input type="file"
+                 multiple
+                 [(ngModel)]="avatar"
+                 (change)="uploadPhotos($event, 'avatar')"
+                 style="display: none;"
+                 name="avatar"
+                 id="avatar"
+                 accept="image/*;capture">
+        </div>
+        <div class="clearfix"></div>
+        <label class="text text-heading">{{ 'COVER_PHOTO' | translate }}</label>
+        <div class="d-block">
+          <ion-avatar *ngIf="poster != null">
+            <img [src]="poster" alt="Plagát">
+          </ion-avatar>
+          <label ion-button class="btn btn-gray" for="poster">{{ 'UPLOAD_PHOTO' | translate }}</label>
+          <input type="file"
+                 multiple
+                 [(ngModel)]="poster"
+                 (change)="uploadPhotos($event, 'poster')"
+                 style="display: none;"
+                 name="poster"
+                 id="poster"
+                 accept="image/*;capture">
+        </div>
+      </div>
+    </div>
+    <div class="text text-center">
+      <button type="submit" ion-button class="btn btn-primary">{{ 'SAVE_CHANGES' | translate }}</button>
+    </div>
+  </form>
+  <form (ngSubmit)="saveData()" class="container bg bg-gray offset offset-top">
+    <div class="form-group text text-center" *ngIf="regionImage != null">
+      <img [src]="regionImage" alt="" width="100">
+    </div>
+    <div>
+      <div class="form-group">
+        <label class="text text-heading" for="data.street">{{ 'STREET_NO' | translate }}</label>
+        <ion-input type="text"
+                   id="data.street"
+                   [(ngModel)]="data.NeoContentFarmersProfile.address"
+                   name="street"
+                   placeholder="{{ 'STREET_NO' | translate }}"
+                   value="{{ data.NeoContentFarmersProfile.address }}"></ion-input>
+      </div>
+      <div class="form-group" [formGroup]="account">
+        <label class="text text-heading">{{ 'CITY' | translate }}</label>
+        <ion-auto-complete [dataProvider]="regionsAutocmp"
+                           formControlName="city"
+                           (itemSelected)="regionSelect()"></ion-auto-complete>
+      </div>
+      <div class="form-group">
+        <label class="text text-heading" for="data.NeoContentFarmersProfile.zip">{{ 'ZIP' | translate }}</label>
+        <ion-input type="text"
+                   id="data.NeoContentFarmersProfile.zip"
+                   [(ngModel)]="data.NeoContentFarmersProfile.zip"
+                   name="zip"
+                   placeholder="{{ 'ZIP' | translate }}"
+                   value="{{ data.NeoContentFarmersProfile.zip }}"></ion-input>
+      </div>
+      <div class="form-group">
+        <label class="text text-heading" for="data.phone">{{ 'PHONE_NO' | translate }}</label>
+        <ion-input type="text"
+                   id="data.phone"
+                   [(ngModel)]="data.NeoContentFarmersProfile.phone"
+                   name="phone"
+                   placeholder="{{ 'PHONE_NO' | translate }}"
+                   value="{{ data.NeoContentFarmersProfile.phone }}"></ion-input>
+      </div>
+    </div>
+    <div class="text text-center">
+      <button type="submit" ion-button class="btn btn-primary">{{ 'SAVE_CHANGES' | translate }}</button>
+    </div>
+  </form>
+  <form (ngSubmit)="saveData()" class="container bg bg-gray offset offset-top">
+    <div>
+      <div class="form-group">
+        <label class="text text-heading" for="data.NeoContentFarmersProfile.post_send">{{ 'COLLECT_TYPE' | translate }}</label>
+        <ion-select type="text"
+                   id="data.NeoContentFarmersProfile.post_send"
+                   [(ngModel)]="data.NeoContentFarmersProfile.post_send"
+                   name="post_send"
+                   placeholder="{{ 'COLLECT_TYPE' | translate }}">
+          <ion-option value="0" [selected]="data.NeoContentFarmersProfile.post_send == 0">{{ 'POST' | translate }}</ion-option>
+          <ion-option value="1" [selected]="data.NeoContentFarmersProfile.post_send == 1">{{ 'PERSONAL' | translate }}</ion-option>
+        </ion-select>
+      </div>
+    </div>
+    <div>
+      <div class="form-group">
+        <label class="text text-heading" for="data.NeoContentFarmersProfile.package_type">{{ 'PACKAGE_TYPE' | translate }}</label>
+        <ion-select type="text"
+                   id="data.NeoContentFarmersProfile.package_type"
+                   [(ngModel)]="data.NeoContentFarmersProfile.package_type"
+                   name="package_type"
+                   placeholder="{{ 'PACKAGE_TYPE' | translate }}">
+          <ion-option value="0" [selected]="data.NeoContentFarmersProfile.package_type == 0">{{ 'KG' | translate }}</ion-option>
+          <ion-option value="1" [selected]="data.NeoContentFarmersProfile.package_type == 1">{{ 'G' | translate }}</ion-option>
+          <ion-option value="2" [selected]="data.NeoContentFarmersProfile.package_type == 2">{{ 'PACKAGES' | translate }}</ion-option>
+          <ion-option value="3" [selected]="data.NeoContentFarmersProfile.package_type == 3">{{ 'PIECES' | translate }}</ion-option>
+        </ion-select>
+      </div>
+    </div>
+    <div class="text text-center">
+      <button type="submit" ion-button class="btn btn-primary">{{ 'SAVE_CHANGES' | translate }}</button>
+    </div>
+  </form>
+  <form (ngSubmit)="saveData()" class="container bg bg-gray offset offset-top">
+    <div class="w-day d-inline-block" *ngFor="let day of hourKeys">
+      <div class="form-group">
+        <label class="text text-heading" for="{{ 'day-0-' + day }}">{{ translated[day] }}</label>
+        <ion-select type="text"
+                   id="{{ 'day-0-' + day }}"
+                   [(ngModel)]="data.NeoContentFarmersProfile.opening_hours[day]"
+                   name="opening_hours[day]"
+                   placeholder="{{ translated[day] + ' - od'}}">
+          <ion-option *ngFor="let hour of _.range(24)" [selected]="hour + ':00' == data.NeoContentFarmersProfile.opening_hours[day][0]">{{ hour + ':00' }}</ion-option>
+        </ion-select>
+        <ion-select type="text"
+                   id="{{ 'day-1-' + day }}"
+                   [(ngModel)]="data.NeoContentFarmersProfile.opening_hours[day]"
+                   name="opening_hours[day]"
+                   placeholder="{{ translated[day] + ' - do'}}">
+          <ion-option *ngFor="let hour of _.range(24)" [selected]="hour + ':00' == data.NeoContentFarmersProfile.opening_hours[day][1]">{{ hour + ':00' }}</ion-option>
+        </ion-select>
+      </div>
+    </div>
+    <div class="text text-center">
+      <button type="submit" ion-button class="btn btn-primary">{{ 'SAVE_CHANGES' | translate }}</button>
+    </div>
+  </form>
+</ion-content>

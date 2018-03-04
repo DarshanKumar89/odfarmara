@@ -1,0 +1,127 @@
+<ion-scroll scrollY="true" class="bg bg-white">
+  <form (ngSubmit)="save()" class="padding">
+    <h2>{{ product.id == 0 ? 'Pridajte nový dopyt' : 'Upraviť dopyt' }}</h2>
+    <div class="alert alert-error" *ngIf="errText != ''" [innerHtml]="errText"></div>
+    <div class="bg bg-gray padding offset offset-top">
+      <div class="form-group">
+        <ion-label class="text text-bold text-grey text-uppercase">{{ 'PRODUCT' | translate }}</ion-label>
+        <ion-input type="text"
+                   [(ngModel)]="product.name"
+                   name="name"
+                   placeholder="{{ 'PRODUCT' | translate }}"
+                   required></ion-input>
+      </div>
+      <div class="form-group">
+        <ion-label class="text text-bold text-grey text-uppercase">{{ 'SHORT_DESC' | translate }}</ion-label>
+        <ion-textarea [(ngModel)]="product.description"
+                      name="description"
+                      placeholder="{{ 'SHORT_DESC' | translate }}"
+                      required
+                      value="{{ product.description }}"></ion-textarea>
+      </div>
+    </div>
+    <div class="bg bg-gray padding offset offset-top">
+      <div class="form-group">
+        <ion-label class="text text-bold text-grey text-uppercase">{{ 'CHOOSE_CATEGORY' | translate }}</ion-label>
+        <ion-select type="text"
+                    [(ngModel)]="product.category.parent.id"
+                    name="parent-cat-id"
+                    (ionChange)="categoryChange()"
+                    required
+                    placeholder="{{ 'CHOOSE_CATEGORY' | translate }}">
+          <ion-option *ngFor="let category of categories" [value]="category.id" [selected]="category.id == this.product.category.parent.id">{{ category.name }}</ion-option>
+        </ion-select>
+      </div>
+      <div class="form-group">
+        <ion-label class="text text-bold text-grey text-uppercase">{{ 'CHOOSE_SUB_CATEGORY' | translate }}</ion-label>
+        <ion-select type="text"
+                    [(ngModel)]="product.category.id"
+                    name="cat-id"
+                    required
+                    placeholder="{{ 'CHOOSE_SUB_CATEGORY' | translate }}">
+          <ion-option *ngFor="let category of subcategories" [value]="category.id" [selected]="category.id == this.product.category.id">{{ category.name }}</ion-option>
+        </ion-select>
+      </div>
+    </div>
+    <div class="bg bg-gray padding offset offset-top">
+      <div class="form-group">
+        <ion-label class="text text-bold text-grey text-uppercase">{{ 'TOTAL_QUANTITY' | translate }}</ion-label>
+        <ion-input type="number"
+                   [(ngModel)]="product.quantity"
+                   name="quantity"
+                   required
+                   placeholder="{{ 'TOTAL_QUANTITY' | translate }}"
+                   value="{{ product.quantity }}"></ion-input>
+      </div>
+      <div class="form-group">
+        <ion-label class="text text-bold text-grey text-uppercase">{{ 'PER' | translate }}</ion-label>
+        <ion-select type="text"
+                    [(ngModel)]="product.priceType"
+                    name="priceType"
+                    required
+                    placeholder="{{ 'PER' | translate }}">
+          <ion-option *ngFor="let type of types" [value]="type.index" [selected]="type.index == product.priceType">{{ type.value }}</ion-option>
+        </ion-select>
+      </div>
+      <div class="form-group">
+        <ion-label class="text text-bold text-grey text-uppercase">{{ 'PRICE' | translate }}</ion-label>
+        <ion-input type="number"
+                   [(ngModel)]="product.price"
+                   name="price"
+                   required
+                   placeholder="{{ 'PRICE' | translate }}"
+                   value="{{ product.price }}"></ion-input>
+      </div>
+      <div class="form-group">
+        <ion-label class="text text-bold text-grey text-uppercase">{{ 'PRICE_PER' | translate }}</ion-label>
+        <ion-select type="text"
+                    [(ngModel)]="product.qtyType"
+                    name="qtyType"
+                    required
+                    placeholder="{{ 'PRICE_PER' | translate }}">
+          <ion-option value="1">1 {{ 'UNIT' | translate }}</ion-option>
+          <ion-option value="10">10 {{ 'UNITS' | translate }}</ion-option>
+          <ion-option value="100">100 {{ 'UNITS' | translate }}</ion-option>
+          <ion-option value="1000">1000 {{ 'UNITS' | translate }}</ion-option>
+        </ion-select>
+      </div>
+    </div>
+    <div class="bg bg-gray padding offset offset-top">
+      <div class="form-group">
+        <ion-label class="text text-bold text-grey text-uppercase">{{ 'VALID_FROM' | translate }}</ion-label>
+        <ion-datetime [(ngModel)]="validFrom"
+                      name="valid-from"
+                      required
+                      [max]="future"
+                      displayFormat="DD.MM.YYYY"></ion-datetime>
+      </div>
+    </div>
+    <div class="bg bg-gray padding offset offset-top">
+      <div class="form-group">
+        <ion-label class="text text-bold text-grey text-uppercase">{{ 'VALID_UNTIL' | translate }}</ion-label>
+        <ion-datetime [(ngModel)]="validUntil"
+                      name="valid-until"
+                      required
+                      [max]="future"
+                      displayFormat="DD.MM.YYYY"></ion-datetime>
+      </div>
+    </div>
+    <p>{{ 'IMG_COUNT_NOTICE' | translate }}</p>
+    <div class="bg bg-gray padding offset offset-top">
+      <div class="uploaded-photo" *ngFor="let image of gallery; let i = index">
+        <span class="fa fa-trash" (click)="deletePhoto(i)"></span>
+        <div class="photo" [style.background-image]="sanitize(image)"></div>
+      </div>
+    </div>
+    <div class="text text-center offset offset-top">
+      <label ion-button class="btn btn-plain-gray" for="photos">{{ 'UPLOAD_PHOTO' | translate }}</label>
+      <input type="file" multiple [(ngModel)]="gallery" (change)="uploadPhotos($event)" style="display: none;" name="photos" id="photos" accept="image/*;capture=camera">
+      <button ion-button class="btn btn-white" (click)="deletePhotos()" type="button">{{ 'CLEAR_ALL' | translate }}</button>
+    </div>
+    <div class="alert alert-error" *ngIf="errText != ''" [innerHtml]="errText"></div>
+    <div class="text text-center offset offset-top">
+      <button ion-button class="btn btn-primary" type="submit">{{ product.id ? 'Upraviť ponuku' : 'Odoslať novú ponuku' }}</button>
+      <button ion-button class="btn btn-white" (click)="closeModal()" type="button">{{ 'CANCEL' | translate }}</button>
+    </div>
+  </form>
+</ion-scroll>

@@ -1,0 +1,29 @@
+page-map {
+  padding: 0;
+  margin: 0;
+  .scroll-content {
+    padding: 0 !important;
+  }
+  #map-farmers {
+    width: 100%;
+    height: 80vh;
+  }
+
+  .btn {
+    font-family: 'Open Sans', sans-serif !important;
+    display: block !important;
+    width: 100%;
+    text-align: left;
+    .fa {
+      margin: 0 !important;
+    }
+  }
+
+  ion-avatar {
+    width: 60px;
+    height: 60px;
+    float: left;
+    overflow: hidden;
+    border-radius: 50%;
+  }
+}

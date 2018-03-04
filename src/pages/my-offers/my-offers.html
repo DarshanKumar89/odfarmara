@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-buttons end>
+      <button ion-button menuToggle="right">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title align="center">{{ title }}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <div *ngIf="loaded" class="row">
+    <div *ngFor="let cat of categorized" class="d-block w-full">
+      <span class="icofont">{{ cat.category.icon }}</span>
+      <span class="text text-heading">{{ cat.category.name }}</span>
+      <div>
+        <div *ngFor="let product of cat.products" class="w-half d-inline-block">
+          <offer-view [product]="product" [myOffers]="true"></offer-view>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!loaded" class="text text-center">
+    <div class="fa fa-spin fa-spinner fa-4x"></div>
+  </div>
+</ion-content>

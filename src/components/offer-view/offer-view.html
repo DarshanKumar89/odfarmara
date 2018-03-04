@@ -1,0 +1,21 @@
+<div class="padding">
+  <div class="product d-block" (click)="showProduct(product)">
+    <div class="bg bg-gray product-photo" [style.background-image]="sanitize(product.photos[0])"></div>
+    <div class="product-info">
+      <div class="border border-bottom">
+        <strong>{{ product.name }}</strong>
+      </div>
+      <span>{{ 'OFFER' | translate }} <strong>{{ product.quantity }} {{ prices[product.priceType] }}</strong></span>
+    </div>
+  </div>
+  <div *ngIf="myOffers" class="offset offset-top">
+    <div class="btn-edit text text-heading" (click)="showEditProduct(product)">
+      {{ 'EDIT' | translate }}
+    </div>
+    <div class="float-right">
+    <span class="padding text text-md text-gray" (click)="deleteProduct(product)">
+      <span class="fa fa-trash-o"></span>
+    </span>
+    </div>
+  </div>
+</div>

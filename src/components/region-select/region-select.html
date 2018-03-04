@@ -1,0 +1,9 @@
+<div class="form-group">
+  <label [for]="id" class="text text-heading">Mesto</label>
+  <ion-select [(ngModel)]="city" name="region_id" (ngModelChange)="updateImage()" [id]="id">
+    <ion-option *ngFor="let village of villages" [value]="village.id" [selected]="id == village.id">{{ village.fullname }}{{ village.zip == 0 ? '' : (' - ' + village.zip) }}</ion-option>
+  </ion-select>
+</div>
+<div class="d-inline-block w-half">
+  <img [src]="image" alt="Region">
+</div>

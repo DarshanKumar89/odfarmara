@@ -1,0 +1,4 @@
+<div class="product-thumb" (click)="showProduct(product)">
+  <div class="product-image bg bg-gray" [style.background-image]="sanitize(product.photos[0] ? product.photos[0].url.main : '')"></div>
+  <strong class="text text-serif">{{ product.name }}</strong>
+</div>

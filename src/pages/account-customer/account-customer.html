@@ -1,0 +1,115 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-buttons end>
+      <button ion-button menuToggle="right">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title align="center">{{ 'PROFILE' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form class="container bg bg-gray" ion-row (ngSubmit)="saveData()">
+    <div col-12>
+      <div class="form-group">
+        <label class="text text-heading" for="data.NeoShopUser.name">{{ 'NAME_COMPANY' | translate }}</label>
+        <ion-input type="text"
+                   id="data.NeoShopUser.name"
+                   [(ngModel)]="data.NeoShopUser.name"
+                   name="name"
+                   placeholder="{{ 'NAME_COMPANY' | translate }}"
+                   value="{{ data.NeoShopUser.name }}"></ion-input>
+      </div>
+      <div class="form-group">
+        <label class="text text-heading" for="data.NeoShopUser.description">{{ 'SHORT_DESC' | translate }}</label>
+        <ion-input type="textarea"
+                   id="data.NeoShopUser.description"
+                   [(ngModel)]="data.NeoShopUser.description"
+                   name="description"
+                   placeholder="{{ 'SHORT_DESC' | translate }}"
+                   value="{{ data.NeoShopUser.description }}"></ion-input>
+      </div>
+    </div>
+    <div col-12>
+      <label class="text text-heading">{{ 'PROFILE_PHOTO' | translate }}</label>
+      <div class="d-block">
+        <ion-avatar>
+          <img [src]="avatar" alt="Avatar">
+        </ion-avatar>
+        <label ion-button class="btn btn-gray" for="avatar">{{ 'UPLOAD_PHOTO' | translate }}</label>
+        <input type="file"
+               multiple
+               [(ngModel)]="avatar"
+               (change)="uploadPhotos($event, 'avatar')"
+               style="display: none;"
+               name="avatar"
+               id="avatar"
+               accept="image/*;capture">
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="row">
+      <button ion-button class="btn btn-primary" type="submit">{{ 'SAVE_CHANGES' | translate }}</button>
+    </div>
+  </form>
+  <form class="container bg bg-gray offset offset-top" (ngSubmit)="saveData()">
+    <div class="form-group text text-center">
+      <img [src]="regionImage" alt="" width="100">
+    </div>
+    <div>
+      <div class="form-group">
+        <label class="text text-heading" for="data[0].NeoShopAddress.name">{{ 'NAME_SURNAME' | translate }}</label>
+        <ion-input type="text"
+                   id="data[0].NeoShopAddress.name"
+                   [(ngModel)]="data[0].NeoShopAddress.name"
+                   name="name"
+                   placeholder="{{ 'NAME_SURNAME' | translate }}"
+                   value="{{ data[0].NeoShopAddress.name }}"></ion-input>
+      </div>
+      <div class="form-group">
+        <label class="text text-heading" for="data.NeoShopUser.address">{{ 'STREET_NO' | translate }}</label>
+        <ion-input type="text"
+                   id="data.NeoShopUser.address"
+                   [(ngModel)]="data[0].NeoShopAddress.address"
+                   name="address"
+                   placeholder="{{ 'STREET_NO' | translate }}"
+                   value="{{ data[0].NeoShopAddress.address }}"></ion-input>
+      </div>
+      <div class="form-group" [formGroup]="account">
+        <label class="text text-heading">{{ 'CITY' | translate }}</label>
+        <ion-auto-complete [dataProvider]="regionsAutocmp"
+                           formControlName="city"
+                           (itemSelected)="regionSelect()"></ion-auto-complete>
+      </div>
+      <div class="form-group">
+        <label class="text text-heading" for="data.NeoShopUser.zip">{{ 'ZIP' | translate }}</label>
+        <ion-input type="text"
+                   id="data.NeoShopUser.zip"
+                   [(ngModel)]="data.NeoShopUser.zip"
+                   name="zip"
+                   placeholder="{{ 'ZIP' | translate }}"
+                   value="{{ data.NeoShopUser.zip }}"></ion-input>
+      </div>
+      <div class="form-group">
+        <label class="text text-heading" for="data.NeoShopUser.phone">{{ 'PHONE' | translate }}</label>
+        <ion-input type="text"
+                   id="data.NeoShopUser.phone"
+                   [(ngModel)]="data.NeoShopUser.phone"
+                   name="name"
+                   placeholder="{{ 'PHONE' | translate }}"
+                   value="{{ data.NeoShopUser.phone }}"></ion-input>
+      </div>
+      <!--<region-select [region]="data[0].NeoShopAddress.region_id"
+                     id="villages"
+                     [city]="data[0].NeoShopAddress.city"></region-select>-->
+    </div>
+
+    <div class="row">
+      <button ion-button class="btn btn-primary" type="submit">{{ 'SAVE_CHANGES' | translate }}</button>
+    </div>
+  </form>
+</ion-content>

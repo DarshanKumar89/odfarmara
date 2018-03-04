@@ -1,0 +1,4 @@
+<button ion-button block [ngClass]="{'btn-primary': state, 'btn': true, 'btn-white': !state}" (click)="addToFav()">
+  <span [class]="'fa fa-heart' + (state ? '' : '-o')"></span>
+  {{ 'SAVE_AS_FAVOURITES' | translate }}
+</button>

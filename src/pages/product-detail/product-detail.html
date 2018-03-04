@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-buttons end style="display: block !important;">
+      <button ion-button menuToggle="right">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title align="center">{{ 'PRODUCT' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="bg bg-profile text text-center"
+       [style.background-image]="sanitize(product.photos[0] && product.photos[0].url ? product.photos[0].url.main : '')">
+  </div>
+  <div class="container container-subpage container-profile">
+    <h1 class="text text-left">{{ product.name }}</h1>
+    <div class="row">
+      <div class="user" col-9>
+        <ion-avatar [style.background-image]="sanitize(product.author.avatar)">
+        </ion-avatar>
+        <div class="user-info">
+          <strong class="text text-uppercase text-heading">{{ product.author.name }}</strong>
+          <span class="text text-sm">{{ 'RATING' | translate }}</span><br/>
+          <div class="rating text text-primary">
+            <span *ngFor="let star of calc(product.author.rating)" [innerHtml]="star"></span>
+          </div>
+        </div>
+        <p>{{ product.description }}</p>
+        <div class="product-info">
+          <div class="product-price">{{ product.price }} €</div>
+          <div class="d-inline-block">
+            <span>{{ 'PRICE_PER' | translate }}</span><br>
+            <strong>{{ product.quantity }} {{ prices[product.priceType] }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <div col-3>
+        <img *ngIf="regions[product.author.region]"
+             src="https://odfarmara.sk/theme/Odfarmara/img/{{ regions[product.author.region]['image'] }}"
+             alt="Region">
+      </div>
+    </div>
+    <div class="bg bg-grey-darker border bg bg-gray offset offset-top text text-sm">
+      <div class="padding d-inline-block">
+        <div class="border border-right padding padding-right">
+          Ponuka <strong>{{ product.quantity }} {{ prices[product.priceType] }}</strong>
+        </div>
+      </div>
+      <div class="d-inline-block padding">
+        Ponuka platná do <strong>{{ product.validUntil | date:'dd.MM.yyyy' }}</strong>
+      </div>
+      <div class="border border-top padding">
+        <strong class="d-inline-block vertical middle text text-uppercase text-heading">{{ 'QTY' | translate }}</strong>
+        <div class="d-inline-block form-group">
+          <button class="btn btn-grey btn-round btn-border text text-grey" (click)="decreaseQuantity()" ion-button>-
+          </button>
+          <ion-input type="number"
+                     name="quantity"
+                     class="d-inline-block w-auto text text-center"
+                     style="width: 50px"
+                     [(ngModel)]="demand.quantity"></ion-input>
+          <button class="btn btn-grey btn-round btn-border text text-grey" (click)="increaseQuantity()" ion-button>+
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row offset offset-top">
+      <div col>
+        <btn-favourites *ngIf="loggedUser != null && loggedUser.id != product.author.id"
+                        [state]="isFav"
+                        [idProduct]="product.id"></btn-favourites>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<ion-footer align="center" *ngIf="loggedUser != null && loggedUser.id != product.author.id">
+  <ion-toolbar>
+    <button ion-button class="btn btn-primary">
+      {{ 'SEND_DEMAND' | translate }}
+    </button>
+  </ion-toolbar>
+</ion-footer>

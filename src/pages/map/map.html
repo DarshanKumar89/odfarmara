@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-buttons end>
+      <button ion-button menuToggle="right">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title align="center">
+      <span class="fa fa-map-marker"></span>
+      {{ 'NEAR_YOU' | translate }}
+      <span class="label label-primary">{{ len }}</span>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding (ionScroll)="scroll($event)">
+  <iframe id="map-farmers" [src]="url" frameborder="0"></iframe>
+  <div class="padding padding-top" *ngFor="let user of (farmers)">
+    <button (click)="openFarmer(user)" class="btn btn-white d-block padding">
+      <ion-avatar class="float-left">
+        <img [src]="user.avatar" alt="">
+      </ion-avatar>
+      <span class="text text-heading">{{ user.name }}</span><br>
+      <span>{{ 'RATING' | translate }}</span>
+      <div class="rating text text-primary">
+        <span *ngFor="let star of calc(user.rating)" [innerHtml]="star"></span>
+      </div>
+      <span class="clearfix"></span>
+    </button>
+  </div>
+  <div id="bottom"></div>
+</ion-content>
