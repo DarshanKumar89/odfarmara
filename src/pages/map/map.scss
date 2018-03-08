@@ -22,8 +22,21 @@ page-map {
   ion-avatar {
     width: 60px;
     height: 60px;
-    float: left;
-    overflow: hidden;
+    position: relative;
     border-radius: 50%;
+    overflow: hidden;
+    img {
+      left: -9999px;
+      top: -9999px;
+      bottom: -9999px;
+      right: -9999px;
+      position: absolute;
+      margin: auto;
+      display: block;
+      width: 100%;
+      height: auto;
+      min-height: 100%;
+      max-width: none;
+    }
   }
 }

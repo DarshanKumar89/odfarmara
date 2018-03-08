@@ -32,6 +32,7 @@
     "@ngx-translate/core": "^9.1.1",
     "@ngx-translate/http-loader": "^2.0.1",
     "cordova-android": "7.0.0",
+    "cordova-browser": "5.0.3",
     "cordova-plugin-background-mode": "^0.7.2",
     "cordova-plugin-badge": "^0.8.7",
     "cordova-plugin-deeplinks": "^1.0.0",

@@ -36,7 +36,7 @@ export class LoginPage {
                 alert.present();
             } else if(data['loggedUser'] == null) {
                 let alert = this.alert.create({
-                    title: 'Chyba',
+                    title: 'Upozornenie',
                     subTitle: 'Účet nebol aktivovaný. Skontrolujte mailovú schránku.',
                     buttons: ['OK']
                 });

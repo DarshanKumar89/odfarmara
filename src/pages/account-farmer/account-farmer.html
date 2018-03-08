@@ -167,21 +167,24 @@
     </div>
   </form>
   <form (ngSubmit)="saveData()" class="container bg bg-gray offset offset-top">
-    <div class="w-day d-inline-block" *ngFor="let day of hourKeys">
+
+    <div class="w-day" *ngFor="let day of hourKeys">
       <div class="form-group">
         <label class="text text-heading" for="{{ 'day-0-' + day }}">{{ translated[day] }}</label>
         <ion-select type="text"
-                   id="{{ 'day-0-' + day }}"
-                   [(ngModel)]="data.NeoContentFarmersProfile.opening_hours[day]"
-                   name="opening_hours[day]"
-                   placeholder="{{ translated[day] + ' - od'}}">
+                    id="{{ 'day-0-' + day }}"
+                    [(ngModel)]="data.NeoContentFarmersProfile.opening_hours[day][0]"
+                    [name]="'opening_hours-0-' + day"
+                    placeholder="{{ translated[day] + ' - od'}}">
           <ion-option *ngFor="let hour of _.range(24)" [selected]="hour + ':00' == data.NeoContentFarmersProfile.opening_hours[day][0]">{{ hour + ':00' }}</ion-option>
         </ion-select>
+      </div>
+      <div class="form-group">
         <ion-select type="text"
-                   id="{{ 'day-1-' + day }}"
-                   [(ngModel)]="data.NeoContentFarmersProfile.opening_hours[day]"
-                   name="opening_hours[day]"
-                   placeholder="{{ translated[day] + ' - do'}}">
+                    id="{{ 'day-1-' + day }}"
+                    [(ngModel)]="data.NeoContentFarmersProfile.opening_hours[day][1]"
+                    [name]="'opening_hours-1-' + day"
+                    placeholder="{{ translated[day] + ' - do'}}">
           <ion-option *ngFor="let hour of _.range(24)" [selected]="hour + ':00' == data.NeoContentFarmersProfile.opening_hours[day][1]">{{ hour + ':00' }}</ion-option>
         </ion-select>
       </div>
