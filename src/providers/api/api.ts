@@ -161,7 +161,8 @@ export class ApiProvider {
                 package_type: user['NeoContentFarmersProfile']['package_type']
             } : {
                 name: address ? address['NeoShopAddress']['name'] : '',
-                phone: user['NeoShopUser']['phone']
+                phone: user['NeoShopUser']['phone'],
+                idAddress: address ? address['NeoShopAddress']['id'] : 0
             }
         );
     }
@@ -243,7 +244,6 @@ export class ApiProvider {
 
     static getProduct(product, user: User = null) {
         product['isFarmer'] = true;
-        console.log(user);
         return new Product(
             product['NeoContentOffer']['id'],
             user !== null ? user : (product['NeoContentFarmersProfile'] ? ApiProvider.getUser(product, {'NeoShopAddress': {}}) : null),

@@ -28,7 +28,8 @@ export class AccountCustomerPage {
                 city: MyApp.loggedUser.city,
                 region_id: MyApp.loggedUser.region,
                 zip: MyApp.loggedUser.zip,
-                name: MyApp.loggedUser.scopeExtra['name']
+                name: MyApp.loggedUser.scopeExtra['name'],
+                id: MyApp.loggedUser.scopeExtra['idAddress'],
             }
         },
         NeoShopUser: {
@@ -38,6 +39,7 @@ export class AccountCustomerPage {
             region_id: MyApp.loggedUser.region,
             city: MyApp.loggedUser.city,
             zip: MyApp.loggedUser.zip,
+            address: MyApp.loggedUser.street,
             phone: MyApp.loggedUser.scopeExtra['phone']
         }
     };
@@ -76,11 +78,12 @@ export class AccountCustomerPage {
     saveData() {
         this.data[0].NeoShopAddress.city = this.data.NeoShopUser.city = this.account.value.city;
         let village = Data.villages.find(item => {
-            console.log(item['fullname'], this.data.NeoShopUser.city );
             return item['fullname'] == this.data.NeoShopUser.city;
         });
         this.data.NeoShopUser.region_id = village['region_id'];
         this.data[0].NeoShopAddress.zip = this.data.NeoShopUser.zip = village['zip'].toString();
+        this.data[0].NeoShopAddress.city = this.data.NeoShopUser.city;
+        this.data[0].NeoShopAddress.address = this.data.NeoShopUser.address;
         this.api.editUser(this.data).then(response => {
             MyApp.loggedUser.name = this.data.NeoShopUser.name;
             MyApp.loggedUser.description = this.data.NeoShopUser.description;
@@ -88,11 +91,13 @@ export class AccountCustomerPage {
             MyApp.loggedUser.region = this.data[0].NeoShopAddress.region_id;
             MyApp.loggedUser.city = this.data[0].NeoShopAddress.city;
             this.showAlert(response['status']);
-            MyApp.loggedUser = ApiProvider.getUser(this.data, this.data);
+            this.data['User'] = response['loggedUser']['User'];
+            this.data['isFarmer'] = false;
+            MyApp.loggedUser = ApiProvider.getUser(this.data, this.data[0]);
             this.storage.set('loggedUser', MyApp.loggedUser);
 
             this.api.getFavouriteOffers(MyApp.loggedUser.id).then(response => {
-                MyApp.loggedUser = ApiProvider.getUser(response['loggedInUser'], response['loggedInUser'])
+                MyApp.loggedUser = ApiProvider.getUser(response['loggedInUser'], {"NeoShopAddress": {}})
             });
 
         });
@@ -107,7 +112,8 @@ export class AccountCustomerPage {
             reader.onload = event => {
                 let bs = event.target['result'];
                 this.api.uploadBase64(btoa(bs), 'NeoShopUser', MyApp.loggedUser.scopeId).then(data => {
-                    this.data.NeoShopUser.photo = this.avatar = ApiProvider.URL + data['path'];
+                    this.avatar = ApiProvider.URL + data['path'];
+                    this.data.NeoShopUser.photo = data['id'];
                 });
             };
             reader.readAsBinaryString(file);

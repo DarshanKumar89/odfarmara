@@ -39,6 +39,7 @@ import {LocalNotifications} from '@ionic-native/local-notifications';
 import {TranslateModule, TranslateLoader, TranslateService} from '@ngx-translate/core'
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HttpClient, HttpClientModule, HttpHandler} from "@angular/common/http";
+import {ForgotPasswordPage} from "../pages/forgot-password/forgot-password";
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -67,6 +68,7 @@ export function createTranslateLoader(http: HttpClient) {
         OfferMiniComponent,
         BtnFavouritesComponent,
         RegionSelectComponent,
+        ForgotPasswordPage
     ],
     imports: [
         BrowserModule,
@@ -102,6 +104,7 @@ export function createTranslateLoader(http: HttpClient) {
         HomeFarmerPage,
         MapPage,
         OfferFormComponent,
+        ForgotPasswordPage
     ],
     providers: [
         StatusBar,

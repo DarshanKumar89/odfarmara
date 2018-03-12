@@ -170,6 +170,7 @@ export class MyApp {
         ];
         //this.storage.set('loggedUser', null);
         this.storage.get('loggedUser').then((data) => {
+            console.log(data);
             MyApp.loggedUser = data;
             if (MyApp.loggedUser != null) {
                 this.rootPage = MyApp.loggedUser.farmer ? HomeFarmerPage : HomeCustomerPage;

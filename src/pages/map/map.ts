@@ -28,6 +28,7 @@ export class MapPage extends Wrapper {
     constructor(public navParams: NavParams, public navCtrl: NavController, public sanitizer: DomSanitizer, public geolocation: Geolocation, public api: ApiProvider, public events: Events,
                 private zone: NgZone) {
         super(navCtrl, navParams, sanitizer);
+        this.url = this.sanitizeURL('https://odfarmara.sk/sub_page/apiMap');
         this.farmers = [];
         this.load();
         setInterval(this.load, 1000 * 60);

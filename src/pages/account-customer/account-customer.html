@@ -16,22 +16,13 @@
   <form class="container bg bg-gray" ion-row (ngSubmit)="saveData()">
     <div col-12>
       <div class="form-group">
-        <label class="text text-heading" for="data.NeoShopUser.name">{{ 'NAME_COMPANY' | translate }}</label>
+        <label class="text text-heading" for="data.NeoShopUser.name">{{ 'NAME_SURNAME' | translate }}</label>
         <ion-input type="text"
                    id="data.NeoShopUser.name"
                    [(ngModel)]="data.NeoShopUser.name"
                    name="name"
-                   placeholder="{{ 'NAME_COMPANY' | translate }}"
+                   placeholder="{{ 'NAME_SURNAME' | translate }}"
                    value="{{ data.NeoShopUser.name }}"></ion-input>
-      </div>
-      <div class="form-group">
-        <label class="text text-heading" for="data.NeoShopUser.description">{{ 'SHORT_DESC' | translate }}</label>
-        <ion-input type="textarea"
-                   id="data.NeoShopUser.description"
-                   [(ngModel)]="data.NeoShopUser.description"
-                   name="description"
-                   placeholder="{{ 'SHORT_DESC' | translate }}"
-                   value="{{ data.NeoShopUser.description }}"></ion-input>
       </div>
     </div>
     <div col-12>
@@ -48,7 +39,8 @@
                style="display: none;"
                name="avatar"
                id="avatar"
-               accept="image/*;capture">
+               capture="camera"
+               accept="image/*">
       </div>
       <div class="clearfix"></div>
     </div>
@@ -62,22 +54,13 @@
     </div>
     <div>
       <div class="form-group">
-        <label class="text text-heading" for="data[0].NeoShopAddress.name">{{ 'NAME_SURNAME' | translate }}</label>
-        <ion-input type="text"
-                   id="data[0].NeoShopAddress.name"
-                   [(ngModel)]="data[0].NeoShopAddress.name"
-                   name="name"
-                   placeholder="{{ 'NAME_SURNAME' | translate }}"
-                   value="{{ data[0].NeoShopAddress.name }}"></ion-input>
-      </div>
-      <div class="form-group">
         <label class="text text-heading" for="data.NeoShopUser.address">{{ 'STREET_NO' | translate }}</label>
         <ion-input type="text"
                    id="data.NeoShopUser.address"
-                   [(ngModel)]="data[0].NeoShopAddress.address"
+                   [(ngModel)]="data.NeoShopUser.address"
                    name="address"
                    placeholder="{{ 'STREET_NO' | translate }}"
-                   value="{{ data[0].NeoShopAddress.address }}"></ion-input>
+                   value="{{ data.NeoShopUser.address }}"></ion-input>
       </div>
       <div class="form-group" [formGroup]="account">
         <label class="text text-heading">{{ 'CITY' | translate }}</label>
