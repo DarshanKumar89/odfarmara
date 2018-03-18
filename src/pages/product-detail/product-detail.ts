@@ -48,16 +48,32 @@ export class ProductDetailPage extends Wrapper {
                 }
             });
         } else {
-
-            api.post('/neo_content/neo_content_offers/view/' + this.product, {
+            let id = this.product;
+            this.product = new Product(
+                0,
+                MyApp.emptyUser,
+                '',
+                '',
+                0,
+                0,
+                0,
+                new Date,
+                new Date,
+                [],
+                ''
+            );
+            api.post('/neo_content/neo_content_offers/view/' + id, {
                 data: {
                     force: {
                         loggedUserIdBASE64: btoa(`user_:(${MyApp.loggedUser.id})`)
                     }
                 }
             }).then(response => {
-                this.product = ApiProvider.getProduct(response['offer']);
+                response['neoContentFarmer']['isFarmer'] = true;
+                this.product = ApiProvider.getProduct(response['neoContentOffer'], ApiProvider.getUser(response['neoContentFarmer'], response['neoContentFarmer']));
                 MyApp.idDetailAuthor = this.product.author.id;
+            }).catch(e => {
+                console.error(e);
             });
         }
     }

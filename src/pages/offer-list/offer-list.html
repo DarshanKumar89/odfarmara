@@ -15,16 +15,25 @@
   <ion-row *ngIf="favs">
     <ion-item col>
       <div class="bg bg-gray padding">
-        <div ion-button class="btn btn-gray btn-segment" *ngFor="let category of following">
-          <button class="btn btn-remove-fav" (click)="deleteFromFavs(category.NeoContentCategory.id)">
-            <span class="fa fa-times"></span>
+        <span class="text text-heading">{{ 'SEGMENTS' | translate }}</span>
+        <span class="label label-primary" *ngIf="following.length > 0">{{ following.length }}</span>
+        <div class="offset offset-top">
+          <button ion-button class="btn btn-gray text text-gray d-inline-block" *ngIf="!adding" (click)="toggleAdd()">
+            {{ 'ADD_SEGMENT' | translate }}
           </button>
-          <strong>{{ category.NeoContentCategory.name }}</strong>
-          <span>{{ category.Region ? category.Region.name : 'Slovensko' }}</span>
+          <button class="btn btn-gray d-inline-block text text-gray text-center" ion-button (click)="toggleShowList()">
+            <i [class]="'fa fa-angle-' + (showList ? 'right' : 'down')"></i>
+          </button>
         </div>
-        <button ion-button class="btn btn-gray offset offset-top text text-gray" *ngIf="!adding" (click)="toggleAdd()">
-          {{ 'ADD_SEGMENT' | translate }}
-        </button>
+        <div *ngIf="showList">
+          <div ion-button class="btn btn-gray btn-segment" *ngFor="let category of following">
+            <button class="btn btn-remove-fav" (click)="deleteFromFavs(category.NeoContentCategory.id)">
+              <span class="fa fa-times"></span>
+            </button>
+            <strong>{{ category.NeoContentCategory.name }}</strong>
+            <span>{{ category.Region ? category.Region.name : 'Slovensko' }}</span>
+          </div>
+        </div>
         <div *ngIf="adding">
           <button class="btn btn-white d-block w-full" ion-button (click)="toggleSegment()">{{ 'CHOOSE_SEGMENT' | translate }}</button>
           <button class="btn btn-white d-block w-full" ion-button (click)="toggleLocality()">{{ region ? region.name : 'Nájdi lokalitu' }}</button>
@@ -37,7 +46,6 @@
             </div>
             <div *ngFor="let category of categories; let i = index">
               <div *ngIf="category.open">
-
                 <button class="btn btn-white-o"
                         (click)="check(child.NeoContentCategory.id)"
                         ion-button

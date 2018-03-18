@@ -2,7 +2,7 @@ import {Component, Pipe, ViewChild} from '@angular/core';
 import {AlertController, ModalController, Nav, Platform} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
-
+import {_} from 'underscore';
 import {CmsPage} from "../pages/cms/cms";
 import {ProfileFarmerPage} from "../pages/profile-farmer/profile-farmer";
 import {User} from "./Entity/User";
@@ -23,10 +23,12 @@ import {OfferFormComponent} from "../components/offer-form/offer-form";
 import {Category} from "./Entity/Category";
 import {AccountCustomerPage} from "../pages/account-customer/account-customer";
 import {MapPage} from "../pages/map/map";
-import { Deeplinks } from '@ionic-native/deeplinks';
-import { BackgroundMode } from '@ionic-native/background-mode';
-import { LocalNotifications } from '@ionic-native/local-notifications';
+import {Deeplinks} from '@ionic-native/deeplinks';
+import {BackgroundMode} from '@ionic-native/background-mode';
+import {LocalNotifications} from '@ionic-native/local-notifications';
 import {TranslateService} from "@ngx-translate/core";
+import {Geolocation} from "@ionic-native/geolocation";
+import {ProductDetailPage} from "../pages/product-detail/product-detail";
 
 
 @Component({
@@ -84,12 +86,18 @@ export class MyApp {
         0, '', '', '', 1, '', '', '', '', '', '', '', 0, '', true, ''
     );
 
+    private lat;
+    private lng;
+
     static offer: Product = null;
     static demandQty: number = 0;
     static idDetailAuthor: number = 0;
 
     public static lang = 'sk';
 
+    public static following = [];
+    public static notified = [];
+    static nav;
     constructor(public platform: Platform,
                 public statusBar: StatusBar,
                 public splashScreen: SplashScreen,
@@ -100,9 +108,9 @@ export class MyApp {
                 private deeplinks: Deeplinks,
                 private bg: BackgroundMode,
                 private notif: LocalNotifications,
-                private translate: TranslateService) {
+                private translate: TranslateService,
+                private geo: Geolocation) {
         this.initializeApp();
-
         this.translate.setDefaultLang(MyApp.lang);
         this.deeplinks.route({
             '/farmer/:id': ProfileFarmerPage
@@ -170,26 +178,72 @@ export class MyApp {
         ];
         //this.storage.set('loggedUser', null);
         this.storage.get('loggedUser').then((data) => {
-            console.log(data);
             MyApp.loggedUser = data;
             if (MyApp.loggedUser != null) {
+                MyApp.getFavourites(MyApp.loggedUser.id, this.api, this.geo, this.notif);
                 this.rootPage = MyApp.loggedUser.farmer ? HomeFarmerPage : HomeCustomerPage;
-                api.getFavouriteOffers(MyApp.loggedUser.id).then(resolve => {
-                    this.categories = MyApp.categories = Object.keys(resolve['farmarCategories']).map(key => {
-                        let category = ApiProvider.getCategory(resolve['farmarCategories'][key]);
-                        MyApp.children[category.id] = category.children;
-                        return category;
-                    });
-                    MyApp.favourites = this.favourites = resolve['offers'].map(item => {
-                        return ApiProvider.getProduct(item);
-                    });
-                    MyApp.counts.favourites = resolve['offers'].length;
-                });
             } else {
+                MyApp.getFavourites(1, this.api, this.geo, this.notif);
                 this.rootPage = LoginPage;
             }
             this.loggedUser = MyApp.loggedUser;
             this.splashScreen.hide();
+        });
+    }
+
+    static getNewFarmers(geo: Geolocation, api: ApiProvider, notif: LocalNotifications) {
+        geo.getCurrentPosition().then(item => {
+            let lat = item.coords.latitude;
+            let lng = item.coords.longitude;
+            api.getNearbyOffers(lat, lng, 100).then(response => {
+                let offers = response['offers'].map(item => {
+                    item['author']['isFarmer'] = true;
+                    return ApiProvider.getProduct(item, ApiProvider.getUser(item['author'], item['author']))
+                }).filter((item: Product) => {
+                    return _.contains(MyApp.following, item.category.id);
+                }).filter((item: Product) => {
+                    return !_.contains(MyApp.notified, item.author.id);
+                });
+                for (let offer of offers) {
+                    MyApp.notified.push(offer.id);
+                    if (_.contains(MyApp.notified, offer.author.id)) {
+                        continue;
+                    }
+                    MyApp.notified.push(offer.author.id);
+                    notif.schedule({
+                        id: 1,
+                        title: 'Farma v okolí',
+                        text: 'Farma, ktorá vyrába kategóriu, ktorú sledujete.',
+                        sound: null,
+                        at: new Date(new Date().getTime() + 1),
+                        data: {farm: offer.author}
+                    });
+                }
+            });
+        });
+    }
+
+    static getFavourites(id, api: ApiProvider, geo: Geolocation, notif: LocalNotifications) {
+        api.getFavouriteOffers(id).then(resolve => {
+            MyApp.categories = Object.keys(resolve['farmarCategories']).map(key => {
+                let category = ApiProvider.getCategory(resolve['farmarCategories'][key]);
+                MyApp.children[category.id] = category.children;
+                return category;
+            });
+            MyApp.favourites = resolve['offers'].map(item => {
+                return ApiProvider.getProduct(item);
+            });
+            MyApp.counts.favourites = resolve['offers'].length;
+            MyApp.following = resolve['following'].map(cat => {
+                return cat['NeoContentCategory']['id'];
+            });
+            if (MyApp.loggedUser && !MyApp.loggedUser.farmer) {
+                setInterval(() => {
+                    MyApp.getNewFarmers(geo, api, notif);
+                }, 1000 * 60);
+                MyApp.getNewFarmers(geo, api, notif);
+            }
+
         });
     }
 
@@ -213,6 +267,19 @@ export class MyApp {
 
     initializeApp() {
         this.platform.ready().then(() => {
+            MyApp.nav = this.nav;
+            this.notif.on('click', (notification) => {
+                if(notification['data']) {
+                    let data = notification['data'];
+                    if(data['offer']) {
+                        this.nav.push(ProductDetailPage, {
+                            product: data['offer']
+                        });
+                    } else if(notification['data']['farm']) {
+
+                    }
+                }
+            });
             this.statusBar.styleDefault();
             this.splashScreen.hide();
             this.notifications();
@@ -238,14 +305,15 @@ export class MyApp {
             this.api.notifications().then(data => {
                 MyApp.counts.messages = this.count = data['messages'];
                 MyApp.counts.demands = this.count = data['demands'];
-                for(let i = 0; i < data['notifications'].length; i++) {
+                for (let i = 0; i < data['notifications'].length; i++) {
                     let notification = data['notifications'][i];
                     this.notif.schedule({
-                      id: 1,
-                      title: notification['title'],
-                      text: notification['text'],
-                      sound: null,
-                      at: new Date(new Date().getTime() + 1),
+                        id: 1,
+                        title: notification['title'],
+                        text: notification['text'],
+                        sound: null,
+                        at: new Date(new Date().getTime() + 1),
+                        data: JSON.parse(notification['data'])
                     });
                 }
             });
@@ -293,7 +361,7 @@ export class MyApp {
     }
 
     openProfile(id) {
-        if(MyApp.loggedUser.id) {
+        if (MyApp.loggedUser.id) {
             this.nav.push(ProfileFarmerPage, {
                 id: id,
             });

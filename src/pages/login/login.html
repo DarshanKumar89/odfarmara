@@ -17,39 +17,30 @@
   <form (ngSubmit)="doLogin()" class="container">
     <div class="form-group">
       <ion-label class="text text-bold text-grey text-uppercase">{{ 'EMAIL' | translate }}</ion-label>
-      <ion-input type="email" [(ngModel)]="login.email" name="email" placeholder="{{ 'EMAIL' | translate }}"></ion-input>
+      <ion-input type="email"
+                 [(ngModel)]="login.email"
+                 name="email"
+                 placeholder="{{ 'EMAIL' | translate }}"></ion-input>
     </div>
     <div class="form-group">
       <ion-label class="text text-bold text-grey text-uppercase">{{ 'PASSWORD' | translate }}</ion-label>
-      <ion-input type="password" [(ngModel)]="login.password" name="password" placeholder="{{ 'PASSWORD' | translate }}"></ion-input>
+      <ion-input type="password"
+                 [(ngModel)]="login.password"
+                 name="password"
+                 placeholder="{{ 'PASSWORD' | translate }}"></ion-input>
     </div>
     <div class="form-group">
-      <button ion-button class="btn btn-primary d-block" [disabled]="login.disabled">{{ 'LOGIN_N' | translate }}</button>
+      <button ion-button class="btn btn-primary d-inline-block" [disabled]="login.disabled">
+        {{ 'LOGIN_N' | translate }}
+      </button>
+      <button ion-button class="btn btn-primary d-inline-block" type="button" (click)="registerPage()">
+        {{ 'REGISTER_N' | translate }}
+      </button>
     </div>
     <div class="form-group">
-      <button ion-button type="button" class="btn btn-gray" (click)="forgotPassword()">{{ 'FORGOT_PASSWORD' | translate }}</button>
-    </div>
-  </form>
-  <p class="text text-center">alebo</p>
-  <form class="container" (ngSubmit)="doRegister()">
-    <div class="form-group">
-      <ion-label class="text text-bold text-grey text-uppercase">{{ 'EMAIL' | translate }}</ion-label>
-      <ion-input type="email" [(ngModel)]="register.email" name="email" placeholder="{{ 'EMAIL' | translate }}"></ion-input>
-    </div>
-    <div class="form-group">
-      <ion-label class="text text-bold text-grey text-uppercase">{{ 'PASSWORD' | translate }}</ion-label>
-      <ion-input type="password" [(ngModel)]="register.password" name="password" placeholder="{{ 'PASSWORD' | translate }}"></ion-input>
-    </div>
-    <div class="form-group">
-      <ion-label class="text text-bold text-grey text-uppercase">{{ 'REPEAT_PASSWORD' | translate }}</ion-label>
-      <ion-input type="password" [(ngModel)]="register.passwordRepeat" name="passwordRepeat" placeholder="{{ 'REPEAT_PASSWORD' | translate }}"></ion-input>
-    </div>
-    <div class="form-group">
-      <ion-label class="text text-bold text-grey text-uppercase">{{ 'FARMER' | translate }}</ion-label>
-      <ion-toggle [(ngModel)]="register.type" name="type"></ion-toggle>
-    </div>
-    <div class="form-group">
-      <button ion-button class="btn btn-primary d-block" [disabled]="register.disabled">{{ 'REGISTER_N' | translate }}</button>
+      <button ion-button type="button" class="btn btn-gray" (click)="forgotPassword()">
+        {{ 'FORGOT_PASSWORD' | translate }}
+      </button>
     </div>
   </form>
 </ion-content>

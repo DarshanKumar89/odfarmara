@@ -22,22 +22,30 @@
       <div class="border" *ngIf="conversations.length > 0">
         <div class="row conversation border border-bottom"
              *ngFor="let message of conversations">
-          <div col-8 (click)="openConversation(message.user.id, message.id)">
+          <div col-4 (click)="openConversation(message.user.id, message.id)">
             <div class="seen" *ngIf="!message.lastMessage.seen"><span class="seen-circle"></span></div>
             <div class="avatar">
               <ion-avatar>
-                <img src="{{ message.user.avatar }}" alt="{{ message.user.name }}">
+                <img src="{{ message.product.photos[0].url.main || 'assets/icon/user.png' }}" alt="{{ message.product.name }}">
               </ion-avatar>
             </div>
+          </div>
+          <div col-4 (click)="openConversation(message.user.id, message.id)">
             <div class="data">
-              <div class="user-name text text-heading">{{ message.user.name }}</div>
+              <div class="user-name text text-bold">{{ message.product.name }}</div>
               <div class="message-body" [innerHtml]="message.lastMessage.body"></div>
             </div>
           </div>
-          <div col-4>
+          <div col-4 (click)="openConversation(message.user.id, message.id)">
+            <ion-avatar class="small float-right">
+              <img src="{{ message.user.avatar || 'assets/icon/user.png' }}" alt="{{ message.user.name }}">
+            </ion-avatar>
+          </div>
+          <div col-4 (click)="openConversation(message.user.id, message.id)"></div>
+          <div col-8>
             <button class="btn btn-transparent float-right" (click)="deleteDemand(message.id)">
               <i class="fa fa-trash"></i></button>
-            <span class="text text-sm">{{ message.lastMessage.created | date:'dd.MM.yyyy' }}</span>
+            <span class="text text-sm">{{ message.lastMessage.created | date:'dd.MM.yyyy HH:mm' }}</span>
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@
   "PROFILE": "Profil",
   "NAME_COMPANY": "Meno / Spoločnosť",
   "SHORT_DESC": "Krátky popis prevádzky",
+  "SHORT_DESC_PRODUCT": "Krátky popis ponuky",
   "PROFILE_PHOTO": "Profilová foto",
   "UPLOAD_PHOTO": "Nahrať foto",
   "SAVE_CHANGES": "Uložiť zmeny",
@@ -76,7 +77,6 @@
   "NEARBY_YOU": "V okolí",
   "FAVOURITES": "Obľúbené",
   "ADD": "Pridaj",
-
   "SAVE_AS_FAVOURITES": "Uložiť ako obľúbené",
   "CHOOSE_CATEGORY": "Vyberte kategóriu",
   "CHOOSE_SUB_CATEGORY": "Vyberte kategóriu",
@@ -90,7 +90,8 @@
   "IMG_COUNT_NOTICE": "Prvý obrázok bude použitý ako hlavný. Maximálny počet obrázkov je 8.",
   "CLEAR_ALL": "Vymazať všetky",
   "EDIT": "Upraviť",
-
   "RESPOND": "odpovedať",
-  "FORGOT_PASSWORD": "Zabudnuté heslo"
+  "FORGOT_PASSWORD": "Zabudnuté heslo",
+  "CUSTOMER": "Zákazník",
+  "APPLY_FOR_ALL": "Použiť na všetky"
 }

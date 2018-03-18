@@ -58,15 +58,7 @@
           <ion-avatar *ngIf="avatar != null">
             <img [src]="avatar" alt="Avatar">
           </ion-avatar>
-          <label ion-button class="btn btn-gray" for="avatar">{{ 'UPLOAD_PHOTO' | translate }}</label>
-          <input type="file"
-                 multiple
-                 [(ngModel)]="avatar"
-                 (change)="uploadPhotos($event, 'avatar')"
-                 style="display: none;"
-                 name="avatar"
-                 id="avatar"
-                 accept="image/*;capture=camera">
+          <button type="button" ion-button class="btn btn-gray" (click)="choosePhoto('avatar')">{{ 'UPLOAD_PHOTO' | translate }}</button>
         </div>
         <div class="clearfix"></div>
         <label class="text text-heading">{{ 'COVER_PHOTO' | translate }}</label>
@@ -74,15 +66,7 @@
           <ion-avatar *ngIf="poster != null">
             <img [src]="poster" alt="Plagát">
           </ion-avatar>
-          <label ion-button class="btn btn-gray" for="poster">{{ 'UPLOAD_PHOTO' | translate }}</label>
-          <input type="file"
-                 multiple
-                 [(ngModel)]="poster"
-                 (change)="uploadPhotos($event, 'poster')"
-                 style="display: none;"
-                 name="poster"
-                 id="poster"
-                 accept="image/*;capture=camera">
+          <button ion-button type="button" class="btn btn-gray" (click)="choosePhoto('poster')">{{ 'UPLOAD_PHOTO' | translate }}</button>
         </div>
       </div>
     </div>
@@ -167,26 +151,38 @@
     </div>
   </form>
   <form (ngSubmit)="saveData()" class="container bg bg-gray offset offset-top">
-
+    <label class="text text-heading">{{ 'OPEN_HOURS' | translate }}</label>
     <div class="w-day" *ngFor="let day of hourKeys">
-      <div class="form-group">
-        <label class="text text-heading" for="{{ 'day-0-' + day }}">{{ translated[day] }}</label>
-        <ion-select type="text"
-                    id="{{ 'day-0-' + day }}"
-                    [(ngModel)]="data.NeoContentFarmersProfile.opening_hours[day][0]"
-                    [name]="'opening_hours-0-' + day"
-                    placeholder="{{ translated[day] + ' - od'}}">
-          <ion-option *ngFor="let hour of _.range(24)" [selected]="hour + ':00' == data.NeoContentFarmersProfile.opening_hours[day][0]">{{ hour + ':00' }}</ion-option>
-        </ion-select>
+      <div class="row">
+        <div class="form-group" col-10>
+          <label class="text text-heading" for="{{ 'day-0-' + day }}">{{ translated[day] }}</label>
+          <ion-select type="text"
+                      id="{{ 'day-0-' + day }}"
+                      [(ngModel)]="data.NeoContentFarmersProfile.opening_hours[day][0]"
+                      [name]="'opening_hours-0-' + day"
+                      placeholder="{{ translated[day] + ' - od'}}">
+            <ion-option *ngFor="let hour of _.range(24)" [selected]="hour + ':00' == data.NeoContentFarmersProfile.opening_hours[day][0]">{{ hour + ':00' }}</ion-option>
+          </ion-select>
+        </div>
+        <div col-2>
+          <div class="form-group">
+            <label class="d-block">&nbsp;</label>
+            <button ion-button class="btn btn-primary btn-sm" type="button" (click)="applyForAll(day)">
+              <span class="fa fa-calendar"></span>
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="form-group">
-        <ion-select type="text"
-                    id="{{ 'day-1-' + day }}"
-                    [(ngModel)]="data.NeoContentFarmersProfile.opening_hours[day][1]"
-                    [name]="'opening_hours-1-' + day"
-                    placeholder="{{ translated[day] + ' - do'}}">
-          <ion-option *ngFor="let hour of _.range(24)" [selected]="hour + ':00' == data.NeoContentFarmersProfile.opening_hours[day][1]">{{ hour + ':00' }}</ion-option>
-        </ion-select>
+      <div class="row">
+        <div class="form-group" col-10>
+          <ion-select type="text"
+                      id="{{ 'day-1-' + day }}"
+                      [(ngModel)]="data.NeoContentFarmersProfile.opening_hours[day][1]"
+                      [name]="'opening_hours-1-' + day"
+                      placeholder="{{ translated[day] + ' - do'}}">
+            <ion-option *ngFor="let hour of _.range(24)" [selected]="hour + ':00' == data.NeoContentFarmersProfile.opening_hours[day][1]">{{ hour + ':00' }}</ion-option>
+          </ion-select>
+        </div>
       </div>
     </div>
     <div class="text text-center">

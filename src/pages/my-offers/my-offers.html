@@ -14,8 +14,10 @@
 <ion-content padding>
   <div *ngIf="loaded" class="row">
     <div *ngFor="let cat of categorized" class="d-block w-full">
-      <span class="icofont">{{ cat.category.icon }}</span>
-      <span class="text text-heading">{{ cat.category.name }}</span>
+      <div class="offset offset-top">
+        <span class="icofont">{{ cat.category ? cat.category.icon : '' }}</span>
+        <span class="text text-heading">{{ cat.category ? cat.category.name : '' }}</span>
+      </div>
       <div>
         <div *ngFor="let product of cat.products" class="w-half d-inline-block">
           <offer-view [product]="product" [myOffers]="true"></offer-view>

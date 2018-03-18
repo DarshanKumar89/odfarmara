@@ -43,7 +43,7 @@ export class ProfileFarmerPage extends Wrapper {
         super(navCtrl, navParams, sanitizer);
         let id = this.navParams.data.id;
         if(id) {
-            api.get('/' + id).then(response => {
+            api.get(isNaN(parseInt(id)) ? '/' + id : ('/neo_content/neo_content_farmers_profile/view/' + id)).then(response => {
                 response['neoContentFarmersProfile']['isFarmer'] = true;
                 this.user = ApiProvider.getUser(response['neoContentFarmersProfile'], response['neoContentFarmersProfile']);
                 this.offers = response['neoContentFarmerOffers'].map(item => {

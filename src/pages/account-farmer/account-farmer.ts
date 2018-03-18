@@ -10,6 +10,7 @@ import {FileTransfer} from "@ionic-native/file-transfer";
 import {FormControl, FormGroup} from "@angular/forms";
 import {RegionAutocompleteProvider} from "../../providers/region-autocomplete/region-autocomplete";
 import {Storage} from "@ionic/storage";
+import {Camera} from "@ionic-native/camera";
 
 /**
  * Generated class for the AccountPage page.
@@ -26,6 +27,7 @@ export class AccountFarmerPage extends Wrapper {
 
     data = {
         NeoContentFarmersProfile: {
+            id: MyApp.loggedUser.scopeId,
             name: MyApp.loggedUser.name,
             region_id: MyApp.loggedUser.region,
             contact_name: MyApp.loggedUser.person,
@@ -60,6 +62,7 @@ export class AccountFarmerPage extends Wrapper {
     poster: string;
     account: FormGroup;
     regionImage: string;
+    loading = false;
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
                 sanitizer: DomSanitizer,
@@ -67,6 +70,8 @@ export class AccountFarmerPage extends Wrapper {
                 public api: ApiProvider,
                 private transfer: FileTransfer,
                 public regionsAutocmp: RegionAutocompleteProvider,
+                private camera: Camera,
+                private alert: AlertController,
                 private storage: Storage) {
         super(navCtrl, navParams, sanitizer);
 
@@ -98,7 +103,6 @@ export class AccountFarmerPage extends Wrapper {
     }
 
     saveData() {
-
         this.api.editUser(this.data).then(response => {
             MyApp.loggedUser.name = this.data.NeoContentFarmersProfile.name;
             MyApp.loggedUser.description = this.data.NeoContentFarmersProfile.short_description;
@@ -116,26 +120,58 @@ export class AccountFarmerPage extends Wrapper {
         });
     }
 
-    uploadPhotos(evt, type) {
+    uploadPhotos(bs, type) {
 
         let ft = this.transfer.create();
-        for (let i = 0; i < evt.target.files.length; i++) {
-            let file = evt.target.files[i];
-            let reader = new FileReader();
-            reader.onload = event => {
-                let bs = event.target['result'];
-                this.api.uploadBase64(btoa(bs), 'NeoContentFarmersProfile', MyApp.loggedUser.scopeId).then(data => {
-                    if(type === 'avatar') {
-                        this.data.NeoContentFarmersProfile.photo = data['id'];
-                        this.avatar = ApiProvider.URL + data['path'];
-                    } else {
-                        this.data.NeoContentFarmersProfile.cover = data['id'];
-                        this.poster = ApiProvider.URL + data['path'];
+        this.loading = true;
+        this.api.uploadBase64(bs, 'NeoContentFarmersProfile', MyApp.loggedUser.scopeId).then(data => {
+            this.loading = false;
+            if(type === 'avatar') {
+                this.data.NeoContentFarmersProfile.photo = data['id'];
+                this.avatar = ApiProvider.URL + data['path'];
+            } else {
+                this.data.NeoContentFarmersProfile.cover = data['id'];
+                this.poster = ApiProvider.URL + data['path'];
+            }
+
+        });
+    }
+
+    choosePhoto(type) {
+        let alert = this.alert.create({
+            title: 'Vyberte spôsob',
+            message: 'Vyberte, ktorým chcete vybrať obrázky.',
+            buttons: [
+                {
+                    text: 'Fotoaparát',
+                    handler: () => {
+                        this.getPhoto(1, type)
                     }
-                });
-            };
-            reader.readAsBinaryString(file);
-        }
+                },
+                {
+                    text: 'Galéria',
+                    handler: () => {
+                        this.getPhoto(0, type)
+                    }
+                }
+            ]
+        });
+        alert.present();
+    }
+
+    private getPhoto(srcType: number, type) {
+        this.camera.getPicture({
+            quality: 50,
+            destinationType: this.camera.DestinationType.DATA_URL,
+            encodingType: this.camera.EncodingType.JPEG,
+            mediaType: this.camera.MediaType.PICTURE,
+            correctOrientation: true,
+            sourceType: srcType,
+        }).then(img => {
+            this.uploadPhotos(img, type);
+        }).catch(e => {
+            console.error(e);
+        });
     }
 
     regionSelect() {
@@ -151,5 +187,15 @@ export class AccountFarmerPage extends Wrapper {
         if(region) {
             this.regionImage = img + region['image'];
         }
+    }
+
+    applyForAll(day) {
+        let openingHours = this.data.NeoContentFarmersProfile.opening_hours[day];
+        for(let d in this.data.NeoContentFarmersProfile.opening_hours) {
+            this.data.NeoContentFarmersProfile.opening_hours[d][0] = openingHours[0];
+            this.data.NeoContentFarmersProfile.opening_hours[d][1] = openingHours[1];
+        }
+        this.hourKeys = [];
+        this.hourKeys = Object.keys(this.data.NeoContentFarmersProfile.opening_hours);
     }
 }

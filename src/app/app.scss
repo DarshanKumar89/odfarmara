@@ -110,6 +110,10 @@ ion-app.wp {
     font-weight: 300;
     letter-spacing: 2px;
   }
+  &#{&}-sm {
+    font-size: 0.8em;
+    padding: 3px;
+  }
   &#{&}-plain-grey,
   &#{&}-plain-gray {
     border-color: transparent transparent #667272;
@@ -227,6 +231,9 @@ ion-app.wp {
   &#{&}-grey,
   &#{&}-gray {
     color: #333;
+  }
+  &#{&}-black {
+    color: #000;
   }
   &#{&}-primary {
     color: map-get($colors, primary);

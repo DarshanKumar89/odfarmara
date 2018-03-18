@@ -6,6 +6,7 @@ import {ApiProvider} from "../../providers/api/api";
 import {Wrapper} from "../../app/Helpers/Wrapper";
 import {DomSanitizer} from "@angular/platform-browser";
 import _ from 'underscore';
+import {Category} from "../../app/Entity/Category";
 
 /**
  * Generated class for the MyOffersPage page.
@@ -40,7 +41,12 @@ export class MyOffersPage extends Wrapper {
                 }
                 item['ParentNeoContentCategory'] = item['NeoContentCategoryParents'];
                 let p = ApiProvider.getProduct(item, MyApp.loggedUser);
-                this.main[p.category.parent.id] = p.category.parent;
+                console.log(p);
+                if(p.category.parent) {
+                    this.main[p.category.parent.id] = p.category.parent;
+                } else {
+                    this.main[0] = new Category(0, 'Nezaradené', '', null);
+                }
                 return p;
             });
             this.main = _.values(this.main);
@@ -56,6 +62,7 @@ export class MyOffersPage extends Wrapper {
                     c.products.push(offer);
                 }
             }
+            console.log(this.categorized);
             //this.categorized = _.indexBy(this.offers, 'idp');
         });
     }

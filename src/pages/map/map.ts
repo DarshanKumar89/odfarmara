@@ -35,17 +35,20 @@ export class MapPage extends Wrapper {
         this.len = this.farmers.length;
         this.events.subscribe('updateScreen', () => {
             this.zone.run(() => {
-                console.log('force update the screen');
             });
         });
     }
 
     load() {
-        this.geolocation.getCurrentPosition().then(resp => {
-            this.setup(`&lat=${resp.coords.latitude}&lng=${resp.coords.longitude}`);
-        }).catch(resp => {
+        if(this.geolocation) {
+            this.geolocation.getCurrentPosition().then(resp => {
+                this.setup(`&lat=${resp.coords.latitude}&lng=${resp.coords.longitude}`);
+            }).catch(resp => {
+                this.setup();
+            });
+        } else {
             this.setup();
-        });
+        }
     }
 
     setup(url = '') {

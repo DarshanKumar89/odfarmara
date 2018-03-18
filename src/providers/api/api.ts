@@ -182,11 +182,12 @@ export class ApiProvider {
         });
     }
 
-    getNearbyOffers(lat, lng) {
+    getNearbyOffers(lat, lng, area = null) {
         return this.post(`/neo_content/neo_content_offers/getNearby`, {
             data: {
                 lat: lat,
                 lng: lng,
+                area: area
             }
         });
     }
@@ -256,7 +257,7 @@ export class ApiProvider {
             new Date(product['NeoContentOffer']['end_date']),
             product['NeoUploadFile'],
             product['main'],
-            product['NeoContentCategory'] ? ApiProvider.getCategory(product) : null,
+            product['NeoContentCategory'] ? ApiProvider.getCategory(product['NeoContentCategory'][0] ? {"NeoContentCategory": product['NeoContentCategory'][0], "ParentNeoContentCategory": product['ParentNeoContentCategory']} : product) : null,
             product['NeoContentOffer']['unit_coef']
         );
     }
@@ -298,25 +299,6 @@ export class ApiProvider {
     }
 
     private static getNeoUser(user: User) {
-        /*
-        return new User(
-            user['id'],
-            user['NeoUploadFile'] && user['NeoUploadFile'].length > 0 ? user['NeoUploadFile'][0]['url']['main'] : null,
-            user['NeoUploadFile'] && user['NeoUploadFile'].length > 1 ? user['NeoUploadFile'][1]['url']['main'] : null,
-            (user['isFarmer'] ? (user['NeoContentFarmersProfile'] ? user['NeoContentFarmersProfile']['name'] : '') : (user['NeoShopUser'] ? user['NeoShopUser']['name'] : '')) == '' ? user['username'] : user['isFarmer'] ? user['NeoContentFarmersProfile']['name'] : user['NeoShopUser']['name'],
-            user['isFarmer'] ? user['NeoContentFarmersProfile']['region_id'] : user['NeoShopUser']['region_id'],
-            user['isFarmer'] ? user['NeoContentFarmersProfile']['long_description'] : user['NeoShopUser']['description'],
-            user['isFarmer'] ? user['NeoContentFarmersProfile']['contact_name'] : user['NeoShopUser']['name'],
-            user['isFarmer'] ? user['NeoContentFarmersProfile']['name'] : (address ? address['NeoShopAddress']['name'] : ''),
-            user['isFarmer'] ? user['NeoContentFarmersProfile']['address'] : (address ? address['NeoShopAddress']['address'] : ''),
-            user['isFarmer'] ? user['NeoContentFarmersProfile']['zip'] : (address ? address['NeoShopAddress']['zip'] : ''),
-            user['isFarmer'] ? user['NeoContentFarmersProfile']['city'] : (address ? address['NeoShopAddress']['city'] : ''),
-            user['isFarmer'] ? user['NeoContentFarmersProfile']['country_id'] : user['NeoShopUser']['country_id'],
-            user['isFarmer'] ? user['NeoContentFarmersProfile']['stars'] : user['NeoShopUser']['stars'],
-            user['username'],
-            user['isFarmer']
-        );
-         */
         return {
             "id": user.id,
             "username": user.email
@@ -359,12 +341,12 @@ export class ApiProvider {
         });
     }
 
-    static getDemand(data, messages) {
+    static getDemand(data, messages, product: Product = null) {
         let user = MyApp.loggedUser.farmer ? messages[0]['UserFrom'] : messages[0]['UserTo'];
         data = _.extend(data, user);
         data['isFarmer'] = !MyApp.loggedUser.farmer;
         user = ApiProvider.getUser(data, data);
-        let product = ApiProvider.getProduct(data);
+        product = product || ApiProvider.getProduct(data);
         let dem = new Demand(
             product,
             user,
@@ -378,7 +360,6 @@ export class ApiProvider {
     static getMessage(data) {
         data['UserFrom']['isFarmer'] = !!data['UserFrom']['NeoContentFarmersProfile'];
         data['UserTo']['isFarmer'] = !!data['UserTo']['NeoContentFarmersProfile'];
-        console.log(data, !!data['NeoContentInbox']['seen'], data['UserFrom']['User']['id'], MyApp.loggedUser.id);
         return new Message(
             data['NeoContentInbox']['id_inbox'],
             ApiProvider.getUser(data['UserFrom'], data['UserFrom']),

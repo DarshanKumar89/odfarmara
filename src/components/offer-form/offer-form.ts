@@ -8,6 +8,7 @@ import {ApiProvider} from "../../providers/api/api";
 import _ from "underscore";
 import {ProductDetailPage} from "../../pages/product-detail/product-detail";
 import {FileTransfer} from "@ionic-native/file-transfer";
+import {Camera} from "@ionic-native/camera";
 
 /**
  * Generated class for the OfferFormComponent component.
@@ -33,6 +34,7 @@ export class OfferFormComponent extends Wrapper {
     private validFrom;
     private validUntil;
     private gallery = [];
+    private loading = false;
 
     constructor(public viewCtrl: ViewController,
                 public navCtrl: NavController,
@@ -40,13 +42,14 @@ export class OfferFormComponent extends Wrapper {
                 protected sanitizer: DomSanitizer,
                 public api: ApiProvider,
                 private transfer: FileTransfer,
-                private alert: AlertController) {
+                private alert: AlertController,
+                private camera: Camera) {
         super(navCtrl, navParams, sanitizer);
         this.categories = MyApp.categories;
         this.children = MyApp.children;
         this.subcategories = this.children[this.categories[0] ? this.categories[0].id : 0];
         this.product = navParams.get('product');
-        if(!this.product) {
+        if (!this.product) {
             this.product = new Product(
                 0, MyApp.loggedUser, '', '', 0,
                 1, 0, new Date(), new Date(), [], '',
@@ -59,12 +62,11 @@ export class OfferFormComponent extends Wrapper {
             this.product.photos = this.product.photos.map(item => {
                 return item['id'];
             });
-            console.log(this.product);
         }
-        if(!this.product.category) {
+        if (!this.product.category) {
             this.product.category = this.children[this.categories[0] ? this.categories[0].id : 0][0];
         }
-        if(!this.product.category.parent) {
+        if (!this.product.category.parent) {
             this.product.category.parent = this.children[this.categories[0] ? this.categories[0].id : 0][0].parent;
         }
         for (let i in MyApp.prices) {
@@ -85,34 +87,34 @@ export class OfferFormComponent extends Wrapper {
         let txt = '';
         this.product.validFrom = new Date(this.validFrom);
         this.product.validUntil = new Date(this.validUntil);
-        if(this.product.name == '') {
+        if (this.product.name == '') {
             txt += "Vyplňte názov produktu.<br>";
         }
-        if(this.product.description == '') {
+        if (this.product.description == '') {
             txt += "Vyplňte popis produktu.<br>";
         }
-        if(this.product.price <= 0) {
+        if (this.product.price <= 0) {
             txt += "Vyplňte cenu produktu.<br>";
         }
-        if(this.product.quantity <= 0) {
+        if (this.product.quantity <= 0) {
             txt += "Vyplňte množstvo produktu.<br>";
         }
         let today = new Date();
-        today.setHours(0,0,0,0);
-        if(this.product.validFrom < today) {
+        today.setHours(0, 0, 0, 0);
+        if (this.product.validFrom < today) {
             txt += "Vyplňte správny dátum začiatku platnosti produktu.<br>";
         }
-        if(this.product.validUntil < new Date) {
+        if (this.product.validUntil < new Date) {
             txt += "Vyplňte správny dátum konca platnosti produktu.<br>";
         }
-        if(this.product.photos.length == 0) {
+        if (this.product.photos.length == 0) {
             txt += "Nahrajte aspoň jednu fotku.<br>";
         }
-        if(this.product.category.id == 0) {
+        if (this.product.category.id == 0) {
             txt += "Vyberte kategóriu produktu.<br>";
         }
         this.errText = txt;
-        if(txt == '') {
+        if (txt == '') {
             let url = `/neo_content/neo_content_offers/${this.product.id == 0 ? 'add' : `edit/${this.product.id}`}`;
             this.api.post(url, {
                 data: _.extend({
@@ -133,7 +135,7 @@ export class OfferFormComponent extends Wrapper {
                     product: this.product
                 });
                 this.closeModal();
-                if(data['insertId']) {
+                if (data['insertId']) {
                     this.alert.create({
                         title: 'Ponuka pridaná',
                         message: 'Ponuka bola úspešne pridaná. Počkajte na schválenie ponuky administrátorom.',
@@ -168,21 +170,52 @@ export class OfferFormComponent extends Wrapper {
         this.viewCtrl.dismiss();
     }
 
-    uploadPhotos(evt) {
+    choosePhoto() {
+        let alert = this.alert.create({
+            title: 'Vyberte spôsob',
+            message: 'Vyberte, ktorým chcete vybrať obrázky.',
+            buttons: [
+                {
+                    text: 'Fotoaparát',
+                    handler: () => {
+                        this.getPhoto(1)
+                    }
+                },
+                {
+                    text: 'Galéria',
+                    handler: () => {
+                        this.getPhoto(0)
+                    }
+                }
+            ]
+        });
+        alert.present();
+    }
+
+    private getPhoto(srcType: number) {
+        this.camera.getPicture({
+            quality: 50,
+            destinationType: this.camera.DestinationType.DATA_URL,
+            encodingType: this.camera.EncodingType.JPEG,
+            mediaType: this.camera.MediaType.PICTURE,
+            correctOrientation: true,
+            sourceType: srcType,
+        }).then(img => {
+            this.uploadPhotos(img);
+        }).catch(e => {
+            console.error(e);
+        });
+    }
+
+    uploadPhotos(bs) {
 
         let ft = this.transfer.create();
-        for(let i = 0; i < evt.target.files.length; i++) {
-            let file = evt.target.files[i];
-            let reader = new FileReader();
-            reader.onload = event => {
-                let bs = event.target['result'];
-                this.api.uploadBase64(btoa(bs)).then(data => {
-                    this.product.photos.push(data['id']);
-                    this.gallery.push(ApiProvider.URL + data['path']);
-                });
-            };
-            reader.readAsBinaryString(file);
-        }
+        this.loading = true;
+        this.api.uploadBase64(bs).then(data => {
+            this.product.photos.push(data['id']);
+            this.gallery.push(ApiProvider.URL + data['path']);
+            this.loading = false;
+        });
     }
 
 }

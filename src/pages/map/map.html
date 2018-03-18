@@ -22,11 +22,13 @@
       <ion-avatar class="float-left">
         <img [src]="user.avatar" alt="">
       </ion-avatar>
-      <span class="text text-heading">{{ user.name }}</span><br>
-      <span>{{ 'RATING' | translate }}</span>
-      <div class="rating text text-primary">
+      <span class="text text-heading">{{ user.name }}</span>
+      <br>
+      <br>
+      <span class="text text-black">{{ 'RATING' | translate }}</span>
+      <span class="rating text text-primary">
         <span *ngFor="let star of calc(user.rating)" [innerHtml]="star"></span>
-      </div>
+      </span>
       <span class="clearfix"></span>
     </button>
   </div>

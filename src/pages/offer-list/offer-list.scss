@@ -16,11 +16,19 @@ page-offer-list {
     }
   }
 
+  .btn-gray {
+    display: inline-block !important;
+    .fa {
+      margin-right: 0;
+    }
+  }
+
   .btn-segment, .btn-white {
     font-family: 'Open Sans', sans-serif !important;
     color: #000 !important;
     font-size: 1.1rem !important;
     letter-spacing: 0 !important;
+    display: block !important;
     strong {
       text-transform: none !important;
     }
@@ -91,4 +99,5 @@ page-offer-list {
       }
     }
   }
+
 }

@@ -5,6 +5,10 @@ page-messages {
     position: relative;
     border-radius: 50%;
     overflow: hidden;
+    &.small {
+      width: 30px;
+      height: 30px;
+    }
     img {
       left: -9999px;
       top: -9999px;
@@ -20,16 +24,22 @@ page-messages {
     }
   }
 
+  [col-12],
+  [col-4],
+  [col-8] {
+    padding: 0 !important;
+  }
+
   .avatar {
     width: 28%;
   }
 
   .conversation {
-    padding: 20px 10px;
+    padding: 10px 5px;
   }
 
   .data {
-    width: 60%;
+    width: 70%;
     text-overflow: ellipsis;
     display: inline-block;
   }

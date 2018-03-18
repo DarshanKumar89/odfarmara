@@ -25,7 +25,7 @@ export class DemandsPage {
         this.api.getDemands(MyApp.loggedUser.id).then(data => {
             data['demands'].map(item => {
                 this.api.fetchDemand(item['NeoContentDemand']['id_demand']).then(response => {
-                    this.conversations.push(ApiProvider.getDemand(response['demand'], response['messages']));
+                    this.conversations.push(ApiProvider.getDemand(response['demand'], response['messages'], ApiProvider.getProduct(response['offer'])));
                 });
             });
             //MyApp.counts.demands = data['demands'].length;

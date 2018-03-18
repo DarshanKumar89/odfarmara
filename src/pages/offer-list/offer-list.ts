@@ -36,7 +36,7 @@ export class OfferListPage extends Wrapper {
     private following = [];
     private prices = MyApp.prices;
     private counts = MyApp.counts;
-    private area = 500;
+    private area = 20;
     private cnts;
     private url = '';
     private interval;
@@ -44,6 +44,7 @@ export class OfferListPage extends Wrapper {
     private lat;
     private lng;
     private region = null;
+    private showList = false;
 
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
@@ -86,11 +87,18 @@ export class OfferListPage extends Wrapper {
             this.cnts = this.navParams.data['count'] ? this.navParams.data['count'] : 0;
         }
         this.cnts = this.cnts || 0;
-        this.title = `<span class="fa fa-heart-o"></span> ${this.navParams.data['title']} <span class="label label-primary">${this.cnts}</span>`;
+        this.title = `<span class="fa fa-heart-o"></span> ${this.navParams.data['title']} `;
+        if(this.cnts > 0) {
+            this.title += `<span class="label label-primary">${this.cnts}</span>`;
+        }
         this.favs = !!this.navParams.get('favs');
         this.adding = false;
         this.addingSegment = false;
         this.addingLocality = false;
+        this.getOffers(this.url);
+        this.storage.get('radius').then(radius => {
+            this.area = isNaN(parseInt(radius)) ? 20 : parseInt(radius);
+        });
     }
 
     selectLocality(index) {
@@ -139,7 +147,10 @@ export class OfferListPage extends Wrapper {
             });
             this.cnts = this.offers.length;
             this.cnts = this.cnts || 0;
-            this.title = `<span class="fa fa-heart-o"></span> ${this.navParams.data['title']} <span class="label label-primary">${this.cnts}</span>`;
+            this.title = `<span class="fa fa-heart-o"></span> ${this.navParams.data['title']} `;
+            if(this.cnts > 0) {
+                this.title += `<span class="label label-primary">${this.cnts}</span>`;
+            }
         });
     }
 
@@ -198,6 +209,10 @@ export class OfferListPage extends Wrapper {
         this.addingSegment = !this.addingSegment;
     }
 
+    toggleShowList() {
+        this.showList = !this.showList;
+    }
+
     toggleLocality() {
         this.addingLocality = !this.addingLocality;
     }
@@ -244,6 +259,7 @@ export class OfferListPage extends Wrapper {
     }
 
     changeArea() {
+        this.storage.set('radius', this.area);
         this.getOffers(this.url);
     }
 }

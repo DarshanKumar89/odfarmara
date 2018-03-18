@@ -7,6 +7,7 @@ import {FileTransfer} from "@ionic-native/file-transfer";
 import {RegionAutocompleteProvider} from "../../providers/region-autocomplete/region-autocomplete";
 import {FormControl, FormGroup} from "@angular/forms";
 import {Storage} from "@ionic/storage";
+import {Camera} from "@ionic-native/camera";
 
 /**
  * Generated class for the AccountCustomerPage page.
@@ -20,7 +21,7 @@ import {Storage} from "@ionic/storage";
     templateUrl: 'account-customer.html',
 })
 export class AccountCustomerPage {
-
+    loading = false;
     private data = {
         '0': {
             NeoShopAddress: {
@@ -54,6 +55,8 @@ export class AccountCustomerPage {
                 private alertCtrl: AlertController,
                 private transfer: FileTransfer,
                 public regionsAutocmp: RegionAutocompleteProvider,
+                private camera: Camera,
+                private alert: AlertController,
                 private storage: Storage) {
         this.avatar = this.data.NeoShopUser.photo;
         this.account = new FormGroup({
@@ -103,22 +106,52 @@ export class AccountCustomerPage {
         });
     }
 
-    uploadPhotos(evt) {
+    choosePhoto() {
+        let alert = this.alert.create({
+            title: 'Vyberte spôsob',
+            message: 'Vyberte, ktorým chcete vybrať obrázky.',
+            buttons: [
+                {
+                    text: 'Fotoaparát',
+                    handler: () => {
+                        this.getPhoto(1)
+                    }
+                },
+                {
+                    text: 'Galéria',
+                    handler: () => {
+                        this.getPhoto(0)
+                    }
+                }
+            ]
+        });
+        alert.present();
+    }
+
+    private getPhoto(srcType: number) {
+        this.camera.getPicture({
+            quality: 50,
+            destinationType: this.camera.DestinationType.DATA_URL,
+            encodingType: this.camera.EncodingType.JPEG,
+            mediaType: this.camera.MediaType.PICTURE,
+            correctOrientation: true,
+            sourceType: srcType,
+        }).then(img => {
+            this.uploadPhotos(img);
+        }).catch(e => {
+            console.error(e);
+        });
+    }
+
+    uploadPhotos(bs) {
 
         let ft = this.transfer.create();
-        for (let i = 0; i < evt.target.files.length; i++) {
-            let file = evt.target.files[i];
-            let reader = new FileReader();
-            reader.onload = event => {
-                let bs = event.target['result'];
-                this.api.uploadBase64(btoa(bs), 'NeoShopUser', MyApp.loggedUser.scopeId).then(data => {
-                    this.avatar = ApiProvider.URL + data['path'];
-                    this.data.NeoShopUser.photo = data['id'];
-                });
-            };
-            reader.readAsBinaryString(file);
-        }
+        this.api.uploadBase64(bs, 'NeoShopUser', MyApp.loggedUser.scopeId).then(data => {
+            this.avatar = ApiProvider.URL + data['path'];
+            this.data.NeoShopUser.photo = data['id'];
+        });
     }
+
 
     regionSelect() {
         this.data.NeoShopUser.city = this.data[0].NeoShopAddress.city = this.account.value.city;

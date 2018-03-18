@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-buttons end>
+      <button ion-button menuToggle="right">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title align="center">
+      {{ 'REGISTER_N' | translate }}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <form class="container" (ngSubmit)="doRegister()" [formGroup]="register">
+    <div class="form-group">
+      <ion-label class="text text-bold text-grey text-uppercase">{{ 'EMAIL' | translate }}</ion-label>
+      <ion-input type="email" formControlName="email" placeholder="{{ 'EMAIL' | translate }}"></ion-input>
+    </div>
+    <div class="form-group">
+      <ion-label class="text text-bold text-grey text-uppercase">{{ 'PASSWORD' | translate }}</ion-label>
+      <ion-input type="password" formControlName="password" placeholder="{{ 'PASSWORD' | translate }}"></ion-input>
+    </div>
+    <div class="form-group">
+      <ion-label class="text text-bold text-grey text-uppercase">{{ 'REPEAT_PASSWORD' | translate }}</ion-label>
+      <ion-input type="password" formControlName="passwordRepeat" placeholder="{{ 'REPEAT_PASSWORD' | translate }}"></ion-input>
+    </div>
+    <div class="form-group" radio-group>
+      <ion-item>
+        <ion-radio value="farmer" (ionSelect)="changeType('farmer')" name="register.type"></ion-radio>
+        <ion-label>{{ 'FARMER' }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-radio value="customer" (ionSelect)="changeType('customer')" name="register.type"></ion-radio>
+        <ion-label>{{ 'CUSTOMER' }}</ion-label>
+      </ion-item>
+    </div>
+    <div class="form-group">
+      <button ion-button class="btn btn-primary d-inline-block" [disabled]="disabled">{{ 'REGISTER_N' | translate }}</button>
+      <button ion-button class="btn btn-primary d-inline-block" type="button" (click)="loginPage()">
+        {{ 'LOGIN_N' | translate }}
+      </button>
+    </div>
+  </form>
+</ion-content>

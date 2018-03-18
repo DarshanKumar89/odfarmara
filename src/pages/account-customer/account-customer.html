@@ -31,16 +31,7 @@
         <ion-avatar>
           <img [src]="avatar" alt="Avatar">
         </ion-avatar>
-        <label ion-button class="btn btn-gray" for="avatar">{{ 'UPLOAD_PHOTO' | translate }}</label>
-        <input type="file"
-               multiple
-               [(ngModel)]="avatar"
-               (change)="uploadPhotos($event, 'avatar')"
-               style="display: none;"
-               name="avatar"
-               id="avatar"
-               capture="camera"
-               accept="image/*">
+        <button type="button" ion-button class="btn btn-gray" (click)="choosePhoto()">{{ 'UPLOAD_PHOTO' | translate }}</button>
       </div>
       <div class="clearfix"></div>
     </div>

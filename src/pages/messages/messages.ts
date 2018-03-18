@@ -5,6 +5,7 @@ import {User} from "../../app/Entity/User";
 import {MyApp} from "../../app/app.component";
 import {ApiProvider} from "../../providers/api/api";
 import {ConversationPage} from "../conversation/conversation";
+import {Demand} from "../../app/Entity/Demand";
 
 /**
  * Generated class for the MessagesPage page.
@@ -19,7 +20,7 @@ import {ConversationPage} from "../conversation/conversation";
 })
 export class MessagesPage {
 
-    private conversations = Array<{ message: Message, opponent: User }>();
+    private conversations = Array<{ message: Message, opponent: User }|Demand>();
 
     private counts;
 
@@ -41,6 +42,16 @@ export class MessagesPage {
                     message: ApiProvider.getMessage(data['messages'][key])
                 };
             });
+            this.loaded = true;
+        });
+        this.api.getDemands(MyApp.loggedUser.id).then(data => {
+            data['demands'].map(item => {
+                this.api.fetchDemand(item['NeoContentDemand']['id_demand']).then(response => {
+                    this.conversations.push(ApiProvider.getDemand(response['demand'], response['messages'], ApiProvider.getProduct(response['offer'])));
+                });
+            });
+            //MyApp.counts.demands = data['demands'].length;
+            this.counts = MyApp.counts;
             this.loaded = true;
         });
     }
@@ -65,5 +76,9 @@ export class MessagesPage {
             });
             MyApp.counts.messages--;
         });
+    }
+
+    isDemand(message: { message: Message; opponent: User } | Demand) {
+        return message instanceof Demand;
     }
 }

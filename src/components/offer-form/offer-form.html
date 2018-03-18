@@ -1,6 +1,6 @@
 <ion-scroll scrollY="true" class="bg bg-white">
   <form (ngSubmit)="save()" class="padding">
-    <h2>{{ product.id == 0 ? 'Pridajte nový dopyt' : 'Upraviť dopyt' }}</h2>
+    <h2>{{ product.id == 0 ? 'Pridajte novú ponuku' : 'Upraviť ponuku' }}</h2>
     <div class="alert alert-error" *ngIf="errText != ''" [innerHtml]="errText"></div>
     <div class="bg bg-gray padding offset offset-top">
       <div class="form-group">
@@ -12,10 +12,10 @@
                    required></ion-input>
       </div>
       <div class="form-group">
-        <ion-label class="text text-bold text-grey text-uppercase">{{ 'SHORT_DESC' | translate }}</ion-label>
+        <ion-label class="text text-bold text-grey text-uppercase">{{ 'SHORT_DESC_PRODUCT' | translate }}</ion-label>
         <ion-textarea [(ngModel)]="product.description"
                       name="description"
-                      placeholder="{{ 'SHORT_DESC' | translate }}"
+                      placeholder="{{ 'SHORT_DESC_PRODUCT' | translate }}"
                       required
                       value="{{ product.description }}"></ion-textarea>
       </div>
@@ -117,13 +117,15 @@
     </div>
     <p>{{ 'IMG_COUNT_NOTICE' | translate }}</p>
     <div class="bg bg-gray padding offset offset-top">
+      <span class="fa fa-spin fa-spinner fa-3x" *ngIf="loading"></span>
+      <br>
       <div class="uploaded-photo" *ngFor="let image of gallery; let i = index">
         <span class="fa fa-trash" (click)="deletePhoto(i)"></span>
         <div class="photo" [style.background-image]="sanitize(image)"></div>
       </div>
     </div>
     <div class="text text-center offset offset-top">
-      <label ion-button class="btn btn-plain-gray" for="photos">{{ 'UPLOAD_PHOTO' | translate }}</label>
+      <!--<label ion-button class="btn btn-plain-gray" for="photos">{{ 'UPLOAD_PHOTO' | translate }}</label>
       <input type="file"
              multiple
              [(ngModel)]="gallery"
@@ -131,14 +133,15 @@
              style="display: none;"
              name="photos"
              id="photos"
-             accept="image/*;capture=camera">
+             accept="image/*;capture=camera">-->
+      <button class="btn btn-plain-gray" ion-button (click)="choosePhoto()" type="button">{{ 'UPLOAD_PHOTO' | translate }}</button>
       <button ion-button class="btn btn-white" (click)="deletePhotos()" type="button">{{ 'CLEAR_ALL' | translate }}
       </button>
     </div>
     <div class="alert alert-error" *ngIf="errText != ''" [innerHtml]="errText"></div>
     <div class="text text-center offset offset-top">
-      <button ion-button class="btn btn-primary" type="submit">{{ product.id ? 'Upraviť ponuku' : 'Odoslať novú ponuku'
-                                                               }}
+      <button ion-button class="btn btn-primary" type="submit">
+        {{ product.id ? 'Upraviť ponuku' : 'Odoslať novú ponuku' }}
       </button>
       <button ion-button class="btn btn-white" (click)="closeModal()" type="button">{{ 'CANCEL' | translate }}</button>
     </div>
