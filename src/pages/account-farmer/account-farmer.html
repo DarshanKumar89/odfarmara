@@ -58,7 +58,9 @@
           <ion-avatar *ngIf="avatar != null">
             <img [src]="avatar" alt="Avatar">
           </ion-avatar>
-          <button type="button" ion-button class="btn btn-gray" (click)="choosePhoto('avatar')">{{ 'UPLOAD_PHOTO' | translate }}</button>
+          <button type="button" ion-button class="btn btn-gray" (click)="choosePhoto('avatar')">{{ 'UPLOAD_PHOTO' |
+                                                                                                translate }}
+          </button>
         </div>
         <div class="clearfix"></div>
         <label class="text text-heading">{{ 'COVER_PHOTO' | translate }}</label>
@@ -66,7 +68,9 @@
           <ion-avatar *ngIf="poster != null">
             <img [src]="poster" alt="Plagát">
           </ion-avatar>
-          <button ion-button type="button" class="btn btn-gray" (click)="choosePhoto('poster')">{{ 'UPLOAD_PHOTO' | translate }}</button>
+          <button ion-button type="button" class="btn btn-gray" (click)="choosePhoto('poster')">{{ 'UPLOAD_PHOTO' |
+                                                                                                translate }}
+          </button>
         </div>
       </div>
     </div>
@@ -120,29 +124,39 @@
   <form (ngSubmit)="saveData()" class="container bg bg-gray offset offset-top">
     <div>
       <div class="form-group">
-        <label class="text text-heading" for="data.NeoContentFarmersProfile.post_send">{{ 'COLLECT_TYPE' | translate }}</label>
+        <label class="text text-heading" for="data.NeoContentFarmersProfile.post_send">{{ 'COLLECT_TYPE' | translate
+                                                                                       }}</label>
         <ion-select type="text"
-                   id="data.NeoContentFarmersProfile.post_send"
-                   [(ngModel)]="data.NeoContentFarmersProfile.post_send"
-                   name="post_send"
-                   placeholder="{{ 'COLLECT_TYPE' | translate }}">
-          <ion-option value="0" [selected]="data.NeoContentFarmersProfile.post_send == 0">{{ 'POST' | translate }}</ion-option>
-          <ion-option value="1" [selected]="data.NeoContentFarmersProfile.post_send == 1">{{ 'PERSONAL' | translate }}</ion-option>
+                    id="data.NeoContentFarmersProfile.post_send"
+                    [(ngModel)]="data.NeoContentFarmersProfile.post_send"
+                    name="post_send"
+                    placeholder="{{ 'COLLECT_TYPE' | translate }}">
+          <ion-option value="0" [selected]="data.NeoContentFarmersProfile.post_send == 0">{{ 'POST' | translate }}
+          </ion-option>
+          <ion-option value="1" [selected]="data.NeoContentFarmersProfile.post_send == 1">{{ 'PERSONAL' | translate }}
+          </ion-option>
         </ion-select>
       </div>
     </div>
     <div>
       <div class="form-group">
-        <label class="text text-heading" for="data.NeoContentFarmersProfile.package_type">{{ 'PACKAGE_TYPE' | translate }}</label>
+        <label class="text text-heading" for="data.NeoContentFarmersProfile.package_type">{{ 'PACKAGE_TYPE' | translate
+                                                                                          }}</label>
         <ion-select type="text"
-                   id="data.NeoContentFarmersProfile.package_type"
-                   [(ngModel)]="data.NeoContentFarmersProfile.package_type"
-                   name="package_type"
-                   placeholder="{{ 'PACKAGE_TYPE' | translate }}">
-          <ion-option value="0" [selected]="data.NeoContentFarmersProfile.package_type == 0">{{ 'KG' | translate }}</ion-option>
-          <ion-option value="1" [selected]="data.NeoContentFarmersProfile.package_type == 1">{{ 'G' | translate }}</ion-option>
-          <ion-option value="2" [selected]="data.NeoContentFarmersProfile.package_type == 2">{{ 'PACKAGES' | translate }}</ion-option>
-          <ion-option value="3" [selected]="data.NeoContentFarmersProfile.package_type == 3">{{ 'PIECES' | translate }}</ion-option>
+                    id="data.NeoContentFarmersProfile.package_type"
+                    [(ngModel)]="data.NeoContentFarmersProfile.package_type"
+                    name="package_type"
+                    placeholder="{{ 'PACKAGE_TYPE' | translate }}">
+          <ion-option value="0" [selected]="data.NeoContentFarmersProfile.package_type == 0">{{ 'KG' | translate }}
+          </ion-option>
+          <ion-option value="1" [selected]="data.NeoContentFarmersProfile.package_type == 1">{{ 'G' | translate }}
+          </ion-option>
+          <ion-option value="2" [selected]="data.NeoContentFarmersProfile.package_type == 2">{{ 'PACKAGES' | translate
+                                                                                             }}
+          </ion-option>
+          <ion-option value="3" [selected]="data.NeoContentFarmersProfile.package_type == 3">{{ 'PIECES' | translate
+                                                                                             }}
+          </ion-option>
         </ion-select>
       </div>
     </div>
@@ -153,36 +167,35 @@
   <form (ngSubmit)="saveData()" class="container bg bg-gray offset offset-top">
     <label class="text text-heading">{{ 'OPEN_HOURS' | translate }}</label>
     <div class="w-day" *ngFor="let day of hourKeys">
-      <div class="row">
-        <div class="form-group" col-10>
-          <label class="text text-heading" for="{{ 'day-0-' + day }}">{{ translated[day] }}</label>
-          <ion-select type="text"
-                      id="{{ 'day-0-' + day }}"
-                      [(ngModel)]="data.NeoContentFarmersProfile.opening_hours[day][0]"
-                      [name]="'opening_hours-0-' + day"
-                      placeholder="{{ translated[day] + ' - od'}}">
-            <ion-option *ngFor="let hour of _.range(24)" [selected]="hour + ':00' == data.NeoContentFarmersProfile.opening_hours[day][0]">{{ hour + ':00' }}</ion-option>
-          </ion-select>
-        </div>
-        <div col-2>
-          <div class="form-group">
-            <label class="d-block">&nbsp;</label>
-            <button ion-button class="btn btn-primary btn-sm" type="button" (click)="applyForAll(day)">
-              <span class="fa fa-calendar"></span>
-            </button>
-          </div>
-        </div>
+      <div class="form-group">
+        <label class="text text-heading" for="{{ 'day-0-' + day }}">{{ translated[day] }}</label>
+        <ion-select type="text"
+                    id="{{ 'day-0-' + day }}"
+                    [(ngModel)]="data.NeoContentFarmersProfile.opening_hours[day][0]"
+                    [name]="'opening_hours-0-' + day"
+                    placeholder="{{ translated[day] + ' - od'}}">
+          <ion-option *ngFor="let hour of _.range(24)"
+                      [selected]="hour + ':00' == data.NeoContentFarmersProfile.opening_hours[day][0]">
+            {{ hour + ':00' }}
+          </ion-option>
+        </ion-select>
       </div>
-      <div class="row">
-        <div class="form-group" col-10>
-          <ion-select type="text"
-                      id="{{ 'day-1-' + day }}"
-                      [(ngModel)]="data.NeoContentFarmersProfile.opening_hours[day][1]"
-                      [name]="'opening_hours-1-' + day"
-                      placeholder="{{ translated[day] + ' - do'}}">
-            <ion-option *ngFor="let hour of _.range(24)" [selected]="hour + ':00' == data.NeoContentFarmersProfile.opening_hours[day][1]">{{ hour + ':00' }}</ion-option>
-          </ion-select>
-        </div>
+      <div class="form-group">
+        <ion-select type="text"
+                    id="{{ 'day-1-' + day }}"
+                    [(ngModel)]="data.NeoContentFarmersProfile.opening_hours[day][1]"
+                    [name]="'opening_hours-1-' + day"
+                    placeholder="{{ translated[day] + ' - do'}}">
+          <ion-option *ngFor="let hour of _.range(24)"
+                      [selected]="hour + ':00' == data.NeoContentFarmersProfile.opening_hours[day][1]">
+            {{ hour + ':00' }}
+          </ion-option>
+        </ion-select>
+      </div>
+      <div class="form-group">
+        <button ion-button class="btn btn-primary btn-sm d-block" type="button" (click)="applyForAll(day)">
+          {{ 'APPLY_FOR_ALL' | translate }}
+        </button>
       </div>
     </div>
     <div class="text text-center">

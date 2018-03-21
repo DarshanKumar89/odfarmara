@@ -21,7 +21,7 @@ import {Message} from "../../app/Entity/Message";
 @Injectable()
 export class ApiProvider {
 
-    public static URL = 'http://farmartest.weblaboratory.sk';
+    public static URL = 'https://odfarmara.sk';
 
     constructor(private http: Http, private storage: Storage, private alerts: AlertController) {
     }

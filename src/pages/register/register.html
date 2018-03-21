@@ -30,11 +30,11 @@
     <div class="form-group" radio-group>
       <ion-item>
         <ion-radio value="farmer" (ionSelect)="changeType('farmer')" name="register.type"></ion-radio>
-        <ion-label>{{ 'FARMER' }}</ion-label>
+        <ion-label>{{ 'FARMER' | translate }}</ion-label>
       </ion-item>
       <ion-item>
         <ion-radio value="customer" (ionSelect)="changeType('customer')" name="register.type"></ion-radio>
-        <ion-label>{{ 'CUSTOMER' }}</ion-label>
+        <ion-label>{{ 'CUSTOMER' | translate }}</ion-label>
       </ion-item>
     </div>
     <div class="form-group">

@@ -44,7 +44,7 @@ import {Camera} from "@ionic-native/camera";
 import {RegisterPage} from "../pages/register/register";
 
 export function createTranslateLoader(http: HttpClient) {
-    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+    return new TranslateHttpLoader(http, './assets/i18n/', '-1.json');
 }
 
 @NgModule({

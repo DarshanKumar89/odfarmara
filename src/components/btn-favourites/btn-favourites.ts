@@ -22,6 +22,7 @@ export class BtnFavouritesComponent {
     }
 
     addToFav() {
+        this.state = !this.state;
         this.api.post('/neo_shop/neo_shop_users/favourite/' + this.idProduct, {}, MyApp.loggedUser.id).then(data => {
             this.state = data['like'] == 1;
         });
