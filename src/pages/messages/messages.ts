@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {Content, NavController, NavParams} from 'ionic-angular';
 import {Message} from "../../app/Entity/Message";
 import {User} from "../../app/Entity/User";
 import {MyApp} from "../../app/app.component";
@@ -19,7 +19,7 @@ import {Demand} from "../../app/Entity/Demand";
     templateUrl: 'messages.html',
 })
 export class MessagesPage {
-
+    @ViewChild(Content) content: Content;
     private conversations = Array<{ message: Message, opponent: User }|Demand>();
 
     private counts;

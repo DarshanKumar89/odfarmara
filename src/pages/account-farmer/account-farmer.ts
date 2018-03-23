@@ -51,7 +51,7 @@ export class AccountFarmerPage extends Wrapper {
         thursday: 'Štvrtok',
         friday: 'Piatok',
         saturday: 'Sobota',
-        sunday: 'Sunday',
+        sunday: 'Nedeľa',
     };
 
     _ = _;

@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {Content, NavController, NavParams} from 'ionic-angular';
 import {Message} from "../../app/Entity/Message";
 import {User} from "../../app/Entity/User";
 import {MyApp} from "../../app/app.component";
@@ -17,6 +17,7 @@ import {ApiProvider} from "../../providers/api/api";
     templateUrl: 'conversation.html',
 })
 export class ConversationPage {
+    @ViewChild(Content) content: Content;
 
     private conversation: Array<Message>;
     private opponent: User = MyApp.emptyUser;
@@ -32,6 +33,9 @@ export class ConversationPage {
                     this.opponent = msg.userFrom.id === navParams.get('idUser') ? msg.userFrom : msg.userTo;
                     return msg;
                 });
+                setTimeout(() => {
+                    this.content.scrollToBottom(20);
+                }, 300)
             });
         } else {
             this.api.getConversation(
@@ -43,6 +47,9 @@ export class ConversationPage {
                     this.opponent = msg.userFrom.id === navParams.get('idUser') ? msg.userFrom : msg.userTo;
                     return msg;
                 });
+                setTimeout(() => {
+                    this.content.scrollToBottom(20);
+                }, 300)
             });
         }
     }

@@ -93,5 +93,12 @@
   "RESPOND": "odpovedať",
   "FORGOT_PASSWORD": "Zabudnuté heslo",
   "CUSTOMER": "Zákazník",
-  "APPLY_FOR_ALL": "Použiť na všetky"
+  "APPLY_FOR_ALL": "Použiť na všetky",
+  "MONDAY": "Pondelok",
+  "TUESDAY": "Utorok",
+  "WEDNESDAY": "Streda",
+  "THURSDAY": "Štvrtok",
+  "FRIDAY": "Piatok",
+  "SATURDAY": "Sobota",
+  "SUNDAY": "Nedeľa"
 }

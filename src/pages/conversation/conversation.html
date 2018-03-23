@@ -14,7 +14,7 @@
     </ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content padding #content id="content">
   <div class="container">
     <div *ngFor="let message of conversation"
          class="row message {{ message.userFrom.id == loggedUser.id ? 'message-my' : 'message-opponent' }}">

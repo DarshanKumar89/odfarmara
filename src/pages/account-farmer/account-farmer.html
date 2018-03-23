@@ -168,7 +168,7 @@
     <label class="text text-heading">{{ 'OPEN_HOURS' | translate }}</label>
     <div class="w-day" *ngFor="let day of hourKeys">
       <div class="form-group">
-        <label class="text text-heading" for="{{ 'day-0-' + day }}">{{ translated[day] }}</label>
+        <label class="text text-heading" for="{{ 'day-0-' + day }}">{{ day.toUpperCase() | translate }}</label>
         <ion-select type="text"
                     id="{{ 'day-0-' + day }}"
                     [(ngModel)]="data.NeoContentFarmersProfile.opening_hours[day][0]"
