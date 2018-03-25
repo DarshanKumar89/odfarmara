@@ -83,8 +83,8 @@ export class AccountCustomerPage {
         let village = Data.villages.find(item => {
             return item['fullname'] == this.data.NeoShopUser.city;
         });
-        this.data.NeoShopUser.region_id = village['region_id'];
-        this.data[0].NeoShopAddress.zip = this.data.NeoShopUser.zip = village['zip'].toString();
+        this.data.NeoShopUser.region_id = village ? village['region_id'] : 0;
+        this.data[0].NeoShopAddress.zip = this.data.NeoShopUser.zip = village ? village['zip'].toString() : '';
         this.data[0].NeoShopAddress.city = this.data.NeoShopUser.city;
         this.data[0].NeoShopAddress.address = this.data.NeoShopUser.address;
         this.api.editUser(this.data).then(response => {

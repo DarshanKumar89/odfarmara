@@ -84,6 +84,18 @@ export class AccountFarmerPage extends Wrapper {
             this.regionImage = img + region['image'];
         }
         this.hourKeys = Object.keys(this.data.NeoContentFarmersProfile.opening_hours);
+        if(this.hourKeys.length <= 1) {
+            this.data.NeoContentFarmersProfile.opening_hours = {
+                monday: ['', ''],
+                tuesday: ['', ''],
+                wednesday: ['', ''],
+                thursday: ['', ''],
+                friday: ['', ''],
+                saturday: ['', ''],
+                sunday: ['', ''],
+            };
+            this.hourKeys = Object.keys(this.data.NeoContentFarmersProfile.opening_hours);
+        }
 
         this.api.getFavouriteOffers(MyApp.loggedUser.id).then(response => {
             MyApp.loggedUser = ApiProvider.getUser(response['loggedInUser'], response['loggedInUser'])

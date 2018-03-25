@@ -32,7 +32,12 @@ export class ApiProvider {
 
     getOffers(url, id, data = {}) {
         return this.post(url, _.extend({
-            _method: 'put'
+            _method: 'put',
+            data: {
+                force: {
+                    loggedUserIdBASE64: btoa(`user_:(${id}de)`)
+                }
+            }
         }, data), id);
     }
 
@@ -41,7 +46,7 @@ export class ApiProvider {
             data = _.extend(data, {
                 data: {
                     force: {
-                        loggedUserIdBASE64: btoa(`user_:(${id})`)
+                        loggedUserIdBASE64: btoa(`user_:(${id}de)`)
                     }
                 }
             });

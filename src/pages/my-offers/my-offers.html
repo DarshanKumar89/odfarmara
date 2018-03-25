@@ -24,6 +24,9 @@
         </div>
       </div>
     </div>
+    <div *ngIf="categorized.length == 0">
+      <div class="alrt alrt-danger">{{ 'NO_MY_OFFERS' | translate }}</div>
+    </div>
   </div>
   <div *ngIf="!loaded" class="text text-center">
     <div class="fa fa-spin fa-spinner fa-4x"></div>

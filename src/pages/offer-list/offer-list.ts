@@ -218,6 +218,9 @@ export class OfferListPage extends Wrapper {
     }
 
     deleteFromFavs(id) {
+        this.following = this.following.filter(item => {
+            return item['NeoContentCategory']['id'] != id;
+        });
         this.api.post('/neo_content/neo_content_offers/remove_favourite/' + id, {
             data: {
                 force: {
@@ -225,9 +228,6 @@ export class OfferListPage extends Wrapper {
                 }
             }
         }).then(() => {
-            this.following = this.following.filter(item => {
-                return item['NeoContentCategory']['id'] != id;
-            });
         })
     }
 
