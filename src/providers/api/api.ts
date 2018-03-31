@@ -21,7 +21,7 @@ import {Message} from "../../app/Entity/Message";
 @Injectable()
 export class ApiProvider {
 
-    public static URL = 'https://odfarmara.sk';
+    public static URL = 'http://farmartest.weblaboratory.sk';
 
     constructor(private http: Http, private storage: Storage, private alerts: AlertController) {
     }
@@ -143,8 +143,8 @@ export class ApiProvider {
     static getUser(user, address) {
         return new User(
             typeof user['id'] === 'undefined' ? user['User']['id'] : user['id'],
-            user['NeoUploadFile'] && user['NeoUploadFile'].length > 0 ? (user['NeoUploadFile'][0]['url'] ? user['NeoUploadFile'][0]['url']['main'] : (ApiProvider.URL + '/neo_files/' + user['NeoUploadFile'][0]['plugin'] + '/' + user['NeoUploadFile'][0]['model'] + '/' + user[user['NeoUploadFile'][0]['model']]['id'] + '/' + user['NeoUploadFile'][0]['filename'])) : null,
-            user['NeoUploadFile'] && user['NeoUploadFile'].length > 1 ? (user['NeoUploadFile'][1]['url'] ? user['NeoUploadFile'][1]['url']['main'] : (ApiProvider.URL + '/neo_files/' + user['NeoUploadFile'][1]['plugin'] + '/' + user['NeoUploadFile'][1]['model'] + '/' + user[user['NeoUploadFile'][1]['model']]['id'] + '/' + user['NeoUploadFile'][1]['filename'])) : null,
+            user['NeoUploadFile'] && user['NeoUploadFile'].length > 0 ? (user['NeoUploadFile'][0]['url'] ? user['NeoUploadFile'][0]['url']['main'] : (ApiProvider.URL + '/neo_files/' + user['NeoUploadFile'][0]['plugin'] + '/' + user['NeoUploadFile'][0]['model'] + '/' + user['NeoUploadFile'][0]['foreign_key'] + '/' + user['NeoUploadFile'][0]['filename'])) : null,
+            user['NeoUploadFile'] && user['NeoUploadFile'].length > 1 ? (user['NeoUploadFile'][1]['url'] ? user['NeoUploadFile'][1]['url']['main'] : (ApiProvider.URL + '/neo_files/' + user['NeoUploadFile'][1]['plugin'] + '/' + user['NeoUploadFile'][1]['model'] + '/' + user['NeoUploadFile'][1]['foreign_key'] + '/' + user['NeoUploadFile'][1]['filename'])) : null,
             (user['isFarmer'] ? (user['NeoContentFarmersProfile'] ? user['NeoContentFarmersProfile']['name'] : '') : (user['NeoShopUser'] ? user['NeoShopUser']['name'] : '')) == '' ? user['username'] : user['isFarmer'] ? user['NeoContentFarmersProfile']['name'] : user['NeoShopUser']['name'],
             user['isFarmer'] ? user['NeoContentFarmersProfile']['region_id'] : user['NeoShopUser']['region_id'],
             user['isFarmer'] ? user['NeoContentFarmersProfile']['long_description'] : user['NeoShopUser']['description'],

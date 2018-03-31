@@ -68,7 +68,7 @@ export class MyApp {
 
     static children = {};
 
-    regions: Array<{ id: number, name: string, shortcut: string, image: any }>;
+    regions: Array<{ id: number|string, name: string, shortcut: string, image: any }>;
     static regions: Array<{ id: number, name: string, shortcut: string, image: any }>;
 
     public static loggedUser: User = null;
@@ -98,6 +98,9 @@ export class MyApp {
     public static following = [];
     public static notified = [];
     static nav;
+    private locality: string = '';
+    private product: string = '';
+    private segment: string = '';
     constructor(public platform: Platform,
                 public statusBar: StatusBar,
                 public splashScreen: SplashScreen,
@@ -126,7 +129,7 @@ export class MyApp {
 
         MyApp.categories = [];
 
-        MyApp.regions = this.regions = [
+        MyApp.regions = [
             {
                 "id": 1,
                 "name": "Banskobystrický kraj",
@@ -176,12 +179,16 @@ export class MyApp {
                 "image": "ZILINA.svg"
             }
         ];
-        //this.storage.set('loggedUser', null);
+        this.regions = [{id: '', name: 'Bez regiónu', image: '', shortcut: ''}];
+        for(let region of MyApp.regions) {
+            this.regions.push(region);
+        }
         this.storage.get('loggedUser').then((data) => {
             MyApp.loggedUser = data;
             if (MyApp.loggedUser != null) {
                 MyApp.getFavourites(MyApp.loggedUser.id, this.api, this.geo, this.notif);
                 this.rootPage = MyApp.loggedUser.farmer ? HomeFarmerPage : HomeCustomerPage;
+                this.categories = MyApp.categories;
             } else {
                 MyApp.getFavourites(1, this.api, this.geo, this.notif);
                 this.rootPage = LoginPage;
@@ -191,12 +198,21 @@ export class MyApp {
         });
     }
 
+    getCategories() {
+        let cats = [{id: '', name: 'Bez kategórie'}];
+        for(let cat of MyApp.categories) {
+            cats.push(cat);
+        }
+        return cats;
+    }
+
     static getNewFarmers(geo: Geolocation, api: ApiProvider, notif: LocalNotifications) {
         geo.getCurrentPosition().then(item => {
             let lat = item.coords.latitude;
             let lng = item.coords.longitude;
-            api.getNearbyOffers(lat, lng, 100).then(response => {
-                let offers = response['offers'].map(item => {
+            let km = 5;
+            api.getNearbyOffers(lat, lng, km).then(response => {
+                let offers: Array<Product> = response['offers'].map(item => {
                     item['author']['isFarmer'] = true;
                     return ApiProvider.getProduct(item, ApiProvider.getUser(item['author'], item['author']))
                 }).filter((item: Product) => {
@@ -213,7 +229,7 @@ export class MyApp {
                     notif.schedule({
                         id: 1,
                         title: 'Farma v okolí',
-                        text: 'Farma, ktorá vyrába kategóriu, ktorú sledujete.',
+                        text: `Farma ${offer.author.name}, ktorá vyrába kategóriu, ktorú sledujete (${offer.category.name}) je v okruhu ${km}km.`,
                         sound: null,
                         at: new Date(new Date().getTime() + 1),
                         data: {farm: offer.author}
@@ -343,16 +359,24 @@ export class MyApp {
     }
 
     formSearch() {
-        this.api.get(`/neo_content/neo_content_offers/search?region=${this.search.locality}&produkt=${this.search.product}&segment[${this.search.segment}]=1`).then(data => {
+        this.api.get(`/neo_content/neo_content_offers/search?region=${this.locality}&produkt=${this.product}&segment[${this.segment}]=1`).then(data => {
             let offers = data['neoContentOffers'].map(offer => {
                 offer['author']['isFarmer'] = true;
                 return ApiProvider.getProduct(offer, ApiProvider.getUser(offer['author'], offer['author']));
             });
+            let error = undefined;
+            if(this.locality == '' && this.product == '' && this.segment == '') {
+                error = 'Zadajte aspoň jeden parameter pre vyhľadávanie.';
+            }
             this.nav.push(OfferListPage, {
                 offers: offers,
                 title: 'Vyhľadávanie',
-                count: offers.length
-            })
+                count: offers.length,
+                error: error
+            });
+            this.locality = '';
+            this.product = '';
+            this.segment = '';
         });
     }
 
@@ -419,17 +443,17 @@ export class MyApp {
         this.nav.push(MapPage);
     }
 
-    updateProduct($evt) {
-        this.search.product = $evt.value;
+    /*updateProduct($evt) {
+        this.product = $evt.value;
     }
 
     updateSegment($evt) {
-        this.search.segment = $evt;
+        this.segment = $evt;
     }
 
     updateLocality($evt) {
-        this.search.locality = $evt;
-    }
+        this.locality = $evt;
+    }*/
 
     getAuthor() {
         return MyApp.idDetailAuthor;

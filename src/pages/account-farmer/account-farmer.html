@@ -102,10 +102,10 @@
         <label class="text text-heading" for="data.NeoContentFarmersProfile.zip">{{ 'ZIP' | translate }}</label>
         <ion-input type="text"
                    id="data.NeoContentFarmersProfile.zip"
-                   [(ngModel)]="data.NeoContentFarmersProfile.zip"
+                   [(ngModel)]="zip"
                    name="zip"
                    placeholder="{{ 'ZIP' | translate }}"
-                   value="{{ data.NeoContentFarmersProfile.zip }}"></ion-input>
+                   value="{{ zip }}"></ion-input>
       </div>
       <div class="form-group">
         <label class="text text-heading" for="data.phone">{{ 'PHONE_NO' | translate }}</label>
@@ -132,9 +132,9 @@
                     [(ngModel)]="data.NeoContentFarmersProfile.post_send"
                     name="post_send"
                     placeholder="{{ 'COLLECT_TYPE' | translate }}">
-          <ion-option value="0" [selected]="!data.NeoContentFarmersProfile.post_send">{{ 'POST' | translate }}
+          <ion-option value="0" [selected]="data.NeoContentFarmersProfile.post_send == '0'">{{ 'POST' | translate }}
           </ion-option>
-          <ion-option value="1" [selected]="data.NeoContentFarmersProfile.post_send">{{ 'PERSONAL' | translate }}
+          <ion-option value="1" [selected]="data.NeoContentFarmersProfile.post_send == '1'">{{ 'PERSONAL' | translate }}
           </ion-option>
         </ion-select>
       </div>
@@ -177,6 +177,7 @@
                     [name]="'opening_hours-0-' + day"
                     placeholder="{{ translated[day] + ' - od'}}">
           <ion-option *ngFor="let hour of _.range(24)"
+                      [value]="hour + ':00'"
                       [selected]="hour + ':00' == data.NeoContentFarmersProfile.opening_hours[day][0]">
             {{ hour + ':00' }}
           </ion-option>
@@ -189,6 +190,7 @@
                     [name]="'opening_hours-1-' + day"
                     placeholder="{{ translated[day] + ' - do'}}">
           <ion-option *ngFor="let hour of _.range(24)"
+                      [value]="hour + ':00'"
                       [selected]="hour + ':00' == data.NeoContentFarmersProfile.opening_hours[day][1]">
             {{ hour + ':00' }}
           </ion-option>

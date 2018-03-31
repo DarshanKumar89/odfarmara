@@ -55,8 +55,12 @@ export class LoginPage {
                 });
                 alert.present();
             } else {
+                console.log('FROM WEB');
+                console.log(data['loggedUser']);
                 let user = ApiProvider.getUser(data['loggedUser'], data['address']);
                 MyApp.loggedUser = user;
+                console.log('PROCESSED');
+                console.log(MyApp.loggedUser);
                 this.storage.set('loggedUser', user);
                 this.navCtrl.setRoot(data['loggedUser']['isFarmer'] ? HomeFarmerPage : HomeCustomerPage, {
                     loggedUser: user

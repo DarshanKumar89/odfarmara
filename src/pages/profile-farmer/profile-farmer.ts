@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {AlertController, NavController, NavParams} from 'ionic-angular';
 import {User} from "../../app/Entity/User";
 import {DomSanitizer} from '@angular/platform-browser';
 import {MyApp} from "../../app/app.component";
@@ -38,8 +38,9 @@ export class ProfileFarmerPage extends Wrapper {
     };
     oh;
     private message = '';
+    canBookmark = false;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, sanitizer: DomSanitizer, private api: ApiProvider) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, sanitizer: DomSanitizer, private api: ApiProvider, private alerts: AlertController) {
         super(navCtrl, navParams, sanitizer);
         let id = this.navParams.data.id;
         if(id) {
@@ -55,10 +56,29 @@ export class ProfileFarmerPage extends Wrapper {
                 for(let i = 0; i < 5; i++) {
                     this.stars.push('<span class="fa fa-star' + (i >= Math.round(rating) ? '-o' : '') + '"></span>');
                 }
+                this.canBookmark = response['canBookmark'];
+
             });
         }
         this.oh = Object.keys(this.openingHours);
         this.loggedUser = MyApp.loggedUser;
+    }
+
+
+    bookmark(idFarmer) {
+        this.api.post('/neo_content/neo_content_farmers_profiles/bookmark_add/' + idFarmer, {
+            data: {
+                force: {
+                    loggedUserIdBASE64: btoa(`user_:(${MyApp.loggedUser.id})`)
+                }
+            }
+        }).then(() => {
+            this.alerts.create({
+                title: 'Úspešné',
+                message: 'úspešne ste pridali farmára do obľúbených.',
+                buttons: ['OK'],
+            }).present();
+        });
     }
 
     setTab(tab) {

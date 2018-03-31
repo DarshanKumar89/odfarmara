@@ -5,6 +5,7 @@ import {Wrapper} from "../../app/Helpers/Wrapper";
 import {DomSanitizer} from "@angular/platform-browser";
 import {Geolocation} from "@ionic-native/geolocation";
 import {ProfileFarmerPage} from "../profile-farmer/profile-farmer";
+import {Storage} from "@ionic/storage";
 
 /**
  * Generated class for the MapPage page.
@@ -26,13 +27,15 @@ export class MapPage extends Wrapper {
     loading = 0;
 
     constructor(public navParams: NavParams, public navCtrl: NavController, public sanitizer: DomSanitizer, public geolocation: Geolocation, public api: ApiProvider, public events: Events,
+                private storage: Storage,
                 private zone: NgZone) {
         super(navCtrl, navParams, sanitizer);
         this.url = this.sanitizeURL('https://odfarmara.sk/sub_page/apiMap');
         this.farmers = [];
         this.load();
-        setInterval(this.load, 1000 * 60);
-        this.len = this.farmers.length;
+        setInterval(() => {
+            this.load();
+        }, 1000 * 60);
         this.events.subscribe('updateScreen', () => {
             this.zone.run(() => {
             });
@@ -44,7 +47,11 @@ export class MapPage extends Wrapper {
             this.geolocation.getCurrentPosition().then(resp => {
                 this.setup(`&lat=${resp.coords.latitude}&lng=${resp.coords.longitude}`);
             }).catch(resp => {
-                this.setup();
+                this.storage.get('lastPos').then(item => {
+                    this.setup(`&lat=${item.lat}&lng=${item.lng}`);
+                }).catch(() => {
+                    this.setup();
+                });
             });
         } else {
             this.setup();
@@ -63,7 +70,7 @@ export class MapPage extends Wrapper {
                 this.farmers.push(user);
                 return user;
             });
-            this.len = this.farmers.length;
+            this.len = response['countFarmers'];
             this.loading = 0;
             this.events.publish('updateScreen')
         });
@@ -87,7 +94,7 @@ export class MapPage extends Wrapper {
             let top = e.scrollTop;
             let height = e.scrollHeight;
             let bottom = document.getElementById('bottom');
-            if (top + height > bottom.offsetTop) {
+            if (top + height + 10 >= bottom.offsetTop) {
                 this.loading = 1;
                 this.page++;
                 this.setup(this.rurl);

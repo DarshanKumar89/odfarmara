@@ -41,6 +41,8 @@ export class MessagesPage {
                     opponent: ApiProvider.getUser(user, user),
                     message: ApiProvider.getMessage(data['messages'][key])
                 };
+            }).sort((a: Demand|{message: Message, opponent: User}, b: Demand|{message: Message, opponent: User}) => {
+                return (a instanceof Demand ? a.lastMessage : a.message).created.getTime() > (b instanceof Demand ? b.lastMessage : b.message).created.getTime() ? -1 : 1;
             });
             this.loaded = true;
         });
@@ -48,6 +50,9 @@ export class MessagesPage {
             data['demands'].map(item => {
                 this.api.fetchDemand(item['NeoContentDemand']['id_demand']).then(response => {
                     this.conversations.push(ApiProvider.getDemand(response['demand'], response['messages'], ApiProvider.getProduct(response['offer'])));
+                    this.conversations.sort((a: Demand|{message: Message, opponent: User}, b: Demand|{message: Message, opponent: User}) => {
+                        return (a instanceof Demand ? a.lastMessage : a.message).created.getTime() > (b instanceof Demand ? b.lastMessage : b.message).created.getTime() ? -1 : 1;
+                    });
                 });
             });
             //MyApp.counts.demands = data['demands'].length;
@@ -56,15 +61,23 @@ export class MessagesPage {
         });
     }
 
-    openConversation(idUser, conversation: {message: Message, opponent: User}) {
-        conversation.message.seen = true;
+    openConversation(idUser, conversation: {message: Message, opponent: User}|Demand) {
+        let msg: Message = conversation instanceof Demand ? conversation.lastMessage : conversation.message;
+        if(msg) {
+            msg.seen = true;
+        }
+        let idDemand = undefined;
+        if(conversation instanceof Demand) {
+            idDemand = conversation.id;
+        }
         this.navCtrl.push(ConversationPage, {
-            idUser: idUser
+            idUser: idUser,
+            idDemand: idDemand
         });
     }
 
-    deleteConversation(conversation: {message: Message, opponent: User}) {
-        this.api.post('/neo_content/neo_content_inbox/delete/' + conversation.opponent.id, {
+    deleteConversation(conversation: {message: Message, opponent: User}|Demand) {
+        this.api.post('/neo_content/neo_content_inbox/delete/' + (conversation instanceof Demand ? conversation.user.id : conversation.opponent.id), {
             data: {
                 force: {
                     loggedUserIdBASE64: btoa(`user_:(${MyApp.loggedUser.id})`)
@@ -72,7 +85,7 @@ export class MessagesPage {
             }
         }).then(() => {
             this.conversations = this.conversations.filter((item: {message: Message, opponent: User}) => {
-                return item.opponent.id != conversation.opponent.id;
+                return item.opponent.id != (conversation instanceof Demand ? conversation.user.id : conversation.opponent.id);
             });
             MyApp.counts.messages--;
         });

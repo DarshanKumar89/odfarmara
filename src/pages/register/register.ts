@@ -47,6 +47,7 @@ export class RegisterPage {
     }
 
     changeType(type) {
+        console.log(this.register.value.type);
         this.register.value.type = type;
     }
 
@@ -61,7 +62,8 @@ export class RegisterPage {
             alert.present();
             this.disabled = true;
         } else {
-            this.provider.register(this.register.value.email, this.register.value.password, this.register.value.type).then(data => {
+            console.log(this.register.value.type);
+            this.provider.register(this.register.value.email, this.register.value.password, this.register.value.type == 'farmer').then(data => {
                 this.disabled = false;
                 if (data['status'] == 0) {
                     let alert = this.alert.create({

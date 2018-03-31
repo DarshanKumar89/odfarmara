@@ -18,18 +18,25 @@
       <div class="bg bg-green">
         <h2>{{user.name}}</h2>
         <strong class="block text text-uppercase">{{ 'OPERATOR' | translate }} {{user.person}}</strong>
-        <button ion-button class="text text-uppercase btn btn-primary">
+        <button ion-button
+                class="text text-uppercase btn btn-primary"
+                *ngIf="canBookmark"
+                (click)="bookmark(user.scopeId)">
           <i class="fa fa-heart-o"></i>
           {{ 'SAVE' | translate }}
         </button>
       </div>
     </div>
-    <div class="padding">
+    <div class="padding main">
       <div class="container container-subpage container-profile">
-        <button ion-button class="btn btn-transparent text text-bold text-primary-hover text-gray text-uppercase" (click)="setTab('profile')">
+        <button ion-button
+                class="btn btn-transparent text text-bold text-primary-hover text-gray text-uppercase"
+                (click)="setTab('profile')">
           {{ 'PROFILE' | translate }}
         </button>
-        <button ion-button class="btn btn-transparent text text-bold text-primary-hover text-gray text-uppercase" (click)="setTab('contact')">
+        <button ion-button
+                class="btn btn-transparent text text-bold text-primary-hover text-gray text-uppercase"
+                (click)="setTab('contact')">
           {{ 'CONTACT' | translate }}
         </button>
         <div *ngIf="tab == 'profile'">
@@ -90,9 +97,6 @@
         </div>
       </div>
     </div>
-    <div class="padding"></div>
-    <div class="padding"></div>
-    <div class="padding"></div>
   </div>
   <div *ngIf="!user" class="padding text text-center">
     <span class="fa fa-spinner fa-spin fa-2x"></span>

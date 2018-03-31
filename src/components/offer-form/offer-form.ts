@@ -9,6 +9,7 @@ import _ from "underscore";
 import {ProductDetailPage} from "../../pages/product-detail/product-detail";
 import {FileTransfer} from "@ionic-native/file-transfer";
 import {Camera} from "@ionic-native/camera";
+import {Category} from "../../app/Entity/Category";
 
 /**
  * Generated class for the OfferFormComponent component.
@@ -64,7 +65,7 @@ export class OfferFormComponent extends Wrapper {
             });
         }
         if (!this.product.category) {
-            this.product.category = this.children[this.categories[0] ? this.categories[0].id : 0][0];
+            this.product.category = new Category(0, '', '');
         }
         if (!this.product.category.parent) {
             this.product.category.parent = this.children[this.categories[0] ? this.categories[0].id : 0][0].parent;

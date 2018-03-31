@@ -42,13 +42,21 @@ export class AccountCustomerPage {
             zip: MyApp.loggedUser.zip,
             address: MyApp.loggedUser.street,
             phone: MyApp.loggedUser.scopeExtra['phone']
-        }
+        },
+        NeoUploadFile: [
+            {
+                url: {
+                    main: MyApp.loggedUser.avatar
+                }
+            }
+        ]
     };
 
     avatar: string;
 
     account: FormGroup;
     regionImage: string;
+    zip: string;
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
                 public api: ApiProvider,
@@ -59,6 +67,7 @@ export class AccountCustomerPage {
                 private alert: AlertController,
                 private storage: Storage) {
         this.avatar = this.data.NeoShopUser.photo;
+        this.zip = MyApp.loggedUser.zip;
         this.account = new FormGroup({
             city: new FormControl(this.data[0].NeoShopAddress.city)
         });
@@ -84,13 +93,14 @@ export class AccountCustomerPage {
             return item['fullname'] == this.data.NeoShopUser.city;
         });
         this.data.NeoShopUser.region_id = village ? village['region_id'] : 0;
-        this.data[0].NeoShopAddress.zip = this.data.NeoShopUser.zip = village ? village['zip'].toString() : '';
+        this.data[0].NeoShopAddress.zip = this.data.NeoShopUser.zip = (this.zip != '' ? this.zip : village ? village['zip'].toString() : '');
         this.data[0].NeoShopAddress.city = this.data.NeoShopUser.city;
         this.data[0].NeoShopAddress.address = this.data.NeoShopUser.address;
         this.api.editUser(this.data).then(response => {
             MyApp.loggedUser.name = this.data.NeoShopUser.name;
             MyApp.loggedUser.description = this.data.NeoShopUser.description;
-            MyApp.loggedUser.avatar = this.data.NeoShopUser.photo;
+            MyApp.loggedUser.avatar = this.avatar;
+            this.data.NeoUploadFile[0].url.main = this.avatar;
             MyApp.loggedUser.region = this.data[0].NeoShopAddress.region_id;
             MyApp.loggedUser.city = this.data[0].NeoShopAddress.city;
             this.showAlert(response['status']);
@@ -98,11 +108,6 @@ export class AccountCustomerPage {
             this.data['isFarmer'] = false;
             MyApp.loggedUser = ApiProvider.getUser(this.data, this.data[0]);
             this.storage.set('loggedUser', MyApp.loggedUser);
-
-            this.api.getFavouriteOffers(MyApp.loggedUser.id).then(response => {
-                MyApp.loggedUser = ApiProvider.getUser(response['loggedInUser'], {"NeoShopAddress": {}})
-            });
-
         });
     }
 

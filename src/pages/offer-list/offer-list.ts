@@ -45,7 +45,7 @@ export class OfferListPage extends Wrapper {
     private lng;
     private region = null;
     private showList = false;
-
+    error: string;
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
                 private api: ApiProvider,
@@ -55,7 +55,9 @@ export class OfferListPage extends Wrapper {
                 private alertCtrl: AlertController) {
         super(navCtrl, navParams, sanit);
         let offers = this.navParams.data['offers'];
+        this.error = this.navParams.data['error'];
         let cnts = 0, title = '';
+        console.log(typeof this.offers, typeof offers === 'string');
         if (typeof offers === 'string') {
             this.url = offers;
             geolocation.getCurrentPosition().then(item => {
@@ -80,6 +82,7 @@ export class OfferListPage extends Wrapper {
                     this.getOffers(offers);
                 });
             }, 1000 * 60);
+            this.getOffers(this.url);
         } else {
             this.offers = offers.map(offer => {
                 return offer instanceof Product ? offer : ApiProvider.getProduct(offer);
@@ -95,7 +98,6 @@ export class OfferListPage extends Wrapper {
         this.adding = false;
         this.addingSegment = false;
         this.addingLocality = false;
-        this.getOffers(this.url);
         this.storage.get('radius').then(radius => {
             this.area = isNaN(parseInt(radius)) ? 20 : parseInt(radius);
         });
@@ -112,7 +114,7 @@ export class OfferListPage extends Wrapper {
             lat: this.lat,
             lng: this.lng
         }).then(result => {
-            this.offers = result['offers'].map(offer => {
+            this.offers = result[result['offers'] ? 'offers' : 'neoContentOffers'].map(offer => {
                 offer['author']['isFarmer'] = true;
                 let user = ApiProvider.getUser(offer['author'] ? offer['author'] : offer, {'NeoContentAddress': {}});
                 return offer instanceof Product ? offer : ApiProvider.getProduct(offer, user);

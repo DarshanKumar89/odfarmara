@@ -78,8 +78,14 @@
     </ion-item>
   </ion-row>
   <ion-row>
+    <div *ngIf="error" class="alrt alrt-danger d-block">
+      {{ error }}
+    </div>
     <div *ngFor="let offer of offers" col-6>
       <offer-view [product]="offer"></offer-view>
+    </div>
+    <div *ngIf="offers.length == 0" class="alrt alrt-danger d-block">
+      Zadaným kritériám nevyhovujú žuadne položky.
     </div>
   </ion-row>
 </ion-content>

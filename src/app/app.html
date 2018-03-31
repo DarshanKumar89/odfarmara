@@ -48,19 +48,31 @@
         {{p.title}}
       </button>
       <ion-item>
-        <a href="https://www.facebook.com/sharer.php?u=https://odfarmara.sk/" target="_blank" class="btn btn-sidebar" ion-button>
+        <a href="https://www.facebook.com/sharer.php?u=https://odfarmara.sk/"
+           target="_blank"
+           class="btn btn-sidebar"
+           ion-button>
           <span class="fa fa-facebook-square"></span>
         </a>
-        <a href="https://plus.google.com/share?url=https://odfarmara.sk/" target="_blank" class="btn btn-sidebar" ion-button>
+        <a href="https://plus.google.com/share?url=https://odfarmara.sk/"
+           target="_blank"
+           class="btn btn-sidebar"
+           ion-button>
           <span class="fa fa-google-plus"></span>
         </a>
-        <a href="mailto:?subject=Web OdFarmara.sk&body=Na internete som našiel túto webovú stránku: myslím, že vás bude zaujímať" target="_blank" class="btn btn-sidebar" ion-button>
+        <a href="mailto:?subject=Web OdFarmara.sk&body=Na internete som našiel túto webovú stránku: myslím, že vás bude zaujímať"
+           target="_blank"
+           class="btn btn-sidebar"
+           ion-button>
           <span class="fa fa-envelope"></span>
         </a>
         <a href="viber://forward?text=https://odfarmara.sk" target="_blank" class="btn btn-sidebar" ion-button>
           <img src="assets/icon/viber.svg" alt="Viber" width="20">
         </a>
-        <a href="https://twitter.com/intent/tweet?url=https://odfarmara.sk" class="btn btn-sidebar" target="_blank" ion-button>
+        <a href="https://twitter.com/intent/tweet?url=https://odfarmara.sk"
+           class="btn btn-sidebar"
+           target="_blank"
+           ion-button>
           <span class="fa fa-twitter"></span>
         </a>
       </ion-item>
@@ -86,29 +98,32 @@
           <div col-12 col-sm-4>
             <div class="form-group">
               <ion-input type="text"
-                         [(ngModel)]="search.product"
-                         name="search.product"
-                         (ionChange)="updateProduct($event)"
-                         placeholder="{{ 'PRODUCT' | translate }}"></ion-input>
+                         [(ngModel)]="product"
+                         name="product"
+                         placeholder="{{ 'PRODUCT' | translate }}"
+                         value="{{ product }}"></ion-input>
             </div>
           </div>
           <div col-6 col-sm-4>
             <div class="form-group p-relative">
-              <ion-select [(ngModel)]="search.segment"
+              <ion-select [(ngModel)]="segment"
                           name="segment"
-                          placeholder="{{ 'SEGMENT' | translate }}"
-                          (ionChange)="updateSegment($event)">
-                <ion-option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</ion-option>
+                          placeholder="{{ 'SEGMENT' | translate }}">
+                <ion-option *ngFor="let category of getCategories()"
+                            value="{{category.id}}"
+                            [selected]="segment == category.id">{{category.name}}
+                </ion-option>
               </ion-select>
             </div>
           </div>
           <div col-6 col-sm-4>
             <div class="form-group p-relative">
-              <ion-select [(ngModel)]="search.locality"
+              <ion-select [(ngModel)]="locality"
                           name="locality"
-                          placeholder="{{ 'LOCALITY' | translate }}"
-                          (ionChange)="updateLocality($event)">
-                <ion-option *ngFor="let region of regions" value="{{region.id}}">{{region.name}}</ion-option>
+                          placeholder="{{ 'LOCALITY' | translate }}">
+                <ion-option *ngFor="let region of regions" value="{{region.id}}"
+                            [selected]="locality == region.id">{{region.name}}
+                </ion-option>
               </ion-select>
             </div>
           </div>
@@ -159,7 +174,10 @@
     </button>
   </ion-toolbar>
   <ion-toolbar *ngIf="getOffer() != null">
-    <button *ngIf="getLoggedUser().id != getAuthor()" ion-button class="btn btn-primary" (click)="order(getOffer(), getDemandQuantity())">
+    <button *ngIf="getLoggedUser().id != getAuthor()"
+            ion-button
+            class="btn btn-primary"
+            (click)="order(getOffer(), getDemandQuantity())">
       {{ 'SEND_DEMAND' | translate }}
     </button>
   </ion-toolbar>

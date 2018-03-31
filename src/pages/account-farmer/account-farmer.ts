@@ -38,7 +38,7 @@ export class AccountFarmerPage extends Wrapper {
             photo: MyApp.loggedUser.avatar,
             cover: MyApp.loggedUser.poster,
             opening_hours: MyApp.loggedUser.scopeExtra['opening_hours'],
-            post_send: MyApp.loggedUser.scopeExtra['post_send'],
+            post_send: MyApp.loggedUser.scopeExtra['post_send'] ? '1' : '0',
             phone: MyApp.loggedUser.scopeExtra['phone'],
             package_type: MyApp.loggedUser.scopeExtra['package_type'],
         }
@@ -63,6 +63,7 @@ export class AccountFarmerPage extends Wrapper {
     account: FormGroup;
     regionImage: string;
     loading = false;
+    zip: string;
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
                 sanitizer: DomSanitizer,
@@ -74,10 +75,10 @@ export class AccountFarmerPage extends Wrapper {
                 private alert: AlertController,
                 private storage: Storage) {
         super(navCtrl, navParams, sanitizer);
-
         this.account = new FormGroup({
             city: new FormControl(this.data.NeoContentFarmersProfile.city)
         });
+        this.zip = MyApp.loggedUser.zip;
         let img = 'https://odfarmara.sk/theme/Odfarmara/img/';
         let region = MyApp.regions[this.data.NeoContentFarmersProfile.region_id - 1];
         if(region) {
@@ -96,9 +97,8 @@ export class AccountFarmerPage extends Wrapper {
             };
             this.hourKeys = Object.keys(this.data.NeoContentFarmersProfile.opening_hours);
         }
-
         this.api.getFavouriteOffers(MyApp.loggedUser.id).then(response => {
-            MyApp.loggedUser = ApiProvider.getUser(response['loggedInUser'], response['loggedInUser'])
+            MyApp.loggedUser = ApiProvider.getUser(response['loggedUser'], response['loggedUser'])
         });
 
         this.avatar = MyApp.loggedUser.avatar;
@@ -115,6 +115,9 @@ export class AccountFarmerPage extends Wrapper {
     }
 
     saveData() {
+        if(this.zip != '' && this.zip != '0') {
+            this.data.NeoContentFarmersProfile.zip = this.zip;
+        }
         this.api.editUser(this.data).then(response => {
             MyApp.loggedUser.name = this.data.NeoContentFarmersProfile.name;
             MyApp.loggedUser.description = this.data.NeoContentFarmersProfile.short_description;
@@ -126,6 +129,10 @@ export class AccountFarmerPage extends Wrapper {
             MyApp.loggedUser.zip = this.data.NeoContentFarmersProfile.zip;
             MyApp.loggedUser.avatar = this.avatar;
             MyApp.loggedUser.poster = this.poster;
+            MyApp.loggedUser.scopeExtra['opening_hours'] = this.data.NeoContentFarmersProfile.opening_hours;
+            MyApp.loggedUser.scopeExtra['post_send'] = this.data.NeoContentFarmersProfile.post_send == '1';
+            MyApp.loggedUser.scopeExtra['phone'] = this.data.NeoContentFarmersProfile.phone;
+            MyApp.loggedUser.scopeExtra['package_type'] = this.data.NeoContentFarmersProfile.package_type;
             this.showAlert(response['status']);
             MyApp.loggedUser = ApiProvider.getUser(this.data, this.data);
             this.storage.set('loggedUser', MyApp.loggedUser);
@@ -193,7 +200,7 @@ export class AccountFarmerPage extends Wrapper {
         });
         this.data.NeoContentFarmersProfile.region_id = village['region_id'];
         this.data.NeoContentFarmersProfile.zip = village['zip'].toString();
-        this.data.NeoContentFarmersProfile.zip = this.data.NeoContentFarmersProfile.zip === '0' ? '' : this.data.NeoContentFarmersProfile.zip
+        this.data.NeoContentFarmersProfile.zip = this.data.NeoContentFarmersProfile.zip === '0' ? '' : this.data.NeoContentFarmersProfile.zip;
         let img = 'https://odfarmara.sk/theme/Odfarmara/img/';
         let region = MyApp.regions[this.data.NeoContentFarmersProfile.region_id - 1];
         if(region) {
@@ -209,5 +216,9 @@ export class AccountFarmerPage extends Wrapper {
         }
         this.hourKeys = [];
         this.hourKeys = Object.keys(this.data.NeoContentFarmersProfile.opening_hours);
+    }
+
+    parseInt(num) {
+        return isNaN(parseInt(num)) ? 0 : parseInt(num);
     }
 }
