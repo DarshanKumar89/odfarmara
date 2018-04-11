@@ -71,6 +71,7 @@
       <div class="offset offset-top bg bg-light-red padding text text-center">
         <span class="text text-heading">{{ 'IN_RADIUS' | translate }}</span>
         <span class="label label-primary">{{ area }} KM</span>
+        <span class="label label-primary">{{ diameterOffers }} {{ 'OFFERS_COUNT' | translate }}</span>
         <ion-item>
           <ion-range min="10" max="600" (ionChange)="changeArea()" [debounce]="200" color="transparent" [(ngModel)]="area"></ion-range>
         </ion-item>

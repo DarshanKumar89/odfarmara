@@ -1,0 +1,26 @@
+<div class="row conversation border border-bottom">
+  <div (click)="openConversation(message.opponent.id, message)" class="seen" *ngIf="!message.message.seen">
+    <span class="seen-circle"></span>
+  </div>
+  <div class="avatar" (click)="openConversation(message.opponent.id, message)">
+    <ion-avatar>
+      <img src="{{ message.opponent.avatar || 'assets/icon/user.png' }}" alt="{{ message.opponent.name }}">
+    </ion-avatar>
+  </div>
+  <div class="data">
+    <div class="user-name text text-heading" (click)="openConversation(message.opponent.id, message)">
+      {{ message.opponent.name }}
+    </div>
+    <div class="message-body"
+         (click)="openConversation(message.opponent.id, message)"
+         [innerHtml]="message.message.body"></div>
+    <br>
+    <div>
+      <button (click)="deleteConversation(message)" class="btn btn-transparent float-right">
+        <i class="fa fa-trash"></i></button>
+      <span class="text text-sm" (click)="openConversation(message.opponent.id, message)">
+        {{ message.message.created | date:'dd.MM.yyyy HH:mm' }}
+      </span>
+    </div>
+  </div>
+</div>

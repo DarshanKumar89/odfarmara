@@ -143,7 +143,7 @@
   <div #search></div>
 </ion-nav>
 <ion-footer align="center" *ngIf="getLoggedUser() != null">
-  <ion-toolbar *ngIf="getOffer() == null">
+  <ion-toolbar *ngIf="getOffer() == null && getActivePage() != 'ConversationPage'">
     <button class="p-relative btn btn-transparent" (click)="openMessages()">
       <span class="label label-primary label-round text text-sm" *ngIf="getCounts().messages > 0">{{ getCounts().messages }}</span>
       <i class="fa fa-envelope-o text text-lg"></i>
@@ -160,7 +160,7 @@
     </button>
     <button class="p-relative btn btn-transparent"
             *ngIf="!getLoggedUser().farmer"
-            (click)="showList('/neo_content/neo_content_offers/show_favourites', 'Obľúbené')">
+            (click)="showList('/neo_content/neo_content_offers/show_favourites', 'Obľúbené', false)">
       <i class="fa fa-heart-o text text-lg"></i>
       <strong class="d-block text text-xs text-uppercase">{{ 'FAVOURITES' | translate }}</strong>
     </button>
@@ -180,5 +180,13 @@
             (click)="order(getOffer(), getDemandQuantity())">
       {{ 'SEND_DEMAND' | translate }}
     </button>
+  </ion-toolbar>
+  <ion-toolbar *ngIf="getActivePage() == 'ConversationPage'">
+    <div class="bottom-input bg bg-white">
+      <button ion-button (click)="sendMessage()" class="btn btn-primary pull-right">
+        <span class="fa fa-paper-plane"></span>
+      </button>
+      <ion-input [(ngModel)]="body" placeholder="{{ 'RESPOND' | translate }}..."></ion-input>
+    </div>
   </ion-toolbar>
 </ion-footer>

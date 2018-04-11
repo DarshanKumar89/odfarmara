@@ -42,6 +42,7 @@ import {HttpClient, HttpClientModule, HttpHandler} from "@angular/common/http";
 import {ForgotPasswordPage} from "../pages/forgot-password/forgot-password";
 import {Camera} from "@ionic-native/camera";
 import {RegisterPage} from "../pages/register/register";
+import {MessageComponent} from "../components/message/message";
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '-1.json');
@@ -68,6 +69,7 @@ export function createTranslateLoader(http: HttpClient) {
         OfferFormComponent,
         OfferViewComponent,
         OfferMiniComponent,
+        MessageComponent,
         BtnFavouritesComponent,
         RegionSelectComponent,
         ForgotPasswordPage,
@@ -106,6 +108,7 @@ export function createTranslateLoader(http: HttpClient) {
         HomeCustomerPage,
         HomeFarmerPage,
         MapPage,
+        MessageComponent,
         OfferFormComponent,
         ForgotPasswordPage,
         RegisterPage

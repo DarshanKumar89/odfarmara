@@ -9,7 +9,7 @@
       </button>
     </ion-buttons>
     <ion-title align="center">
-      <i class="fa fa-comment-o"></i>
+      <i class="fa fa-comment-o text text-primary"></i>
       {{ opponent.name }}
     </ion-title>
   </ion-navbar>
@@ -29,11 +29,5 @@
       </div>
     </div>
 
-  </div>
-  <div class="border border-top bottom bg bg-white">
-    <button ion-button (click)="sendMessage()" class="btn btn-primary pull-right">
-      <span class="fa fa-paper-plane"></span>
-    </button>
-    <ion-input [(ngModel)]="body" placeholder="{{ 'RESPOND' | translate }}..."></ion-input>
   </div>
 </ion-content>

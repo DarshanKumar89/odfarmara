@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {Content, NavController, NavParams} from 'ionic-angular';
+import {AlertController, Content, NavController, NavParams} from 'ionic-angular';
 import {Message} from "../../app/Entity/Message";
 import {User} from "../../app/Entity/User";
 import {MyApp} from "../../app/app.component";
@@ -20,14 +20,14 @@ import {Demand} from "../../app/Entity/Demand";
 })
 export class MessagesPage {
     @ViewChild(Content) content: Content;
-    private conversations = Array<{ message: Message, opponent: User }|Demand>();
+    private conversations = Array<{message: Message, opponent: User, idDemand?: number}|Demand>();
 
     private counts;
 
     loaded = false;
     me = MyApp.loggedUser;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, private api: ApiProvider) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, private api: ApiProvider, private alert: AlertController) {
         this.counts = {
             messages: 0
         };
@@ -41,7 +41,7 @@ export class MessagesPage {
                     opponent: ApiProvider.getUser(user, user),
                     message: ApiProvider.getMessage(data['messages'][key])
                 };
-            }).sort((a: Demand|{message: Message, opponent: User}, b: Demand|{message: Message, opponent: User}) => {
+            }).sort((a: Demand|{message: Message, opponent: User, idDemand?: number}, b: Demand|{message: Message, opponent: User, idDemand?: number}) => {
                 return (a instanceof Demand ? a.lastMessage : a.message).created.getTime() > (b instanceof Demand ? b.lastMessage : b.message).created.getTime() ? -1 : 1;
             });
             this.loaded = true;
@@ -50,7 +50,7 @@ export class MessagesPage {
             data['demands'].map(item => {
                 this.api.fetchDemand(item['NeoContentDemand']['id_demand']).then(response => {
                     this.conversations.push(ApiProvider.getDemand(response['demand'], response['messages'], ApiProvider.getProduct(response['offer'])));
-                    this.conversations.sort((a: Demand|{message: Message, opponent: User}, b: Demand|{message: Message, opponent: User}) => {
+                    this.conversations.sort((a: Demand|{message: Message, opponent: User, idDemand?: number}, b: Demand|{message: Message, opponent: User, idDemand?: number}) => {
                         return (a instanceof Demand ? a.lastMessage : a.message).created.getTime() > (b instanceof Demand ? b.lastMessage : b.message).created.getTime() ? -1 : 1;
                     });
                 });
@@ -61,7 +61,7 @@ export class MessagesPage {
         });
     }
 
-    openConversation(idUser, conversation: {message: Message, opponent: User}|Demand) {
+    openConversation(idUser, conversation: {message: Message, opponent: User, idDemand?: number}|Demand) {
         let msg: Message = conversation instanceof Demand ? conversation.lastMessage : conversation.message;
         if(msg) {
             msg.seen = true;
@@ -76,18 +76,43 @@ export class MessagesPage {
         });
     }
 
-    deleteConversation(conversation: {message: Message, opponent: User}|Demand) {
-        this.api.post('/neo_content/neo_content_inbox/delete/' + (conversation instanceof Demand ? conversation.user.id : conversation.opponent.id), {
+    deleteConversation(conversation: {message: Message, opponent: User, idDemand?: number}) {
+        this.api.post('/neo_content/neo_content_inbox/delete/' + (conversation.opponent.id), {
             data: {
                 force: {
                     loggedUserIdBASE64: btoa(`user_:(${MyApp.loggedUser.id})`)
                 }
             }
         }).then(() => {
-            this.conversations = this.conversations.filter((item: {message: Message, opponent: User}) => {
-                return item.opponent.id != (conversation instanceof Demand ? conversation.user.id : conversation.opponent.id);
+            this.alert.create({
+                title: 'Vymazané',
+                message: 'Konverzácia bola vymazaná.',
+                buttons: ['OK']
+            }).present();
+            this.conversations = this.conversations.filter((item: {message: Message, opponent: User, idDemand?: number}|Demand) => {
+                if(item instanceof Demand) {
+                    return true;
+                }
+                return item.opponent.id != (conversation.opponent.id);
             });
             MyApp.counts.messages--;
+        });
+    }
+
+    deleteDemand(message: Demand) {
+        this.alert.create({
+            title: 'Vymazané',
+            message: 'Dopyt bol vymazaný.',
+            buttons: ['OK']
+        }).present();
+        this.conversations = this.conversations.filter((item: {message: Message, opponent: User, idDemand?: number}|Demand) => {
+            if(!(item instanceof Demand)) {
+                return true;
+            }
+            return item.id != message.id;
+        });
+        this.api.get('/neo_content/neo_content_demand/delete/' + message.id).then(item => {
+
         });
     }
 

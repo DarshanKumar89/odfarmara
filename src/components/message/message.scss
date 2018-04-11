@@ -1,14 +1,16 @@
-page-demands {
+message {
   ion-avatar {
+    margin-top: 10px;
     width: 50px;
     height: 50px;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+
     &.small {
       width: 30px;
       height: 30px;
     }
-    position: relative;
-    border-radius: 50%;
-    overflow: hidden;
     img {
       left: -9999px;
       top: -9999px;
@@ -24,33 +26,37 @@ page-demands {
     }
   }
 
+  [col-12],
+  [col-4],
+  [col-8] {
+    padding: 0 !important;
+  }
+
   .avatar {
     width: 28%;
   }
 
   .conversation {
-    padding: 20px 10px;
+    padding: 10px 5px;
+    position: relative;
   }
 
   .data {
-    width: 60%;
+    width: 70%;
     text-overflow: ellipsis;
     display: inline-block;
-    font-size: 0.9em;
   }
 
   .seen {
-    padding-top: 20px;
-    margin-right: 1%;
+    position: absolute;
+    left: 10px;
+    top: 10px;
     display: inline-block;
     width: 10%;
   }
 
   .message-body {
     font-size: 12px;
-    /*@media screen and (max-width: 768px) {
-      display: none;
-    }*/
   }
 
   .btn .fa {

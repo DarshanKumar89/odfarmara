@@ -1,5 +1,5 @@
 <div class="padding">
-  <div class="product d-block" (click)="showProduct(product)">
+  <div [class]="'product d-block ' + (myOffers ? 'my-offer' : '')" (click)="showProduct(product)">
     <div class="bg bg-gray product-photo" [style.background-image]="sanitize(product.photos[0])"></div>
     <div class="product-info">
       <div class="border border-bottom">
@@ -8,7 +8,7 @@
       <span>{{ 'OFFER' | translate }} <strong>{{ product.quantity }} {{ prices[product.priceType] }}</strong></span>
     </div>
   </div>
-  <div *ngIf="myOffers" class="offset offset-top">
+  <div *ngIf="myOffers" class="offset offset-bottom">
     <div class="btn-edit text text-heading" (click)="showEditProduct(product)">
       {{ 'EDIT' | translate }}
     </div>
@@ -17,5 +17,7 @@
       <span class="fa fa-trash-o"></span>
     </span>
     </div>
+    <div class="clearfix"></div>
+    <div class="offset offset-top"></div>
   </div>
 </div>

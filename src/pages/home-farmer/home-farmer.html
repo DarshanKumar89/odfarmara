@@ -21,33 +21,10 @@
       <span class="label label-primary">{{ counts.messages }}</span>
     </div>
     <div class="border" *ngIf="counts.messages > 0">
-      <div class="row conversation border border-bottom padding"
-           *ngFor="let message of conversations">
-        <ion-row class="seen" (click)="openConversation(message.opponent.id)">
-          <div col-1>
-            <span class="seen-circle" *ngIf="!message.message.seen && message.opponent.id != me.id"></span>
-          </div>
-        </ion-row>
-        <ion-row class="w-full">
-          <div col-2 (click)="openConversation(message.opponent.id)">
-            <ion-avatar class="round">
-              <img src="{{ message.opponent.avatar }}" alt="{{ message.opponent.name }}">
-            </ion-avatar>
-          </div>
-          <div col-10>
-            <div (click)="openConversation(message.opponent.id)">{{ message.message.body }}</div>
-            <div>
-              <button class="btn btn-transparent float float-right text text-gray text-right text-md"
-                      (click)="deleteConversation(message)">
-                <i class="fa fa-trash"></i>
-              </button>
-              <span class="text text-light text-sm" (click)="openConversation(message.opponent.id)">
-                {{ message.message.created | date:'dd.MM.yyyy' }}
-              </span>
-            </div>
-          </div>
-        </ion-row>
-      </div>
+      <message *ngFor="let message of conversations"
+               [message]="message"
+               ([conversations])="conversations">
+      </message>
     </div>
     <div class="alrt alrt-danger" *ngIf="counts.messages == 0">
       {{ 'NO_NEW_MESSAGES' | translate }}

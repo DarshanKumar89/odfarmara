@@ -8,6 +8,7 @@ import {MyOffersPage} from "../my-offers/my-offers";
 import {MessagesPage} from "../messages/messages";
 import {OfferFormComponent} from "../../components/offer-form/offer-form";
 import {ConversationPage} from "../conversation/conversation";
+import {Demand} from "../../app/Entity/Demand";
 
 /**
  * Generated class for the HomeFarmerPage page.
@@ -22,7 +23,7 @@ import {ConversationPage} from "../conversation/conversation";
 })
 export class HomeFarmerPage {
 
-    private conversations = Array<{ message: Message, opponent: User }>();
+    private conversations = Array<{message: Message, opponent: User, idDemand?: number}>();
     private counts = MyApp.counts;
     private me = MyApp.loggedUser;
 
@@ -37,9 +38,17 @@ export class HomeFarmerPage {
                     message: ApiProvider.getMessage(data['messages'][key])
                 };
             });
-            this.conversations = this.conversations.filter(item => {
-                return !item.message.seen;
-            });
+            this.conversations = this.conversations.sort((a, b) => {
+                return a.message.seen ? 1 : -1;
+            }).slice(0, 5);
+            if(this.conversations.length < 5) {
+                data['demands'].slice(0, 5 - this.conversations.length).map(item => {
+                    this.api.fetchDemand(item['NeoContentDemand']['id_demand']).then(response => {
+                        let dem = ApiProvider.getDemand(response['demand'], response['messages'], ApiProvider.getProduct(response['offer']));
+                        this.conversations.push({message: dem.lastMessage.setBody(dem.product.name), opponent: dem.user, idDemand: dem.id});
+                    });
+                });
+            }
             MyApp.counts.messages = this.counts.messages = this.conversations.length;
         });
     }
@@ -66,7 +75,7 @@ export class HomeFarmerPage {
         });
     }
 
-    deleteConversation(conversation: {message: Message, opponent: User}) {
+    deleteConversation(conversation: {message: Message, opponent: User, idDemand?: number}) {
         this.api.post('/neo_content/neo_content_inbox/delete/' + conversation.opponent.id, {
             data: {
                 force: {
@@ -74,10 +83,14 @@ export class HomeFarmerPage {
                 }
             }
         }).then(() => {
-            this.conversations = this.conversations.filter((item: {message: Message, opponent: User}) => {
+            this.conversations = this.conversations.filter((item: {message: Message, opponent: User, idDemand?: number}) => {
                 return item.opponent.id != conversation.opponent.id;
             });
             MyApp.counts.messages--;
         });
+    }
+
+    isDemand(message: { message: Message; opponent: User } | Demand) {
+        return message instanceof Demand;
     }
 }

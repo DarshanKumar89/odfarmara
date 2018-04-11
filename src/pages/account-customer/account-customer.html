@@ -40,9 +40,6 @@
     </div>
   </form>
   <form class="container bg bg-gray offset offset-top" (ngSubmit)="saveData()">
-    <div class="form-group text text-center">
-      <img [src]="regionImage" alt="" width="100">
-    </div>
     <div>
       <div class="form-group">
         <label class="text text-heading" for="data.NeoShopUser.address">{{ 'STREET_NO' | translate }}</label>
@@ -80,6 +77,9 @@
       <!--<region-select [region]="data[0].NeoShopAddress.region_id"
                      id="villages"
                      [city]="data[0].NeoShopAddress.city"></region-select>-->
+      <div class="form-group text text-center">
+        <img [src]="regionImage" alt="" width="100">
+      </div>
     </div>
 
     <div class="row">

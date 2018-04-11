@@ -465,6 +465,11 @@ h2 {
       font-size: 14px;
     }
   }
+  &.my-offer #{&}-info {
+    width: 100%;
+    left: 0;
+    padding: 0;
+  }
   & #{&}-photo {
     height: 150px;
     background-size: cover;
@@ -765,4 +770,17 @@ ion-auto-complete {
 
 .alert-radio-group {
   overflow: auto;
+}
+
+.bottom-input {
+  width: 100%;
+  padding-right: 25px;
+  .btn .fa {
+    color: #fff;
+    margin-right: 0;
+    margin-bottom: 0 !important;
+  }
+  ion-input {
+    width: 70%;
+  }
 }

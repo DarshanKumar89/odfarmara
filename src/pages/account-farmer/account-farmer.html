@@ -79,9 +79,6 @@
     </div>
   </form>
   <form (ngSubmit)="saveData()" class="container bg bg-gray offset offset-top">
-    <div class="form-group text text-center" *ngIf="regionImage != null">
-      <img [src]="regionImage" alt="" width="100">
-    </div>
     <div>
       <div class="form-group">
         <label class="text text-heading" for="data.street">{{ 'STREET_NO' | translate }}</label>
@@ -115,6 +112,9 @@
                    name="phone"
                    placeholder="{{ 'PHONE_NO' | translate }}"
                    value="{{ data.NeoContentFarmersProfile.phone }}"></ion-input>
+      </div>
+      <div class="form-group text text-center" *ngIf="regionImage != null">
+        <img [src]="regionImage" alt="" width="100">
       </div>
     </div>
     <div class="text text-center">

@@ -26,6 +26,7 @@
       </ion-item>
       <ion-item>
         <div class="product-thumb">
+          <img [src]="regionImage" alt="region" width="73" class="d-block">
           <button ion-button class="btn btn-primary" (click)="openMap()">
             <i class="fa fa-map-marker"></i>
             {{ 'MAP' | translate }}
@@ -33,10 +34,12 @@
         </div>
       </ion-item>
     </ion-scroll>
-    <button class="btn btn-white offset offset-top" ion-button (click)="openMap()">
-      <i class="fa fa-map-marker"></i>
-      {{ 'SHOW_ON_MAP' | translate }}
-    </button>
+    <div class="d-inline-block">
+      <button class="btn btn-white offset offset-top" ion-button (click)="openMap()">
+        <i class="fa fa-map-marker"></i>
+        {{ 'SHOW_ON_MAP' | translate }}
+      </button>
+    </div>
     <div class="row row-header">
       <i class="fa fa-heart-o"></i>
       <strong class="text text-uppercase text-grey text-wide">{{ 'MY_FOLLOWING' | translate }}</strong>
@@ -47,13 +50,13 @@
         <offer-mini [product]="product"></offer-mini>
       </ion-item>
       <ion-item class="product-thumb w-auto">
-        <button ion-button class="btn btn-primary" (click)="showList('/neo_content/neo_content_offers/show_favourites', counts.favourites, 'Moje Sledované')">
+        <button ion-button class="btn btn-primary" (click)="showList('/neo_content/neo_content_offers/show_favourites', counts.favourites, 'Moje Sledované', false)">
           <i class="fa fa-heart-o"></i>
           {{ 'ALL' | translate }}
         </button>
       </ion-item>
     </ion-scroll>
-    <button class="btn btn-white offset offset-top" ion-button (click)="showList('/neo_content/neo_content_offers/show_favourites', counts.favourites, 'Moje Sledované')">
+    <button class="btn btn-white offset offset-top" ion-button (click)="showList('/neo_content/neo_content_offers/show_favourites', counts.favourites, 'Moje Sledované', false)">
       <i class="fa fa-heart-o"></i>
       {{ 'ALL_FOLLOWING' | translate }}
     </button>

@@ -23,7 +23,7 @@ page-conversation {
     padding: 10px;
     border: 1px solid rgb(204, 204, 204);
     width: 80%;
-    margin: 20px 0;
+    margin: 10px 0;
     float: right;
     .message-body {
       width: 91%;
@@ -65,15 +65,7 @@ page-conversation {
     position: fixed;
     bottom: 60px;
     left: 0;
-    width: 100%;
-    padding-right: 25px;
-    .btn .fa {
-      color: #fff;
-      margin-right: 0;
-    }
-    ion-input {
-      width: 70%;
-    }
+
   }
 
   .bg.bg-white {

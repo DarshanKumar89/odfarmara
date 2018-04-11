@@ -9,60 +9,37 @@
       </button>
     </ion-buttons>
     <ion-title align="center">
-      <i class="fa fa-envelope"></i>
+      <i class="fa fa-envelope-o text text-primary"></i>
       {{ 'MESSAGES' | translate }}
       <span class="label label-primary" *ngIf="counts.messages > 0">{{ counts.messages }}</span>
     </ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <div class="container">
+  <div class="">
     <div *ngIf="loaded">
       <div class="border" *ngIf="conversations.length > 0">
         <div *ngFor="let message of conversations">
-          <div *ngIf="!isDemand(message)" class="row conversation border border-bottom">
-            <div (click)="openConversation(isDemand(message) ? message.user.id : message.opponent.id, message)" class="seen" *ngIf="!message.message.seen">
-              <span class="seen-circle"></span>
-            </div>
-            <div class="avatar" (click)="openConversation(isDemand(message) ? message.user.id : message.opponent.id, message)">
-              <ion-avatar>
-                <img src="{{ message.opponent.avatar || 'assets/icon/user.png' }}" alt="{{ message.opponent.name }}">
-              </ion-avatar>
-            </div>
-            <div class="data">
-              <div class="user-name text text-heading" (click)="openConversation(isDemand(message) ? message.user.id : message.opponent.id, message)">
-                {{ message.opponent.name }}
-              </div>
-              <div class="message-body"
-                   (click)="openConversation(isDemand(message) ? message.user.id : message.opponent.id, message)"
-                   [innerHtml]="message.message.body"></div>
-              <br>
-              <div>
-                <button (click)="deleteConversation(message)" class="btn btn-transparent float-right">
-                  <i class="fa fa-trash"></i></button>
-                <span class="text text-sm" (click)="openConversation(isDemand(message) ? message.user.id : message.opponent.id, message)">{{ message.message.created | date:'dd.MM.yyyy HH:mm' }}</span>
-              </div>
-            </div>
-          </div>
-          <div *ngIf="isDemand(message)" class="row conversation border border-bottom">
+          <message [message]="isDemand(message) ? {message: message.lastMessage.setBody(message.product.name), opponent: message.user, idDemand: message.id} : message"
+                   ([conversations])="conversations">
+          </message>
+          <!--<div *ngIf="isDemand(message)" class="row conversation border border-bottom">
             <div col-12>
               <div class="row">
                 <div col-3 (click)="openConversation(message.user.id, message)">
                   <div class="seen" *ngIf="!message.lastMessage.seen"><span class="seen-circle"></span></div>
                   <div class="avatar">
                     <ion-avatar>
-                      <img src="{{ message.product.photos[0].url.main || 'assets/icon/user.png' }}" alt="{{ message.product.name }}">
+                      <img src="{{ message.product.photos[0].url.main || 'assets/icon/user.png' }}"
+                           alt="{{ message.product.name }}">
                     </ion-avatar>
                   </div>
                 </div>
-                <div col-5 (click)="openConversation(message.user.id, message)">
-                  <div class="user-name text text-bold">{{ message.product.name }}</div>
-                  <div class="message-body" [innerHtml]="message.lastMessage.body"></div>
-                </div>
-                <div col-4 (click)="openConversation(message.user.id, message)">
+                <div col-9 (click)="openConversation(message.user.id, message)">
                   <ion-avatar class="small float-right">
                     <img src="{{ message.user.avatar || 'assets/icon/user.png' }}" alt="{{ message.user.name }}">
                   </ion-avatar>
+                  <div class="user-name text text-bold">{{ message.product.name }}</div>
                 </div>
               </div>
             </div>
@@ -76,7 +53,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div>-->
         </div>
       </div>
       <div class="alrt alrt-danger" *ngIf="conversations.length == 0">

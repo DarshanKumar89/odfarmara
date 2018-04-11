@@ -30,6 +30,7 @@ export class HomeCustomerPage extends Wrapper {
     };
     private prices;
     private offers = [];
+    private regionImage: string;
     constructor(navCtrl: NavController, navParams: NavParams, sanitizer: DomSanitizer, private provider: ApiProvider, private geo: Geolocation) {
         super(navCtrl, navParams, sanitizer);
         this.counts = MyApp.counts;
@@ -50,14 +51,20 @@ export class HomeCustomerPage extends Wrapper {
             });
         }).catch(err => {});
         this.prices = MyApp.prices;
+        let img = 'https://odfarmara.sk/theme/Odfarmara/img/';
+        let region = MyApp.regions[MyApp.loggedUser.region - 1];
+        if(region) {
+            this.regionImage = img + region['image'];
+        }
     }
 
-    showList(offers: string|Array<{}>, count:Number = 0, title:string = 'Moje sledované') {
+    showList(offers: string|Array<{}>, count:Number = 0, title:string = 'Moje sledované', refreshCounts: boolean = true) {
         this.navCtrl.push(OfferListPage, {
             offers: offers,
             count: count,
             title: title,
-            favs: true
+            favs: true,
+            refreshCounts: refreshCounts
         });
     }
 

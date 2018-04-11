@@ -101,5 +101,7 @@
   "FRIDAY": "Piatok",
   "SATURDAY": "Sobota",
   "SUNDAY": "Nedeľa",
-  "NO_MY_OFFERS": "Nemáte žiadne produkty."
+  "NO_MY_OFFERS": "Nemáte žiadne produkty.",
+  "SEGMENTS": "Sledované kategórie",
+  "OFFERS_COUNT": "ponúk"
 }

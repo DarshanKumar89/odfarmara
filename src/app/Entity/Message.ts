@@ -13,4 +13,9 @@ export class Message {
     ) {
         this.seen = !seen ? false : seen;
     }
+
+    setBody(body) {
+        this.body = body;
+        return this;
+    }
 }

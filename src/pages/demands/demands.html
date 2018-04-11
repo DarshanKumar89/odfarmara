@@ -9,7 +9,7 @@
       </button>
     </ion-buttons>
     <ion-title align="center">
-      <i class="fa fa-envelope"></i>
+      <i class="fa fa-flag-o text text-primary"></i>
       {{ 'DEMAND' | translate }}
       <span class="label label-primary" *ngIf="counts.demands > 0">{{ counts.demands }}</span>
     </ion-title>
@@ -33,7 +33,6 @@
           <div col-7 (click)="openConversation(message.user.id, message.id)">
             <div class="data">
               <div class="user-name text text-bold">{{ message.product.name }}</div>
-              <div class="message-body" [innerHtml]="message.lastMessage.body"></div>
             </div>
           </div>
           <div col-2 (click)="openConversation(message.user.id, message.id)">

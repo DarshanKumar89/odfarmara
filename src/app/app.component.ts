@@ -206,6 +206,10 @@ export class MyApp {
         return cats;
     }
 
+    getActivePage(): string {
+        return this.nav.getActive().name;
+    }
+
     static getNewFarmers(geo: Geolocation, api: ApiProvider, notif: LocalNotifications) {
         geo.getCurrentPosition().then(item => {
             let lat = item.coords.latitude;
@@ -292,7 +296,9 @@ export class MyApp {
                             product: data['offer']
                         });
                     } else if(notification['data']['farm']) {
-
+                        this.nav.push(ProfileFarmerPage, {
+                            id: data['farm']
+                        });
                     }
                 }
             });
@@ -319,8 +325,8 @@ export class MyApp {
     notifications() {
         setInterval(() => {
             this.api.notifications().then(data => {
-                MyApp.counts.messages = this.count = data['messages'];
                 MyApp.counts.demands = this.count = data['demands'];
+                MyApp.counts.messages = this.count = data['messages'] + MyApp.counts.demands;
                 for (let i = 0; i < data['notifications'].length; i++) {
                     let notification = data['notifications'][i];
                     this.notif.schedule({
@@ -396,12 +402,13 @@ export class MyApp {
         this.nav.push(SettingsPage, {});
     }
 
-    showList(offers: string | Array<{}>, title: string) {
+    showList(offers: string | Array<{}>, title: string, refreshCounts:boolean = true) {
         this.nav.push(OfferListPage, {
             offers: offers,
             title: title,
             count: MyApp.counts.favourites,
-            favs: true
+            favs: true,
+            refreshCounts: refreshCounts
         });
     }
 

@@ -22,6 +22,8 @@ import {Data} from "../../app/Entity/Data";
     templateUrl: 'offer-list.html',
 })
 export class OfferListPage extends Wrapper {
+    diameterOffers: number;
+    refreshCounts: boolean;
     removed = [];
     selected: any[];
     categories = [];
@@ -56,8 +58,9 @@ export class OfferListPage extends Wrapper {
         super(navCtrl, navParams, sanit);
         let offers = this.navParams.data['offers'];
         this.error = this.navParams.data['error'];
-        let cnts = 0, title = '';
-        console.log(typeof this.offers, typeof offers === 'string');
+        this.diameterOffers = 0;
+        this.refreshCounts = this.navParams.data['refreshCounts'] == undefined ? true : this.navParams.data['refreshCounts'];
+        this.cnts = this.navParams.data['count'] ? this.navParams.data['count'] : 0;
         if (typeof offers === 'string') {
             this.url = offers;
             geolocation.getCurrentPosition().then(item => {
@@ -87,7 +90,6 @@ export class OfferListPage extends Wrapper {
             this.offers = offers.map(offer => {
                 return offer instanceof Product ? offer : ApiProvider.getProduct(offer);
             });
-            this.cnts = this.navParams.data['count'] ? this.navParams.data['count'] : 0;
         }
         this.cnts = this.cnts || 0;
         this.title = `<span class="fa fa-heart-o"></span> ${this.navParams.data['title']} `;
@@ -118,7 +120,10 @@ export class OfferListPage extends Wrapper {
                 offer['author']['isFarmer'] = true;
                 let user = ApiProvider.getUser(offer['author'] ? offer['author'] : offer, {'NeoContentAddress': {}});
                 return offer instanceof Product ? offer : ApiProvider.getProduct(offer, user);
+            }).sort((a,b) => {
+                return _.contains(result['liked'], a.id) ? -1 : 1;
             });
+            this.diameterOffers = this.offers.length;
             this.following = result['following'];
             let categories = result['categoriesSelect'];
             let myCats = _.values(result['categories']);
@@ -147,8 +152,10 @@ export class OfferListPage extends Wrapper {
                 });
                 return item;
             });
-            this.cnts = this.offers.length;
-            this.cnts = this.cnts || 0;
+            if(this.refreshCounts) {
+                this.cnts = this.offers.length;
+                this.cnts = this.cnts || 0;
+            }
             this.title = `<span class="fa fa-heart-o"></span> ${this.navParams.data['title']} `;
             if(this.cnts > 0) {
                 this.title += `<span class="label label-primary">${this.cnts}</span>`;
