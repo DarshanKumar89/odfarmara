@@ -1,8 +1,9 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+    <button ion-button class="btn btn-transparent btn-menu-home"(click)="goHome()">
+      <ion-icon name="home"></ion-icon>
     </button>
+
     <ion-buttons end>
       <button ion-button menuToggle="right">
         <ion-icon name="search"></ion-icon>
@@ -16,7 +17,7 @@
 </ion-header>
 <ion-content padding #content id="content">
   <div class="container">
-    <div *ngFor="let message of conversation"
+    <div *ngFor="let message of getConversation()"
          class="row message {{ message.userFrom.id == loggedUser.id ? 'message-my' : 'message-opponent' }}">
       <div class="message-inner">
         <ion-avatar>
@@ -28,6 +29,5 @@
         </div>
       </div>
     </div>
-
   </div>
 </ion-content>

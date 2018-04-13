@@ -11,9 +11,12 @@
     <div class="user-name text text-heading" (click)="openConversation(message.opponent.id, message)">
       {{ message.opponent.name }}
     </div>
-    <div class="message-body"
-         (click)="openConversation(message.opponent.id, message)"
-         [innerHtml]="message.message.body"></div>
+    <div>
+      <label class="label label-green" *ngIf="message.idDemand">DOPYT</label>
+      <div class="message-body d-inline-block"
+           (click)="openConversation(message.opponent.id, message)"
+           [innerHtml]="message.message.body"></div>
+    </div>
     <br>
     <div>
       <button (click)="deleteConversation(message)" class="btn btn-transparent float-right">

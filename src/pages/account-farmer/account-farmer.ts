@@ -221,4 +221,8 @@ export class AccountFarmerPage extends Wrapper {
     parseInt(num) {
         return isNaN(parseInt(num)) ? 0 : parseInt(num);
     }
+
+    goHome() {
+        this.navCtrl.popAll();
+    }
 }

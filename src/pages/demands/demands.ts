@@ -26,6 +26,9 @@ export class DemandsPage {
             data['demands'].map(item => {
                 this.api.fetchDemand(item['NeoContentDemand']['id_demand']).then(response => {
                     this.conversations.push(ApiProvider.getDemand(response['demand'], response['messages'], ApiProvider.getProduct(response['offer'])));
+                    this.conversations = this.conversations.sort((a:Demand, b:Demand) => {
+                        return a.lastMessage.created < b.lastMessage.created ? 1 : -1;
+                    });
                 });
             });
             //MyApp.counts.demands = data['demands'].length;
@@ -52,6 +55,10 @@ export class DemandsPage {
                 return demand.id != id;
             })
         });
+    }
+
+    goHome() {
+        this.navCtrl.popAll();
     }
 
 }

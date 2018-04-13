@@ -490,6 +490,10 @@ h2 {
     background-color: map-get($colors, primary);
     color: #fff;
   }
+  &#{&}-green {
+    background-color: map-get($colors, green);
+    color: #fff;
+  }
 }
 
 .row {
@@ -782,5 +786,16 @@ ion-auto-complete {
   }
   ion-input {
     width: 70%;
+  }
+}
+
+ion-navbar {
+  position: relative;
+  .btn-menu-home {
+    position: absolute;
+    top: 6px;
+    left: 56px;
+    z-index: 100;
+    width: 20px !important;
   }
 }

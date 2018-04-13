@@ -119,4 +119,8 @@ export class MessagesPage {
     isDemand(message: { message: Message; opponent: User } | Demand) {
         return message instanceof Demand;
     }
+
+    goHome() {
+        this.navCtrl.popAll();
+    }
 }

@@ -67,4 +67,8 @@ export class MyOffersPage extends Wrapper {
         });
     }
 
+
+    goHome() {
+        this.navCtrl.popAll();
+    }
 }

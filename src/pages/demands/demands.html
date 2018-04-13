@@ -1,8 +1,9 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
+    <button ion-button class="btn btn-transparent btn-menu-home"(click)="goHome()">
+      <ion-icon name="home"></ion-icon>
     </button>
+
     <ion-buttons end>
       <button ion-button menuToggle="right">
         <ion-icon name="search"></ion-icon>
@@ -32,7 +33,8 @@
           </div>
           <div col-7 (click)="openConversation(message.user.id, message.id)">
             <div class="data">
-              <div class="user-name text text-bold">{{ message.product.name }}</div>
+              <label class="label label-green">DOPYT</label>
+              <div class="user-name text text-bold d-inline-block">{{ message.product.name }}</div>
             </div>
           </div>
           <div col-2 (click)="openConversation(message.user.id, message.id)">

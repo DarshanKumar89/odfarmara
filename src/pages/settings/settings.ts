@@ -69,4 +69,8 @@ export class SettingsPage extends Wrapper {
         })
     }
 
+    goHome() {
+        this.navCtrl.popAll();
+    }
+
 }

@@ -29,4 +29,8 @@ export class CmsPage {
         });
     }
 
+    goHome() {
+        this.navCtrl.popAll();
+    }
+
 }

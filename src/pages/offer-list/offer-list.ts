@@ -271,4 +271,9 @@ export class OfferListPage extends Wrapper {
         this.storage.set('radius', this.area);
         this.getOffers(this.url);
     }
+
+
+    goHome() {
+        this.navCtrl.popAll();
+    }
 }

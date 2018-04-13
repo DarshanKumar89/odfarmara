@@ -5,4 +5,13 @@ page-home-customer {
   .btn.btn-white {
     margin-bottom: 20px;
   }
+  .product-thumb {
+    .text.text-serif {
+      display: block;
+      width: 100%;
+      margin-right: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 }

@@ -103,4 +103,9 @@ export class ProductDetailPage extends Wrapper {
             MyApp.demandQty = ++this.demand.quantity;
         }
     }
+
+
+    goHome() {
+        this.navCtrl.popAll();
+    }
 }

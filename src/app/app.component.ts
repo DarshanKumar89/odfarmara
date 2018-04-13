@@ -1,5 +1,5 @@
 import {Component, Pipe, ViewChild} from '@angular/core';
-import {AlertController, ModalController, Nav, Platform} from 'ionic-angular';
+import {AlertController, Content, ModalController, Nav, Platform} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {_} from 'underscore';
@@ -29,6 +29,7 @@ import {LocalNotifications} from '@ionic-native/local-notifications';
 import {TranslateService} from "@ngx-translate/core";
 import {Geolocation} from "@ionic-native/geolocation";
 import {ProductDetailPage} from "../pages/product-detail/product-detail";
+import {Message} from "./Entity/Message";
 
 
 @Component({
@@ -57,7 +58,7 @@ export class MyApp {
     static favourites = Array<Product>();
 
     @ViewChild(Nav) nav: Nav;
-
+    public static messageCnt;
     rootPage: any;
 
     static pages: Array<{ id: number, title: string, component: any, slug: string }>;
@@ -79,6 +80,17 @@ export class MyApp {
         segment: '',
         locality: ''
     };
+
+    public static message = {
+        idFrom: 0,
+        idTo: 0,
+        idDemand: undefined
+    };
+
+    messageBody = '';
+    public static opponent;
+
+    public static conversation = [];
 
     count = 0;
 
@@ -464,5 +476,29 @@ export class MyApp {
 
     getAuthor() {
         return MyApp.idDetailAuthor;
+    }
+
+    sendMessage() {
+        this.api.post('/neo_content/neo_content_inbox/add', {
+            data: {
+                NeoContentInbox: {
+                    content: this.messageBody,
+                    id_user_from: MyApp.message.idFrom,
+                    id_user_to: MyApp.message.idTo,
+                    id_demand: MyApp.message.idDemand,
+                },
+                force: {
+                    loggedUserIdBASE64: btoa(`user_:(${MyApp.loggedUser.id})`)
+                }
+            },
+        }).then(response => {
+        });
+        MyApp.conversation.push(new Message(
+            0, MyApp.loggedUser, MyApp.opponent, this.messageBody, new Date, false
+        ));
+        setTimeout(() => {
+            MyApp.messageCnt.scrollToBottom(20);
+        }, 100);
+        this.messageBody = '';
     }
 }

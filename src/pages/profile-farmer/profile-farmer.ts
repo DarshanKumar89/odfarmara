@@ -104,4 +104,7 @@ export class ProfileFarmerPage extends Wrapper {
         });
     }
 
+    goHome() {
+        this.navCtrl.popAll();
+    }
 }

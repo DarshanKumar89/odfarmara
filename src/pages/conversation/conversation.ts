@@ -19,18 +19,23 @@ import {ApiProvider} from "../../providers/api/api";
 export class ConversationPage {
     @ViewChild(Content) content: Content;
 
-    private conversation: Array<Message>;
     private opponent: User = MyApp.emptyUser;
     private loggedUser: User;
     private body: string = '';
 
     constructor(public navCtrl: NavController, public navParams: NavParams, public api: ApiProvider) {
+
         this.loggedUser = MyApp.loggedUser;
+        MyApp.message = {
+            idFrom: MyApp.loggedUser.id,
+            idTo: this.navParams.get('idUser'),
+            idDemand: this.navParams.get('idDemand'),
+        };
         if(navParams.get('idDemand')) {
             this.api.fetchDemand(navParams.get('idDemand')).then(item => {
-                this.conversation = item['messages'].map(it => {
+                MyApp.conversation = item['messages'].map(it => {
                     let msg = ApiProvider.getMessage(it);
-                    this.opponent = msg.userFrom.id === navParams.get('idUser') ? msg.userFrom : msg.userTo;
+                    MyApp.opponent = this.opponent = msg.userFrom.id === navParams.get('idUser') ? msg.userFrom : msg.userTo;
                     return msg;
                 });
                 setTimeout(() => {
@@ -42,9 +47,9 @@ export class ConversationPage {
                 MyApp.loggedUser.id,
                 navParams.get('idUser')
             ).then(data => {
-                this.conversation = data['messages'].map(it => {
+                MyApp.conversation = data['messages'].map(it => {
                     let msg = ApiProvider.getMessage(it);
-                    this.opponent = msg.userFrom.id === navParams.get('idUser') ? msg.userFrom : msg.userTo;
+                    MyApp.opponent = this.opponent = msg.userFrom.id === navParams.get('idUser') ? msg.userFrom : msg.userTo;
                     return msg;
                 });
                 setTimeout(() => {
@@ -54,24 +59,15 @@ export class ConversationPage {
         }
     }
 
-    sendMessage() {
-        this.api.post('/neo_content/neo_content_inbox/add', {
-            data: {
-                NeoContentInbox: {
-                    content: this.body,
-                    id_user_from: MyApp.loggedUser.id,
-                    id_user_to: this.navParams.get('idUser'),
-                    id_demand: this.navParams.get('idDemand')
-                },
-                force: {
-                    loggedUserIdBASE64: btoa(`user_:(${MyApp.loggedUser.id})`)
-                }
-            },
-        }).then(response => {
-        });
-        this.conversation.push(new Message(
-            0, MyApp.loggedUser, this.opponent, this.body, new Date, false
-        ));
-        this.body = '';
+    ionViewDidLoad() {
+        MyApp.messageCnt = this.content;
+    }
+
+    getConversation() {
+        return MyApp.conversation;
+    }
+
+    goHome() {
+        this.navCtrl.popAll();
     }
 }

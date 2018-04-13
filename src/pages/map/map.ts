@@ -59,10 +59,13 @@ export class MapPage extends Wrapper {
     }
 
     setup(url = '') {
-        this.rurl = url;
+        let t = new Date().getTime() + Math.random() * 1000;
+        if(url != this.rurl) {
+            this.rurl = url;
+            let baseURL = ApiProvider.URL;
+            this.url = this.sanitizeURL(`${baseURL}/sub_page/apiMap?t=${t}${this.rurl}`);
+        }
         url += `&page=${this.page}`;
-        var t = new Date().getTime() + Math.random() * 1000;
-        this.url = this.sanitizeURL(`https://odfarmara.sk/sub_page/apiMap?t=${t}${url}`);
         this.api.get(`/sub_page/apiMap?t=${t}${url}`).then(response => {
             response['farms'].map(item => {
                 item['isFarmer'] = true;
@@ -106,5 +109,9 @@ export class MapPage extends Wrapper {
         this.navCtrl.push(ProfileFarmerPage, {
             id: user.scopeId
         });
+    }
+
+    goHome() {
+        this.navCtrl.popAll();
     }
 }

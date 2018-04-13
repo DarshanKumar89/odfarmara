@@ -173,4 +173,8 @@ export class AccountCustomerPage {
         }
     }
 
+    goHome() {
+        this.navCtrl.popAll();
+    }
+
 }

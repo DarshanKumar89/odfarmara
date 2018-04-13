@@ -20,13 +20,13 @@
       <strong class="text text-uppercase text-grey text-wide">{{ 'NEW_MESSAGES' | translate }}</strong>
       <span class="label label-primary">{{ counts.messages }}</span>
     </div>
-    <div class="border" *ngIf="counts.messages > 0">
+    <div class="border" *ngIf="conversations.length > 0">
       <message *ngFor="let message of conversations"
                [message]="message"
                ([conversations])="conversations">
       </message>
     </div>
-    <div class="alrt alrt-danger" *ngIf="counts.messages == 0">
+    <div class="alrt alrt-danger" *ngIf="conversations.length == 0">
       {{ 'NO_NEW_MESSAGES' | translate }}
     </div>
     <div class="row row-header offset offset-top">
