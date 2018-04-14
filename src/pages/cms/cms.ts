@@ -34,7 +34,7 @@ export class CmsPage {
     }
 
     goHome() {
-        this.navCtrl.setRoot(MyApp.loggedUser ? (MyApp.loggedUser.farmer ? HomeCustomerPage : HomeFarmerPage) : LoginPage);
+        this.navCtrl.setRoot(MyApp.loggedUser ? (MyApp.loggedUser.farmer ? HomeFarmerPage : HomeCustomerPage) : LoginPage);
     }
 
 }

@@ -123,6 +123,6 @@ export class MessagesPage {
     }
 
     goHome() {
-        this.navCtrl.setRoot(MyApp.loggedUser.farmer ? HomeCustomerPage : HomeFarmerPage);
+        this.navCtrl.setRoot(MyApp.loggedUser.farmer ? HomeFarmerPage : HomeCustomerPage);
     }
 }

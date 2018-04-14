@@ -276,6 +276,6 @@ export class OfferListPage extends Wrapper {
 
 
     goHome() {
-        this.navCtrl.setRoot(MyApp.loggedUser.farmer ? HomeCustomerPage : HomeFarmerPage);
+        this.navCtrl.setRoot(MyApp.loggedUser.farmer ? HomeFarmerPage : HomeCustomerPage);
     }
 }

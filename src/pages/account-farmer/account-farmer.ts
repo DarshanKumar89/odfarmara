@@ -225,6 +225,6 @@ export class AccountFarmerPage extends Wrapper {
     }
 
     goHome() {
-        this.navCtrl.setRoot(MyApp.loggedUser.farmer ? HomeCustomerPage : HomeFarmerPage);
+        this.navCtrl.setRoot(MyApp.loggedUser.farmer ? HomeFarmerPage : HomeCustomerPage);
     }
 }
