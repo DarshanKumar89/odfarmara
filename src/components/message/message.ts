@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, Pipe} from '@angular/core';
 import {User} from "../../app/Entity/User";
 import {Message} from "../../app/Entity/Message";
 import {Demand} from "../../app/Entity/Demand";
@@ -6,6 +6,7 @@ import {ConversationPage} from "../../pages/conversation/conversation";
 import {AlertController, NavController} from "ionic-angular";
 import {MyApp} from "../../app/app.component";
 import {ApiProvider} from "../../providers/api/api";
+import {PipesModule} from "../../pipes/pipes.module";
 
 /**
  * Generated class for the MessageComponent component.

@@ -14,8 +14,9 @@
     <div>
       <label class="label label-green" *ngIf="message.idDemand">DOPYT</label>
       <div class="message-body d-inline-block"
-           (click)="openConversation(message.opponent.id, message)"
-           [innerHtml]="message.message.body"></div>
+           (click)="openConversation(message.opponent.id, message)">
+        {{ message.message.body | removehtmltags | ellipsis }}
+      </div>
     </div>
     <br>
     <div>

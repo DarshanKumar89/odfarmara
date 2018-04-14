@@ -8,6 +8,8 @@ import {RegionAutocompleteProvider} from "../../providers/region-autocomplete/re
 import {FormControl, FormGroup} from "@angular/forms";
 import {Storage} from "@ionic/storage";
 import {Camera} from "@ionic-native/camera";
+import {HomeCustomerPage} from "../home-customer/home-customer";
+import {HomeFarmerPage} from "../home-farmer/home-farmer";
 
 /**
  * Generated class for the AccountCustomerPage page.
@@ -174,7 +176,7 @@ export class AccountCustomerPage {
     }
 
     goHome() {
-        this.navCtrl.popAll();
+        this.navCtrl.setRoot(MyApp.loggedUser.farmer ? HomeCustomerPage : HomeFarmerPage);
     }
 
 }

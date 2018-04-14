@@ -219,7 +219,7 @@ export class MyApp {
     }
 
     getActivePage(): string {
-        return this.nav.getActive().name;
+        return this.nav.getActive() ? this.nav.getActive().name : '';
     }
 
     static getNewFarmers(geo: Geolocation, api: ApiProvider, notif: LocalNotifications) {

@@ -21,7 +21,7 @@
     <div *ngIf="loaded">
       <div class="border" *ngIf="conversations.length > 0">
         <div *ngFor="let message of conversations">
-          <message [message]="isDemand(message) ? {message: message.lastMessage.setBody(message.product.name), opponent: message.user, idDemand: message.id} : message"
+          <message [message]="isDemand(message) ? {message: message.lastMessage, opponent: message.user, idDemand: message.id} : message"
                    ([conversations])="conversations">
           </message>
           <!--<div *ngIf="isDemand(message)" class="row conversation border border-bottom">

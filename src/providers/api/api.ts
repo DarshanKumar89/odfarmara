@@ -141,6 +141,9 @@ export class ApiProvider {
     }
 
     static getUser(user, address) {
+        if(user['isFarmer'] == undefined) {
+            user['isFarmer'] = user['NeoShopUser'] == undefined || user['NeoShopUser']['id'] == undefined;
+        }
         return new User(
             typeof user['id'] === 'undefined' ? user['User']['id'] : user['id'],
             user['NeoUploadFile'] && user['NeoUploadFile'].length > 0 ? (user['NeoUploadFile'][0]['url'] ? user['NeoUploadFile'][0]['url']['main'] : (ApiProvider.URL + '/neo_files/' + user['NeoUploadFile'][0]['plugin'] + '/' + user['NeoUploadFile'][0]['model'] + '/' + user['NeoUploadFile'][0]['foreign_key'] + '/' + user['NeoUploadFile'][0]['filename'])) : null,
@@ -346,20 +349,24 @@ export class ApiProvider {
         });
     }
 
-    static getDemand(data, messages, product: Product = null) {
-        let user = MyApp.loggedUser.farmer ? messages[0]['UserFrom'] : messages[0]['UserTo'];
-        data = _.extend(data, user);
-        data['isFarmer'] = !MyApp.loggedUser.farmer;
-        user = ApiProvider.getUser(data, data);
+    static getDemand(data, messages, product: Product = null, userEnt: User = null) {
+        let user;
+        if(userEnt != null) {
+            user = MyApp.loggedUser.farmer ? messages[0]['UserFrom'] : messages[0]['UserTo'];
+            data = _.extend(data, user);
+            // data['isFarmer'] = !MyApp.loggedUser.farmer;
+            user = ApiProvider.getUser(data, data);
+        } else {
+            user = userEnt;
+        }
         product = product || ApiProvider.getProduct(data);
-        let dem = new Demand(
+        return new Demand(
             product,
             user,
             data['NeoContentDemand']['quantity'],
             ApiProvider.getMessage(data['NeoContentInbox'][data['NeoContentInbox'].length - 1]),
             data['NeoContentDemand']['id_demand']
         );
-        return dem;
     }
 
     static getMessage(data) {

@@ -1,6 +1,10 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {ApiProvider} from "../../providers/api/api";
+import {MyApp} from "../../app/app.component";
+import {HomeCustomerPage} from "../home-customer/home-customer";
+import {HomeFarmerPage} from "../home-farmer/home-farmer";
+import {LoginPage} from "../login/login";
 
 /**
  * Generated class for the CmsPage page.
@@ -30,7 +34,7 @@ export class CmsPage {
     }
 
     goHome() {
-        this.navCtrl.popAll();
+        this.navCtrl.setRoot(MyApp.loggedUser ? (MyApp.loggedUser.farmer ? HomeCustomerPage : HomeFarmerPage) : LoginPage);
     }
 
 }

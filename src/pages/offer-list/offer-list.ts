@@ -9,6 +9,8 @@ import {ApiProvider} from "../../providers/api/api";
 import {Wrapper} from "../../app/Helpers/Wrapper";
 import {DomSanitizer} from "@angular/platform-browser";
 import {Data} from "../../app/Entity/Data";
+import {HomeFarmerPage} from "../home-farmer/home-farmer";
+import {HomeCustomerPage} from "../home-customer/home-customer";
 
 /**
  * Generated class for the OfferListPage page.
@@ -274,6 +276,6 @@ export class OfferListPage extends Wrapper {
 
 
     goHome() {
-        this.navCtrl.popAll();
+        this.navCtrl.setRoot(MyApp.loggedUser.farmer ? HomeCustomerPage : HomeFarmerPage);
     }
 }

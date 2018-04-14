@@ -6,6 +6,9 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {Geolocation} from "@ionic-native/geolocation";
 import {ProfileFarmerPage} from "../profile-farmer/profile-farmer";
 import {Storage} from "@ionic/storage";
+import {HomeFarmerPage} from "../home-farmer/home-farmer";
+import {HomeCustomerPage} from "../home-customer/home-customer";
+import {MyApp} from "../../app/app.component";
 
 /**
  * Generated class for the MapPage page.
@@ -35,7 +38,7 @@ export class MapPage extends Wrapper {
         this.load();
         setInterval(() => {
             this.load();
-        }, 1000 * 60);
+        }, 1000 * 60 * 5);
         this.events.subscribe('updateScreen', () => {
             this.zone.run(() => {
             });
@@ -112,6 +115,6 @@ export class MapPage extends Wrapper {
     }
 
     goHome() {
-        this.navCtrl.popAll();
+        this.navCtrl.setRoot(MyApp.loggedUser.farmer ? HomeCustomerPage : HomeFarmerPage);
     }
 }

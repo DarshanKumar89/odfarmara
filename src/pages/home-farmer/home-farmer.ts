@@ -44,8 +44,8 @@ export class HomeFarmerPage {
             if(this.conversations.length < 5) {
                 data['demands'].slice(0, 5 - this.conversations.length).map(item => {
                     this.api.fetchDemand(item['NeoContentDemand']['id_demand']).then(response => {
-                        let dem = ApiProvider.getDemand(response['demand'], response['messages'], ApiProvider.getProduct(response['offer']));
-                        this.conversations.push({message: dem.lastMessage.setBody(dem.product.name), opponent: dem.user, idDemand: dem.id});
+                        let dem = ApiProvider.getDemand(response['demand'], response['messages'], ApiProvider.getProduct(response['offer']), ApiProvider.getUser(response['opponent'], response['opponent']));
+                        this.conversations.push({message: dem.lastMessage, opponent: dem.user, idDemand: dem.id});
                     });
                 });
             }

@@ -6,6 +6,8 @@ import {MyApp} from "../../app/app.component";
 import {ApiProvider} from "../../providers/api/api";
 import {ConversationPage} from "../conversation/conversation";
 import {Demand} from "../../app/Entity/Demand";
+import {HomeCustomerPage} from "../home-customer/home-customer";
+import {HomeFarmerPage} from "../home-farmer/home-farmer";
 
 /**
  * Generated class for the MessagesPage page.
@@ -49,7 +51,7 @@ export class MessagesPage {
         this.api.getDemands(MyApp.loggedUser.id).then(data => {
             data['demands'].map(item => {
                 this.api.fetchDemand(item['NeoContentDemand']['id_demand']).then(response => {
-                    this.conversations.push(ApiProvider.getDemand(response['demand'], response['messages'], ApiProvider.getProduct(response['offer'])));
+                    this.conversations.push(ApiProvider.getDemand(response['demand'], response['messages'], ApiProvider.getProduct(response['offer']), ApiProvider.getUser(response['opponent'], response['opponent'])));
                     this.conversations.sort((a: Demand|{message: Message, opponent: User, idDemand?: number}, b: Demand|{message: Message, opponent: User, idDemand?: number}) => {
                         return (a instanceof Demand ? a.lastMessage : a.message).created.getTime() > (b instanceof Demand ? b.lastMessage : b.message).created.getTime() ? -1 : 1;
                     });
@@ -121,6 +123,6 @@ export class MessagesPage {
     }
 
     goHome() {
-        this.navCtrl.popAll();
+        this.navCtrl.setRoot(MyApp.loggedUser.farmer ? HomeCustomerPage : HomeFarmerPage);
     }
 }

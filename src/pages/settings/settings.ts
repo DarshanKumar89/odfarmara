@@ -4,6 +4,8 @@ import {Wrapper} from "../../app/Helpers/Wrapper";
 import {ApiProvider} from "../../providers/api/api";
 import {DomSanitizer} from "@angular/platform-browser";
 import {MyApp} from "../../app/app.component";
+import {HomeCustomerPage} from "../home-customer/home-customer";
+import {HomeFarmerPage} from "../home-farmer/home-farmer";
 
 /**
  * Generated class for the SettingsPage page.
@@ -70,7 +72,7 @@ export class SettingsPage extends Wrapper {
     }
 
     goHome() {
-        this.navCtrl.popAll();
+        this.navCtrl.setRoot(MyApp.loggedUser.farmer ? HomeCustomerPage : HomeFarmerPage);
     }
 
 }

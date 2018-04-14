@@ -4,6 +4,8 @@ import {Message} from "../../app/Entity/Message";
 import {User} from "../../app/Entity/User";
 import {MyApp} from "../../app/app.component";
 import {ApiProvider} from "../../providers/api/api";
+import {HomeCustomerPage} from "../home-customer/home-customer";
+import {HomeFarmerPage} from "../home-farmer/home-farmer";
 
 /**
  * Generated class for the ConversationPage page.
@@ -68,6 +70,6 @@ export class ConversationPage {
     }
 
     goHome() {
-        this.navCtrl.popAll();
+        this.navCtrl.setRoot(MyApp.loggedUser.farmer ? HomeCustomerPage : HomeFarmerPage);
     }
 }

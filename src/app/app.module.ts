@@ -43,6 +43,7 @@ import {ForgotPasswordPage} from "../pages/forgot-password/forgot-password";
 import {Camera} from "@ionic-native/camera";
 import {RegisterPage} from "../pages/register/register";
 import {MessageComponent} from "../components/message/message";
+import {PipesModule} from "../pipes/pipes.module";
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '-1.json');
@@ -88,7 +89,8 @@ export function createTranslateLoader(http: HttpClient) {
                 useFactory: (createTranslateLoader),
                 deps: [HttpClient]
             }
-        })
+        }),
+        PipesModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [

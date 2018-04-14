@@ -7,6 +7,8 @@ import {Wrapper} from "../../app/Helpers/Wrapper";
 import {DomSanitizer} from "@angular/platform-browser";
 import _ from 'underscore';
 import {Category} from "../../app/Entity/Category";
+import {HomeCustomerPage} from "../home-customer/home-customer";
+import {HomeFarmerPage} from "../home-farmer/home-farmer";
 
 /**
  * Generated class for the MyOffersPage page.
@@ -69,6 +71,6 @@ export class MyOffersPage extends Wrapper {
 
 
     goHome() {
-        this.navCtrl.popAll();
+        this.navCtrl.setRoot(MyApp.loggedUser.farmer ? HomeCustomerPage : HomeFarmerPage);
     }
 }

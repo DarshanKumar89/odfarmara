@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ApiProvider} from "../../providers/api/api";
+import {LoginPage} from "../login/login";
 
 /**
  * Generated class for the ForgotPasswordPage page.
@@ -36,6 +37,10 @@ export class ForgotPasswordPage {
           }).present();
       }
     })
+  }
+
+  goHome() {
+      this.navCtrl.setRoot(LoginPage);
   }
 
 }

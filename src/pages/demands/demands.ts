@@ -4,6 +4,8 @@ import {MyApp} from "../../app/app.component";
 import {ApiProvider} from "../../providers/api/api";
 import {Demand} from "../../app/Entity/Demand";
 import {ConversationPage} from "../conversation/conversation";
+import {HomeCustomerPage} from "../home-customer/home-customer";
+import {HomeFarmerPage} from "../home-farmer/home-farmer";
 
 /**
  * Generated class for the DemandsPage page.
@@ -25,7 +27,7 @@ export class DemandsPage {
         this.api.getDemands(MyApp.loggedUser.id).then(data => {
             data['demands'].map(item => {
                 this.api.fetchDemand(item['NeoContentDemand']['id_demand']).then(response => {
-                    this.conversations.push(ApiProvider.getDemand(response['demand'], response['messages'], ApiProvider.getProduct(response['offer'])));
+                    this.conversations.push(ApiProvider.getDemand(response['demand'], response['messages'], ApiProvider.getProduct(response['offer']), ApiProvider.getUser(response['opponent'], response['opponent'])));
                     this.conversations = this.conversations.sort((a:Demand, b:Demand) => {
                         return a.lastMessage.created < b.lastMessage.created ? 1 : -1;
                     });
@@ -58,7 +60,7 @@ export class DemandsPage {
     }
 
     goHome() {
-        this.navCtrl.popAll();
+        this.navCtrl.setRoot(MyApp.loggedUser.farmer ? HomeCustomerPage : HomeFarmerPage);
     }
 
 }
