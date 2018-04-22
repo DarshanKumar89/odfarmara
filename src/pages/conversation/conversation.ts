@@ -35,6 +35,7 @@ export class ConversationPage {
         };
         if(navParams.get('idDemand')) {
             this.api.fetchDemand(navParams.get('idDemand')).then(item => {
+                MyApp.mustAgree = item['mustAgree'];
                 MyApp.conversation = item['messages'].map(it => {
                     let msg = ApiProvider.getMessage(it);
                     MyApp.opponent = this.opponent = msg.userFrom.id === navParams.get('idUser') ? msg.userFrom : msg.userTo;

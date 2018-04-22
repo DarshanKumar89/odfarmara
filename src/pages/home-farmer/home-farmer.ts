@@ -46,6 +46,9 @@ export class HomeFarmerPage {
                     this.api.fetchDemand(item['NeoContentDemand']['id_demand']).then(response => {
                         let dem = ApiProvider.getDemand(response['demand'], response['messages'], ApiProvider.getProduct(response['offer']), ApiProvider.getUser(response['opponent'], response['opponent']));
                         this.conversations.push({message: dem.lastMessage, opponent: dem.user, idDemand: dem.id});
+                        this.conversations = this.conversations.sort((a, b) => {
+                            return a.message.seen ? 1 : -1;
+                        }).slice(0, 5);
                     });
                 });
             }

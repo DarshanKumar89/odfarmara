@@ -51,7 +51,7 @@
         </div>
       </div>
     </div>
-    <div class="alrt alrt-danger" *ngIf="conversations.length == 0">
+    <div class="alrt alrt-danger" *ngIf="conversations.length == 0 && loaded">
       {{ 'YOU_HAVE_NO_DEMAND' | translate }}
     </div>
   </div>

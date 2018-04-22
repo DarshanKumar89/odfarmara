@@ -68,7 +68,7 @@ export class ApiProvider {
             data = JSON.stringify(data);
         }
         return new Promise((resolve, reject) => {
-            this.http[type](ApiProvider.URL + url, data, params).subscribe(data => {
+            this.http[type](ApiProvider.URL + url, data, params).timeout(1000 * 30).subscribe(data => {
                 try {
                     resolve(JSON.parse(data['_body']));
                 } catch (e) {
@@ -81,10 +81,10 @@ export class ApiProvider {
                         console.error(error);
                     });
                     this.alerts.create({
-                        title: 'Chyba',
-                        message: 'Chyba pripojenia k serveru. Skontrolujte internetové pripojenie a skúste to znovu.',
+                        title: 'Chyba pripojenia',
+                        message: 'Prosím skúste to znova. Vaša požiadavka nebola spracovaná.',
                         buttons: ['OK']
-                    })
+                    }).present();
                 }
                 reject(err);
             })
@@ -143,6 +143,11 @@ export class ApiProvider {
     static getUser(user, address) {
         if(user['isFarmer'] == undefined) {
             user['isFarmer'] = user['NeoShopUser'] == undefined || user['NeoShopUser']['id'] == undefined;
+        }
+        if(user['NeoUploadFile'] != undefined) {
+            user['NeoUploadFile'] = user['NeoUploadFile'].sort((a, b) => {
+                return a['description'] == 'cover' ? 1 : -1;
+            });
         }
         return new User(
             typeof user['id'] === 'undefined' ? user['User']['id'] : user['id'],

@@ -113,6 +113,7 @@ export class MyApp {
     private locality: string = '';
     private product: string = '';
     private segment: string = '';
+    public static mustAgree = false;
     constructor(public platform: Platform,
                 public statusBar: StatusBar,
                 public splashScreen: SplashScreen,
@@ -500,5 +501,38 @@ export class MyApp {
             MyApp.messageCnt.scrollToBottom(20);
         }, 100);
         this.messageBody = '';
+    }
+
+    hasToAgree() {
+        console.log(MyApp.mustAgree);
+        return MyApp.mustAgree;
+    }
+
+    agree() {
+        this.messageBody = `
+                Používateľ ${MyApp.loggedUser.name} potvrdil váš záujem o dopyt. Kontakt:
+                <br>
+                <a href="/neo_content/neo_content_farmers_profile/view/${MyApp.loggedUser.id}"
+                   class="profil-logo profil-logo-det w-inline-block"
+                   style="background-image: url('${MyApp.loggedUser.avatar}')">
+                </a>
+                <div class="clearfix"></div>
+                <strong>
+                    <a style="color: #888; text-decoration: none;"
+                       href="/neo_content/neo_content_farmers_profiles/view/${MyApp.loggedUser.id}">
+                       ${MyApp.loggedUser.name}
+                    </a>
+                </strong>
+                <div class="user-info">
+                  <p><strong>Názov:</strong> ${MyApp.loggedUser.name}</p>
+                  <p><strong>Email:</strong> ${MyApp.loggedUser.email}</p>
+                  <p><strong>Tel.č.:</strong> ${MyApp.loggedUser.scopeExtra['phone']}</p>
+                  <p><strong>Adresa:</strong> ${MyApp.loggedUser.street} 
+                    <br>${MyApp.loggedUser.city}
+                    <br>${MyApp.loggedUser.zip}</p>
+                </div>
+         `;
+        this.sendMessage();
+        MyApp.mustAgree = false;
     }
 }

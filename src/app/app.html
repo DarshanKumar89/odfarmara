@@ -182,11 +182,23 @@
     </button>
   </ion-toolbar>
   <ion-toolbar *ngIf="getActivePage() == 'ConversationPage'">
-    <div class="bottom-input bg bg-white">
-      <button ion-button (click)="sendMessage()" class="btn btn-primary pull-right">
-        <span class="fa fa-paper-plane"></span>
-      </button>
-      <ion-input [(ngModel)]="messageBody" placeholder="{{ 'RESPOND' | translate }}..."></ion-input>
+    <div *ngIf="!hasToAgree()">
+      <div class="bottom-input bg bg-white">
+        <button ion-button (click)="sendMessage()" class="btn btn-primary pull-right">
+          <span class="fa fa-paper-plane"></span>
+        </button>
+        <ion-input [(ngModel)]="messageBody" placeholder="{{ 'RESPOND' | translate }}..."></ion-input>
+      </div>
+    </div>
+    <div *ngIf="!!hasToAgree()">
+      <ion-row class="bottom-input bg bg-white">
+        <div col-6>
+          <button ion-button class="btn btn-primary" (click)="agree()">Potvrdiť dopyt</button>
+        </div>
+        <div col-6>
+          <button ion-button class="btn btn-primary" (click)="nav.pop()">Zamietnuť dopyt</button>
+        </div>
+      </ion-row>
     </div>
   </ion-toolbar>
 </ion-footer>
