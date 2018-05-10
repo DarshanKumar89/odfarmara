@@ -17,11 +17,11 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding (ionScroll)="scroll($event)">
-  <iframe id="map-farmers" [src]="url" frameborder="0"></iframe>
+  <iframe *ngIf="showMap" id="map-farmers" [src]="url" frameborder="0"></iframe>
   <div class="padding padding-top" *ngFor="let user of (farmers)">
     <button (click)="openFarmer(user)" class="btn btn-white d-block padding">
       <ion-avatar class="float-left">
-        <img [src]="user.avatar" alt="">
+        <custom-img src="{{user.avatar}}" alt=""></custom-img>
       </ion-avatar>
       <span class="text text-heading">{{ user.name }}</span>
       <br>

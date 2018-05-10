@@ -57,7 +57,7 @@
         <label class="text text-heading">{{ 'PROFILE_PHOTO' | translate }}</label>
         <div class="d-block">
           <ion-avatar *ngIf="avatar != null">
-            <img [src]="avatar" alt="Avatar">
+            <img [src]="avatar" alt="Avatar"/>
           </ion-avatar>
           <button type="button" ion-button class="btn btn-gray" (click)="choosePhoto('avatar')">{{ 'UPLOAD_PHOTO' |
                                                                                                 translate }}
@@ -67,7 +67,7 @@
         <label class="text text-heading">{{ 'COVER_PHOTO' | translate }}</label>
         <div class="d-block">
           <ion-avatar *ngIf="poster != null">
-            <img [src]="poster" alt="Plagát">
+            <img [src]="poster" alt="Plagát"/>
           </ion-avatar>
           <button ion-button type="button" class="btn btn-gray" (click)="choosePhoto('poster')">{{ 'UPLOAD_PHOTO' |
                                                                                                 translate }}

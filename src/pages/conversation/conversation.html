@@ -21,7 +21,7 @@
          class="row message {{ message.userFrom.id == loggedUser.id ? 'message-my' : 'message-opponent' }}">
       <div class="message-inner">
         <ion-avatar>
-          <img src="{{ message.userFrom.avatar || 'assets/icon/user.png' }}" alt="{{ message.userFrom.avatar}}">
+          <custom-img src="{{ message.userFrom.avatar || 'assets/icon/user.png' }}" alt="{{ message.userFrom.avatar}}"></custom-img>
         </ion-avatar>
         <div class="message-body">
           <div [innerHtml]="message.body"></div>

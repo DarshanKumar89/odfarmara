@@ -21,8 +21,8 @@ import {Message} from "../../app/Entity/Message";
 @Injectable()
 export class ApiProvider {
 
-    public static URL = 'http://farmartest.weblaboratory.sk';
-
+    public static URL = 'https://odfarmara.sk';
+    alertPresented = false;
     constructor(private http: Http, private storage: Storage, private alerts: AlertController) {
     }
 
@@ -41,7 +41,7 @@ export class ApiProvider {
         }, data), id);
     }
 
-    post(url, data, id: number = 0) {
+    post(url, data, id: number = 0, error = true) {
         if (id > 0) {
             data = _.extend(data, {
                 data: {
@@ -51,10 +51,10 @@ export class ApiProvider {
                 }
             });
         }
-        return this.doAjax('post', url, data);
+        return this.doAjax('post', url, data, error);
     }
 
-    private doAjax(type, url, data = {}) {
+    private doAjax(type, url, data = {}, error = true) {
         let params = {
             headers: {
                 'Accept': 'application/json',
@@ -68,27 +68,51 @@ export class ApiProvider {
             data = JSON.stringify(data);
         }
         return new Promise((resolve, reject) => {
-            this.http[type](ApiProvider.URL + url, data, params).timeout(1000 * 30).subscribe(data => {
+            let t = setTimeout(() => {
+                if(error) {
+                    this.error({}, reject);
+                }
+            }, 30 * 1000);
+            this.http[type](ApiProvider.URL + url, data, params).subscribe(data => {
                 try {
                     resolve(JSON.parse(data['_body']));
                 } catch (e) {
                     resolve(data['_body']);
                 }
+                clearTimeout(t);
             }, error => {
-                let err = JSON.parse(error['_body']);
+                let err;
+                try {
+                    err = JSON.parse(error['_body']);
+                } catch (e) {
+                    err = {};
+                }
                 if (err['errCode'] == 8888) {
                     this.storage.set('loggedUser', null).catch(error => {
                         console.error(error);
                     });
-                    this.alerts.create({
-                        title: 'Chyba pripojenia',
-                        message: 'Prosím skúste to znova. Vaša požiadavka nebola spracovaná.',
-                        buttons: ['OK']
-                    }).present();
                 }
-                reject(err);
             })
         });
+    }
+
+    private error(err, reject) {
+        if(!this.alertPresented) {
+            this.alertPresented = true;
+            this.alerts.create({
+                title: 'Chyba pripojenia',
+                message: 'Prosím skúste to znova. Vaša požiadavka nebola spracovaná.',
+                buttons: [
+                    {
+                        text: 'OK',
+                        handler: () => {
+                            this.alertPresented = false;
+                        }
+                    }
+                ]
+            }).present();
+        }
+        reject(err);
     }
 
     notifications() {
@@ -98,7 +122,7 @@ export class ApiProvider {
                     loggedUserIdBASE64: btoa(`user_:(${MyApp.loggedUser.id})`)
                 }
             }
-        }) : new Promise<any>(res => {});
+        }, 0, false) : new Promise<any>(res => {});
     }
 
     getCmsPage(id, slug) {
@@ -118,25 +142,25 @@ export class ApiProvider {
 
     register(email, password, isFarmer) {
         if(!isFarmer) {
-          return this.post('/neo_shop/neo_shop_users/add', {
-              data: {
-                  agreement: true,
-                  NeoShopUser: {
-                      username: email,
-                      password: password
-                  }
-              }
-          });
+            return this.post('/neo_shop/neo_shop_users/add', {
+                data: {
+                    agreement: true,
+                    NeoShopUser: {
+                        username: email,
+                        password: password
+                    }
+                }
+            });
         } else {
-          return this.post('/neo_content/neo_content_farmers_profiles/register', {
-              data: {
-                  agreement: true,
-                  User: {
-                      username: email,
-                      password: password
-                  }
-              }
-          });
+            return this.post('/neo_content/neo_content_farmers_profiles/register', {
+                data: {
+                    agreement: true,
+                    User: {
+                        username: email,
+                        password: password
+                    }
+                }
+            });
         }
     }
 
@@ -202,7 +226,7 @@ export class ApiProvider {
                 lng: lng,
                 area: area
             }
-        });
+        }, 0, false);
     }
 
     getFavouriteOffers(id) {
@@ -365,11 +389,14 @@ export class ApiProvider {
             user = userEnt;
         }
         product = product || ApiProvider.getProduct(data);
+
         return new Demand(
             product,
             user,
             data['NeoContentDemand']['quantity'],
-            ApiProvider.getMessage(data['NeoContentInbox'][data['NeoContentInbox'].length - 1]),
+            ApiProvider.getMessage(data['NeoContentInbox'].sort((a, b) => {
+                return a['NeoContentInbox']['id_inbox'] > b['NeoContentInbox']['id_inbox'] ? 1 : -1;
+            })[data['NeoContentInbox'].length - 1]),
             data['NeoContentDemand']['id_demand']
         );
     }
@@ -389,15 +416,34 @@ export class ApiProvider {
     }
 
     uploadBase64(content, model = 'NeoContentOffer', id = 0) {
-        return this.post(`/neo_upload/neo_upload_handler/apiUpload`, {
-            data: {
-                force: {
-                    loggedUserIdBASE64: btoa(`user_:(${MyApp.loggedUser.id})`)
-                },
-                content: content,
-                model: model,
-                id: id
-            }
+        return new Promise((resolve, reject) => {
+            console.log('REQUEST')
+            console.log(JSON.stringify({
+                data: {
+                    force: {
+                        loggedUserIdBASE64: btoa(`user_:(${MyApp.loggedUser.id})`)
+                    },
+                    content: content,
+                    model: model,
+                    id: id
+                }
+            }));
+            this.post(`/neo_upload/neo_upload_handler/apiUpload`, {
+                data: {
+                    force: {
+                        loggedUserIdBASE64: btoa(`user_:(${MyApp.loggedUser.id})`)
+                    },
+                    content: content,
+                    model: model,
+                    id: id
+                }
+            }).then(response => {
+                console.log('RESPONSE')
+                console.log(JSON.stringify(response));
+                resolve(response);
+            }).catch(err => {
+                reject(err);
+            });
         });
     }
 }

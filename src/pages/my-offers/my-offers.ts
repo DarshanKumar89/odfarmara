@@ -43,7 +43,6 @@ export class MyOffersPage extends Wrapper {
                 }
                 item['ParentNeoContentCategory'] = item['NeoContentCategoryParents'];
                 let p = ApiProvider.getProduct(item, MyApp.loggedUser);
-                console.log(p);
                 if(p.category.parent) {
                     this.main[p.category.parent.id] = p.category.parent;
                 } else {
@@ -64,7 +63,6 @@ export class MyOffersPage extends Wrapper {
                     c.products.push(offer);
                 }
             }
-            console.log(this.categorized);
             //this.categorized = _.indexBy(this.offers, 'idp');
         });
     }

@@ -21,7 +21,7 @@ export class ForgotPasswordPage {
 
   submit() {
     this.api.post('/neo_shop/neo_shop_users/passwordReset', {
-      'data[NeoShopUser][email]': this.email
+      data: {NeoShopUser: {email:this.email}}
     }).then(response => {
       if(response['sent']) {
         this.alerts.create({

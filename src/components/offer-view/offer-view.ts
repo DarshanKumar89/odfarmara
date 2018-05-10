@@ -35,7 +35,21 @@ export class OfferViewComponent extends Wrapper {
 
     showEditProduct() {
         let offerForm = this.modalCtrl.create(OfferFormComponent, {
-            product: this.product
+            product: new Product(
+                this.product.id,
+                this.product.author,
+                this.product.name,
+                this.product.description,
+                this.product.price,
+                this.product.priceType,
+                this.product.quantity,
+                this.product.validFrom,
+                this.product.validUntil,
+                this.product.photos,
+                this.product.mainPhoto,
+                this.product.category,
+                this.product.qtyType
+            )
         });
         offerForm.present();
     }

@@ -44,6 +44,8 @@ import {Camera} from "@ionic-native/camera";
 import {RegisterPage} from "../pages/register/register";
 import {MessageComponent} from "../components/message/message";
 import {PipesModule} from "../pipes/pipes.module";
+import {Network} from "@ionic-native/network";
+import {CustomImgComponent} from "../components/custom-img/custom-img";
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '-1.json');
@@ -74,7 +76,8 @@ export function createTranslateLoader(http: HttpClient) {
         BtnFavouritesComponent,
         RegionSelectComponent,
         ForgotPasswordPage,
-        RegisterPage
+        RegisterPage,
+        CustomImgComponent
     ],
     imports: [
         BrowserModule,
@@ -130,6 +133,7 @@ export function createTranslateLoader(http: HttpClient) {
         HttpModule,
         HttpClientModule,
         Camera,
+        Network
     ]
 })
 export class AppModule {

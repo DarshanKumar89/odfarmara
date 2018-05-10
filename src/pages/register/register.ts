@@ -47,7 +47,6 @@ export class RegisterPage {
     }
 
     changeType(type) {
-        console.log(this.register.value.type);
         this.register.value.type = type;
     }
 
@@ -61,8 +60,15 @@ export class RegisterPage {
             });
             alert.present();
             this.disabled = true;
+        } else if (this.register.value.password.length < 6) {
+            let alert = this.alert.create({
+                title: 'Chyba',
+                subTitle: 'Heslo je príliš krátke',
+                buttons: ['OK']
+            });
+            alert.present();
+            this.disabled = true;
         } else {
-            console.log(this.register.value.type);
             this.provider.register(this.register.value.email, this.register.value.password, this.register.value.type == 'farmer').then(data => {
                 this.disabled = false;
                 if (data['status'] == 0) {

@@ -9,6 +9,7 @@ import {Storage} from "@ionic/storage";
 import {HomeFarmerPage} from "../home-farmer/home-farmer";
 import {HomeCustomerPage} from "../home-customer/home-customer";
 import {MyApp} from "../../app/app.component";
+import {Network} from "@ionic-native/network";
 
 /**
  * Generated class for the MapPage page.
@@ -28,9 +29,16 @@ export class MapPage extends Wrapper {
     len = 0;
     page = 0;
     loading = 0;
+    showMap = true;
 
-    constructor(public navParams: NavParams, public navCtrl: NavController, public sanitizer: DomSanitizer, public geolocation: Geolocation, public api: ApiProvider, public events: Events,
+    constructor(public navParams: NavParams,
+                public navCtrl: NavController,
+                public sanitizer: DomSanitizer,
+                public geolocation: Geolocation,
+                public api: ApiProvider,
+                public events: Events,
                 private storage: Storage,
+                private network: Network,
                 private zone: NgZone) {
         super(navCtrl, navParams, sanitizer);
         this.url = this.sanitizeURL('https://odfarmara.sk/sub_page/apiMap');
@@ -42,6 +50,12 @@ export class MapPage extends Wrapper {
         this.events.subscribe('updateScreen', () => {
             this.zone.run(() => {
             });
+        });
+        this.network.onDisconnect().subscribe(() => {
+            this.showMap = false;
+        });
+        this.network.onConnect().subscribe(() => {
+            this.showMap = true;
         });
     }
 

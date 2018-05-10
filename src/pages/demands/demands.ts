@@ -31,11 +31,13 @@ export class DemandsPage {
                     this.conversations = this.conversations.sort((a:Demand, b:Demand) => {
                         return a.lastMessage.created < b.lastMessage.created ? 1 : -1;
                     });
+                    if(this.conversations.length === data['demands'].length) {
+                        this.loaded = true;
+                    }
                 });
             });
             //MyApp.counts.demands = data['demands'].length;
             this.counts = MyApp.counts;
-            this.loaded = true;
         });
     }
 

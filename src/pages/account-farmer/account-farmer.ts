@@ -13,6 +13,8 @@ import {Storage} from "@ionic/storage";
 import {Camera} from "@ionic-native/camera";
 import {HomeCustomerPage} from "../home-customer/home-customer";
 import {HomeFarmerPage} from "../home-farmer/home-farmer";
+import { NgZone  } from '@angular/core';
+import { Events } from 'ionic-angular';
 
 /**
  * Generated class for the AccountPage page.
@@ -75,8 +77,15 @@ export class AccountFarmerPage extends Wrapper {
                 public regionsAutocmp: RegionAutocompleteProvider,
                 private camera: Camera,
                 private alert: AlertController,
+                public events: Events,
+                private zone: NgZone,
                 private storage: Storage) {
         super(navCtrl, navParams, sanitizer);
+        this.events.subscribe('updateScreen', () => {
+            this.zone.run(() => {
+                console.log('force update the screen');
+            });
+        });
         this.account = new FormGroup({
             city: new FormControl(this.data.NeoContentFarmersProfile.city)
         });
@@ -154,7 +163,7 @@ export class AccountFarmerPage extends Wrapper {
                 this.data.NeoContentFarmersProfile.cover = data['id'];
                 this.poster = ApiProvider.URL + data['path'];
             }
-
+            this.events.publish('updateScreen');
         });
     }
 

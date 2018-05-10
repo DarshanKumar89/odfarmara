@@ -11,7 +11,7 @@
       <div *ngIf="getLoggedUser() != null">
         <ion-item (click)="openProfile(getLoggedUser().slug)" menuClose>
           <ion-avatar>
-            <img src="{{ getLoggedUser().avatar }}" alt="{{ getLoggedUser().name }}">
+            <custom-img src="{{ getLoggedUser().avatar }}" alt="{{ getLoggedUser().name }}"></custom-img>
           </ion-avatar>
           <div class="text text-gray text-uppercase text-bold text-nl">{{ getLoggedUser().name }}</div>
         </ion-item>

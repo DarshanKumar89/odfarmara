@@ -27,6 +27,8 @@ export class MessagesPage {
     private counts;
 
     loaded = false;
+    mLoaded = false;
+    dLoaded = false;
     me = MyApp.loggedUser;
 
     constructor(public navCtrl: NavController, public navParams: NavParams, private api: ApiProvider, private alert: AlertController) {
@@ -46,7 +48,8 @@ export class MessagesPage {
             }).sort((a: Demand|{message: Message, opponent: User, idDemand?: number}, b: Demand|{message: Message, opponent: User, idDemand?: number}) => {
                 return (a instanceof Demand ? a.lastMessage : a.message).created.getTime() > (b instanceof Demand ? b.lastMessage : b.message).created.getTime() ? -1 : 1;
             });
-            this.loaded = true;
+            this.mLoaded = true;
+            this.loaded = this.mLoaded && this.dLoaded;
         });
         this.api.getDemands(MyApp.loggedUser.id).then(data => {
             data['demands'].map(item => {
@@ -55,11 +58,16 @@ export class MessagesPage {
                     this.conversations.sort((a: Demand|{message: Message, opponent: User, idDemand?: number}, b: Demand|{message: Message, opponent: User, idDemand?: number}) => {
                         return (a instanceof Demand ? a.lastMessage : a.message).created.getTime() > (b instanceof Demand ? b.lastMessage : b.message).created.getTime() ? -1 : 1;
                     });
+                    if(this.conversations.filter(item => {
+                        return item instanceof Demand;
+                    }).length === data['demands'].length) {
+                        this.dLoaded = true;
+                    }
+                    this.loaded = this.mLoaded && this.dLoaded;
                 });
             });
             //MyApp.counts.demands = data['demands'].length;
             this.counts = MyApp.counts;
-            this.loaded = true;
         });
     }
 

@@ -24,37 +24,6 @@
           <message [message]="isDemand(message) ? {message: message.lastMessage, opponent: message.user, idDemand: message.id} : message"
                    ([conversations])="conversations">
           </message>
-          <!--<div *ngIf="isDemand(message)" class="row conversation border border-bottom">
-            <div col-12>
-              <div class="row">
-                <div col-3 (click)="openConversation(message.user.id, message)">
-                  <div class="seen" *ngIf="!message.lastMessage.seen"><span class="seen-circle"></span></div>
-                  <div class="avatar">
-                    <ion-avatar>
-                      <img src="{{ message.product.photos[0].url.main || 'assets/icon/user.png' }}"
-                           alt="{{ message.product.name }}">
-                    </ion-avatar>
-                  </div>
-                </div>
-                <div col-9 (click)="openConversation(message.user.id, message)">
-                  <ion-avatar class="small float-right">
-                    <img src="{{ message.user.avatar || 'assets/icon/user.png' }}" alt="{{ message.user.name }}">
-                  </ion-avatar>
-                  <div class="user-name text text-bold">{{ message.product.name }}</div>
-                </div>
-              </div>
-            </div>
-            <div col-12>
-              <div class="row">
-                <div col-3 (click)="openConversation(message.user.id, message)"></div>
-                <div col-8>
-                  <button class="btn btn-transparent float-right" (click)="deleteDemand(message)">
-                    <i class="fa fa-trash"></i></button>
-                  <span class="text text-sm">{{ message.lastMessage.created | date:'dd.MM.yyyy HH:mm' }}</span>
-                </div>
-              </div>
-            </div>
-          </div>-->
         </div>
       </div>
       <div class="alrt alrt-danger" *ngIf="conversations.length == 0">

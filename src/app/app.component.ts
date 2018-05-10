@@ -30,6 +30,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {Geolocation} from "@ionic-native/geolocation";
 import {ProductDetailPage} from "../pages/product-detail/product-detail";
 import {Message} from "./Entity/Message";
+import { Network } from '@ionic-native/network';
 
 
 @Component({
@@ -125,6 +126,7 @@ export class MyApp {
                 private bg: BackgroundMode,
                 private notif: LocalNotifications,
                 private translate: TranslateService,
+                private network: Network,
                 private geo: Geolocation) {
         this.initializeApp();
         this.translate.setDefaultLang(MyApp.lang);
@@ -199,15 +201,32 @@ export class MyApp {
         this.storage.get('loggedUser').then((data) => {
             MyApp.loggedUser = data;
             if (MyApp.loggedUser != null) {
-                MyApp.getFavourites(MyApp.loggedUser.id, this.api, this.geo, this.notif);
+                MyApp.getFavourites(MyApp.loggedUser.id, this.api, this.geo, this.notif).then(() => {
+                    this.categories = MyApp.categories;
+                    this.storage.set('categories', MyApp.categories);
+                });
                 this.rootPage = MyApp.loggedUser.farmer ? HomeFarmerPage : HomeCustomerPage;
-                this.categories = MyApp.categories;
             } else {
                 MyApp.getFavourites(1, this.api, this.geo, this.notif);
                 this.rootPage = LoginPage;
             }
             this.loggedUser = MyApp.loggedUser;
             this.splashScreen.hide();
+        });
+        this.storage.get('categories').then(categories => {
+            if(categories) {
+                this.categories = MyApp.categories = categories;
+            }
+        });
+        this.network.onConnect().subscribe(() => {
+            let view = this.nav.getActive().component;
+            if (this.nav.getViews().length <= 1) {
+                this.nav.setRoot(view);
+            } else {
+                this.nav.pop().then(() => {
+                    this.nav.push(view);
+                });
+            }
         });
     }
 
@@ -257,26 +276,28 @@ export class MyApp {
     }
 
     static getFavourites(id, api: ApiProvider, geo: Geolocation, notif: LocalNotifications) {
-        api.getFavouriteOffers(id).then(resolve => {
-            MyApp.categories = Object.keys(resolve['farmarCategories']).map(key => {
-                let category = ApiProvider.getCategory(resolve['farmarCategories'][key]);
-                MyApp.children[category.id] = category.children;
-                return category;
-            });
-            MyApp.favourites = resolve['offers'].map(item => {
-                return ApiProvider.getProduct(item);
-            });
-            MyApp.counts.favourites = resolve['offers'].length;
-            MyApp.following = resolve['following'].map(cat => {
-                return cat['NeoContentCategory']['id'];
-            });
-            if (MyApp.loggedUser && !MyApp.loggedUser.farmer) {
-                setInterval(() => {
+        return new Promise(res => {
+            api.getFavouriteOffers(id).then(resolve => {
+                MyApp.categories = Object.keys(resolve['farmarCategories']).map(key => {
+                    let category = ApiProvider.getCategory(resolve['farmarCategories'][key]);
+                    MyApp.children[category.id] = category.children;
+                    return category;
+                });
+                MyApp.favourites = resolve['offers'].map(item => {
+                    return ApiProvider.getProduct(item);
+                });
+                MyApp.counts.favourites = resolve['offers'].length;
+                MyApp.following = resolve['following'].map(cat => {
+                    return cat['NeoContentCategory']['id'];
+                });
+                if (MyApp.loggedUser && !MyApp.loggedUser.farmer) {
+                    setInterval(() => {
+                        MyApp.getNewFarmers(geo, api, notif);
+                    }, 1000 * 60);
                     MyApp.getNewFarmers(geo, api, notif);
-                }, 1000 * 60);
-                MyApp.getNewFarmers(geo, api, notif);
-            }
-
+                }
+                res()
+            });
         });
     }
 
@@ -386,6 +407,9 @@ export class MyApp {
             let error = undefined;
             if(this.locality == '' && this.product == '' && this.segment == '') {
                 error = 'Zadajte aspoň jeden parameter pre vyhľadávanie.';
+            }
+            if(this.nav.getActive().component == OfferListPage) {
+                this.nav.pop();
             }
             this.nav.push(OfferListPage, {
                 offers: offers,
@@ -504,7 +528,6 @@ export class MyApp {
     }
 
     hasToAgree() {
-        console.log(MyApp.mustAgree);
         return MyApp.mustAgree;
     }
 

@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { MessageComponent } from './message/message';
+import { CustomImgComponent } from './custom-img/custom-img';
 @NgModule({
-	declarations: [MessageComponent],
+	declarations: [MessageComponent,
+    CustomImgComponent],
 	imports: [],
-	exports: [MessageComponent]
+	exports: [MessageComponent,
+    CustomImgComponent]
 })
 export class ComponentsModule {}

@@ -27,19 +27,19 @@
             <div class="seen" *ngIf="!message.lastMessage.seen"><span class="seen-circle"></span></div>
             <div class="avatar">
               <ion-avatar>
-                <img src="{{ message.product.photos[0].url.main || 'assets/icon/user.png' }}" alt="{{ message.product.name }}">
+                <custom-img src="{{ message.product.photos[0].url.main || 'assets/icon/user.png' }}" alt="{{ message.product.name }}"></custom-img>
               </ion-avatar>
             </div>
           </div>
           <div col-7 (click)="openConversation(message.user.id, message.id)">
             <div class="data">
-              <label class="label label-green">DOPYT</label>
+              <label class="label label-green">DOPYT</label><br><br>
               <div class="user-name text text-bold d-inline-block">{{ message.product.name }}</div>
             </div>
           </div>
           <div col-2 (click)="openConversation(message.user.id, message.id)">
             <ion-avatar class="small float-right">
-              <img src="{{ message.user.avatar || 'assets/icon/user.png' }}" alt="{{ message.user.name }}">
+              <custom-img src="{{ message.user.avatar || 'assets/icon/user.png' }}" alt="{{ message.user.name }}"></custom-img>
             </ion-avatar>
           </div>
           <div col-3 (click)="openConversation(message.user.id, message.id)"></div>
