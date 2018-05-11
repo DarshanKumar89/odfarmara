@@ -8,6 +8,7 @@ import _ from "underscore";
 import {ApiProvider} from "../../providers/api/api";
 import {HomeFarmerPage} from "../home-farmer/home-farmer";
 import {HomeCustomerPage} from "../home-customer/home-customer";
+import {ProfileFarmerPage} from "../profile-farmer/profile-farmer";
 
 /**
  * Generated class for the ProductDetailPage page.
@@ -104,6 +105,12 @@ export class ProductDetailPage extends Wrapper {
         if (this.demand.quantity < this.product.quantity) {
             MyApp.demandQty = ++this.demand.quantity;
         }
+    }
+
+    openFarmer(id) {
+        this.navCtrl.push(ProfileFarmerPage, {
+            id: id
+        });
     }
 
 

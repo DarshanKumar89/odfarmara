@@ -408,7 +408,7 @@ export class ApiProvider {
             data['NeoContentInbox']['id_inbox'],
             ApiProvider.getUser(data['UserFrom'], data['UserFrom']),
             ApiProvider.getUser(data['UserTo'], data['UserTo']),
-            data['NeoContentInbox']['content'],
+            data['NeoContentInbox']['content'].replace(/href=(['"])\//g, 'href=$1https://odfarmara.sk/'),
             new Date(data['NeoContentInbox']['created']),
             !!data['NeoContentInbox']['seen'] || data['UserFrom']['User']['id'] == MyApp.loggedUser.id,
             null

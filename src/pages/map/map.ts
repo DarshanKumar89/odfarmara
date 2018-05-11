@@ -23,6 +23,7 @@ import {Network} from "@ionic-native/network";
     templateUrl: 'map.html',
 })
 export class MapPage extends Wrapper {
+    area: number = 0;
     url;
     rurl;
     farmers = [];
@@ -44,6 +45,9 @@ export class MapPage extends Wrapper {
         this.url = this.sanitizeURL('https://odfarmara.sk/sub_page/apiMap');
         this.farmers = [];
         this.load();
+        this.storage.get('radius').then(radius => {
+            this.area = isNaN(parseInt(radius)) ? 20 : parseInt(radius);
+        });
         setInterval(() => {
             this.load();
         }, 1000 * 60 * 5);
@@ -80,7 +84,7 @@ export class MapPage extends Wrapper {
         if(url != this.rurl) {
             this.rurl = url;
             let baseURL = ApiProvider.URL;
-            this.url = this.sanitizeURL(`${baseURL}/sub_page/apiMap?t=${t}${this.rurl}`);
+            this.url = this.sanitizeURL(`${baseURL}/sub_page/apiMap?t=${t}${this.rurl}&radius=${this.area}`);
         }
         url += `&page=${this.page}`;
         this.api.get(`/sub_page/apiMap?t=${t}${url}`).then(response => {

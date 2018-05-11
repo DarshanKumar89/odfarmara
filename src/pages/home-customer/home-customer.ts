@@ -8,6 +8,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {OfferListPage} from "../offer-list/offer-list";
 import {Geolocation} from '@ionic-native/geolocation';
 import {MapPage} from "../map/map";
+import {Storage} from "@ionic/storage";
 
 /**
  * Generated class for the HomeCustomerPage page.
@@ -21,6 +22,7 @@ import {MapPage} from "../map/map";
     templateUrl: 'home-customer.html',
 })
 export class HomeCustomerPage extends Wrapper {
+    area: number;
 
     private near = Array<Product>();
     private favourites = Array<Product>();
@@ -31,9 +33,12 @@ export class HomeCustomerPage extends Wrapper {
     private prices;
     private offers = [];
     private regionImage: string;
-    constructor(navCtrl: NavController, navParams: NavParams, sanitizer: DomSanitizer, private provider: ApiProvider, private geo: Geolocation) {
+    constructor(navCtrl: NavController, navParams: NavParams, sanitizer: DomSanitizer, private provider: ApiProvider, private geo: Geolocation, private storage: Storage) {
         super(navCtrl, navParams, sanitizer);
         this.counts = MyApp.counts;
+        this.storage.get('radius').then(radius => {
+            this.area = isNaN(parseInt(radius)) ? 20 : parseInt(radius);
+        });
         provider.getFavouriteOffers(MyApp.loggedUser.id).then(resolve => {
             this.favourites = resolve['offers'].map(item => {
                 item['author']['isFarmer'] = true;
@@ -42,7 +47,7 @@ export class HomeCustomerPage extends Wrapper {
             this.counts.favourites = resolve['offers'].length;
         });
         geo.getCurrentPosition().then(response => {
-            provider.getNearbyOffers(response.coords.latitude, response.coords.longitude).then(resp => {
+            provider.getNearbyOffers(response.coords.latitude, response.coords.longitude, this.area).then(resp => {
                 this.near = resp['offers'].map(item => {
                     item['author']['isFarmer'] = true;
                     return ApiProvider.getProduct(item, ApiProvider.getUser(item['author'], item['author']));

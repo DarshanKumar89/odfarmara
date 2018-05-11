@@ -535,14 +535,14 @@ export class MyApp {
         this.messageBody = `
                 Používateľ ${MyApp.loggedUser.name} potvrdil váš záujem o dopyt. Kontakt:
                 <br>
-                <a href="/neo_content/neo_content_farmers_profile/view/${MyApp.loggedUser.id}"
+                <a href="https://odfarmara.sk/neo_content/neo_content_farmers_profile/view/${MyApp.loggedUser.scopeId}"
                    class="profil-logo profil-logo-det w-inline-block"
                    style="background-image: url('${MyApp.loggedUser.avatar}')">
                 </a>
                 <div class="clearfix"></div>
                 <strong>
                     <a style="color: #888; text-decoration: none;"
-                       href="/neo_content/neo_content_farmers_profiles/view/${MyApp.loggedUser.id}">
+                       href="https://odfarmara.sk/neo_content/neo_content_farmers_profiles/view/${MyApp.loggedUser.scopeId}">
                        ${MyApp.loggedUser.name}
                     </a>
                 </strong>
