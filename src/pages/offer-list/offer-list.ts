@@ -119,8 +119,14 @@ export class OfferListPage extends Wrapper {
             lng: this.lng
         }).then(result => {
             this.offers = result[result['offers'] ? 'offers' : 'neoContentOffers'].map(offer => {
-                offer['author']['isFarmer'] = true;
-                let user = ApiProvider.getUser(offer['author'] ? offer['author'] : offer, {'NeoContentAddress': {}});
+                let author = offer['author'], user;
+                if(author instanceof Array) {
+                    user = MyApp.emptyUser;
+                    user.farmer = true;
+                } else {
+                    author['isFarmer'] = true;
+                    user = ApiProvider.getUser(author ? author : offer, {'NeoContentAddress': {}});
+                }
                 return offer instanceof Product ? offer : ApiProvider.getProduct(offer, user);
             }).sort((a,b) => {
                 return _.contains(result['liked'], a.id) ? -1 : 1;
@@ -172,9 +178,6 @@ export class OfferListPage extends Wrapper {
                 message: 'Sledované kategórie boli uložené.',
                 buttons: ['OK']
             }).present();
-            this.categories = this.categories.filter(item => {
-                return _.contains(this.removed, item['NeoContentCategory']['id']);
-            });
 
             for (let i = 0; i < this.removed.length; i++) {
                 let id = this.removed[i];
@@ -186,6 +189,7 @@ export class OfferListPage extends Wrapper {
                     }
                 });
             }
+            this.following = [];
             for (let i = 0; i < this.selected.length; i++) {
                 let id = this.selected[i];
                 if(typeof id == 'object') {
@@ -201,7 +205,9 @@ export class OfferListPage extends Wrapper {
                 });
                 if (cat) {
                     cat['Regions'] = this.region;
-                    this.following.push(cat);
+                    if(!_.contains(this.removed, id)) {
+                        this.following.push(cat);
+                    }
                 }
                 this.api.post('/neo_content/neo_content_offers/add_favourite/' + id, {
                     data: {
