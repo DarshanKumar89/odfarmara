@@ -50,6 +50,7 @@ export class OfferListPage extends Wrapper {
     private region = null;
     private showList = false;
     error: string;
+    private originalSelected;
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
                 private api: ApiProvider,
@@ -151,6 +152,7 @@ export class OfferListPage extends Wrapper {
                 return category;
             });
             this.selected = cats;
+            this.originalSelected = this.selected.slice();
             this.categories = this.categories.map(item => {
                 item['children'] = categories[item['NeoContentCategory']['id']];
                 item['open'] = false;
@@ -172,6 +174,7 @@ export class OfferListPage extends Wrapper {
     }
 
     toggleAdd(modal = false) {
+        let promises = [];
         if (modal) {
             this.alertCtrl.create({
                 title: 'Sledované uložené',
@@ -181,14 +184,15 @@ export class OfferListPage extends Wrapper {
 
             for (let i = 0; i < this.removed.length; i++) {
                 let id = this.removed[i];
-                this.api.post('/neo_content/neo_content_offers/remove_favourite/' + id, {
+                promises.push(this.api.post('/neo_content/neo_content_offers/remove_favourite/' + id, {
                     data: {
                         force: {
                             loggedUserIdBASE64: btoa(`user_:(${MyApp.loggedUser.id})`)
                         }
                     }
-                });
+                }));
             }
+            let newlySelected = _.difference(this.selected, this.originalSelected);
             this.following = [];
             for (let i = 0; i < this.selected.length; i++) {
                 let id = this.selected[i];
@@ -209,15 +213,24 @@ export class OfferListPage extends Wrapper {
                         this.following.push(cat);
                     }
                 }
-                this.api.post('/neo_content/neo_content_offers/add_favourite/' + id, {
+            }
+            for (let i = 0; i < newlySelected.length; i++) {
+                let id = newlySelected[i];
+                if(typeof id == 'object') {
+                    id = id['NeoContentCategory']['id'];
+                }
+                promises.push(this.api.post('/neo_content/neo_content_offers/add_favourite/' + id, {
                     data: {
                         force: {
                             loggedUserIdBASE64: btoa(`user_:(${MyApp.loggedUser.id})`)
                         },
                         idRegion: this.region ? this.region['id'] : null
                     }
-                });
+                }));
             }
+            Promise.all(promises).then(() => {
+                this.getOffers(this.url);
+            });
         }
         this.adding = !this.adding;
     }
