@@ -36,18 +36,24 @@ export class HomeCustomerPage extends Wrapper {
     constructor(navCtrl: NavController, navParams: NavParams, sanitizer: DomSanitizer, private provider: ApiProvider, private geo: Geolocation, private storage: Storage) {
         super(navCtrl, navParams, sanitizer);
         this.counts = MyApp.counts;
+        setInterval(() => {
+            this.refresh();
+        }, 10000);
+    }
+
+    refresh() {
         this.storage.get('radius').then(radius => {
             this.area = isNaN(parseInt(radius)) ? 20 : parseInt(radius);
         });
-        provider.getFavouriteOffers(MyApp.loggedUser.id).then(resolve => {
+        this.provider.getFavouriteOffers(MyApp.loggedUser.id).then(resolve => {
             this.favourites = resolve['offers'].map(item => {
                 item['author']['isFarmer'] = true;
                 return ApiProvider.getProduct(item, ApiProvider.getUser(item['author'], item['author']));
             });
             this.counts.favourites = resolve['offers'].length;
         });
-        geo.getCurrentPosition().then(response => {
-            provider.getNearbyOffers(response.coords.latitude, response.coords.longitude, this.area).then(resp => {
+        this.geo.getCurrentPosition().then(response => {
+            this.provider.getNearbyOffers(response.coords.latitude, response.coords.longitude, this.area).then(resp => {
                 this.near = resp['offers'].map(item => {
                     item['author']['isFarmer'] = true;
                     return ApiProvider.getProduct(item, ApiProvider.getUser(item['author'], item['author']));

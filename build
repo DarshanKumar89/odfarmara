@@ -1,0 +1,5 @@
+#!/bin/bash
+ionic cordova build android --release
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore store.keystore platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk my_alias_name
+rm odfarmara.apk
+zipalign -v 4 platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk odfarmara.apk
