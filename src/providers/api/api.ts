@@ -73,6 +73,8 @@ export class ApiProvider {
                     this.error({}, reject);
                 }
             }, 30 * 1000);
+            console.log(ApiProvider.URL + url);
+            console.log(new Error().stack);
             this.http[type](ApiProvider.URL + url, data, params).subscribe(data => {
                 try {
                     resolve(JSON.parse(data['_body']));

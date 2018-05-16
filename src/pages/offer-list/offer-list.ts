@@ -2,7 +2,7 @@ import {_} from "underscore";
 import {Storage} from "@ionic/storage";
 import {Geolocation} from "@ionic-native/geolocation";
 import {Component} from '@angular/core';
-import {AlertController, NavController, NavParams} from 'ionic-angular';
+import {AlertController, Events, NavController, NavParams} from 'ionic-angular';
 import {Product} from "../../app/Entity/Product";
 import {MyApp} from "../../app/app.component";
 import {ApiProvider} from "../../providers/api/api";
@@ -57,6 +57,7 @@ export class OfferListPage extends Wrapper {
                 private sanit: DomSanitizer,
                 private geolocation: Geolocation,
                 private storage: Storage,
+                private evts: Events,
                 private alertCtrl: AlertController) {
         super(navCtrl, navParams, sanit);
         let offers = this.navParams.data['offers'];
@@ -291,6 +292,7 @@ export class OfferListPage extends Wrapper {
     changeArea() {
         this.storage.set('radius', this.area);
         this.getOffers(this.url);
+        this.evts.publish('diameter.update');
     }
 
 
