@@ -73,8 +73,8 @@ export class ApiProvider {
                     this.error({}, reject);
                 }
             }, 30 * 1000);
-            console.log(ApiProvider.URL + url);
-            console.log(new Error().stack);
+            //console.log(ApiProvider.URL + url);
+            //console.log(new Error().stack);
             this.http[type](ApiProvider.URL + url, data, params).subscribe(data => {
                 try {
                     resolve(JSON.parse(data['_body']));
@@ -419,7 +419,7 @@ export class ApiProvider {
 
     uploadBase64(content, model = 'NeoContentOffer', id = 0) {
         return new Promise((resolve, reject) => {
-            console.log('REQUEST')
+            console.log('REQUEST');
             console.log(JSON.stringify({
                 data: {
                     force: {
@@ -440,8 +440,6 @@ export class ApiProvider {
                     id: id
                 }
             }).then(response => {
-                console.log('RESPONSE')
-                console.log(JSON.stringify(response));
                 resolve(response);
             }).catch(err => {
                 reject(err);

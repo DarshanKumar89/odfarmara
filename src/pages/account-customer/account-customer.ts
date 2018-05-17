@@ -98,6 +98,8 @@ export class AccountCustomerPage {
         this.data[0].NeoShopAddress.zip = this.data.NeoShopUser.zip = (this.zip != '' ? this.zip : village ? village['zip'].toString() : '');
         this.data[0].NeoShopAddress.city = this.data.NeoShopUser.city;
         this.data[0].NeoShopAddress.address = this.data.NeoShopUser.address;
+        console.log('IMAGES');
+        console.log(JSON.stringify(this.data));
         this.api.editUser(this.data).then(response => {
             MyApp.loggedUser.name = this.data.NeoShopUser.name;
             MyApp.loggedUser.description = this.data.NeoShopUser.description;
@@ -153,7 +155,9 @@ export class AccountCustomerPage {
     uploadPhotos(bs) {
 
         let ft = this.transfer.create();
+        console.log(JSON.stringify(MyApp.loggedUser));
         this.api.uploadBase64(bs, 'NeoShopUser', MyApp.loggedUser.scopeId).then(data => {
+            console.log(JSON.stringify(data));
             this.avatar = ApiProvider.URL + data['path'];
             this.data.NeoShopUser.photo = data['id'];
         });

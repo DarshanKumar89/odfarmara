@@ -454,9 +454,17 @@ export class MyApp {
     }
 
     logout() {
-        this.storage.remove('loggedUser');
-        MyApp.loggedUser = null;
-        this.nav.setRoot(LoginPage);
+        this.api.get('/logout', {
+            force: {
+                loggedUserIdBASE64: btoa(`user_:(${MyApp.loggedUser.id})`)
+            }
+        });
+        this.storage.remove('loggedUser').catch(err => {
+            throw new Error(JSON.stringify(err));
+        }).then(() => {
+            MyApp.loggedUser = null;
+            this.nav.setRoot(LoginPage);
+        });
     }
 
     order(product: Product, qty: number) {

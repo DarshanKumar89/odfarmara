@@ -51,6 +51,16 @@ export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '-1.json');
 }
 
+class MyEH implements ErrorHandler {
+    handleError(error: any): void {
+        console.error('ERROR');
+        console.error(error);
+        console.error(error.message);
+        console.error(error.stack);
+    }
+
+}
+
 @NgModule({
     declarations: [
         MyApp,
@@ -82,7 +92,12 @@ export function createTranslateLoader(http: HttpClient) {
     imports: [
         BrowserModule,
         HttpModule,
-        IonicModule.forRoot(MyApp, {mode: 'md'}),
+        IonicModule.forRoot(MyApp, {
+            mode: 'md',
+            scrollPadding: true,
+            scrollAssist: true,
+            autoFocusAssist: true
+        }),
         IonicStorageModule.forRoot(),
         AutoCompleteModule,
         HttpClientModule,
@@ -121,7 +136,7 @@ export function createTranslateLoader(http: HttpClient) {
     providers: [
         StatusBar,
         SplashScreen,
-        {provide: ErrorHandler, useClass: IonicErrorHandler},
+        {provide: ErrorHandler, useClass: MyEH},
         ApiProvider,
         Geolocation,
         FileTransfer,
@@ -133,7 +148,7 @@ export function createTranslateLoader(http: HttpClient) {
         HttpModule,
         HttpClientModule,
         Camera,
-        Network
+        Network,
     ]
 })
 export class AppModule {

@@ -38,6 +38,10 @@ export class LoginPage {
 
     doLogin() {
         this.login.disabled = true;
+        console.log('EMAIL');
+        console.log(this.login.email);
+        console.log('PASS');
+        console.log(this.login.password);
         this.provider.login(this.login.email, this.login.password).then(data => {
             this.login.disabled = false;
             if (data['status'] == 0) {
@@ -55,13 +59,22 @@ export class LoginPage {
                 });
                 alert.present();
             } else {
-                let user = ApiProvider.getUser(data['loggedUser'], data['address']);
-                MyApp.loggedUser = user;
-                this.storage.set('loggedUser', user);
-                this.navCtrl.setRoot(data['loggedUser']['isFarmer'] ? HomeFarmerPage : HomeCustomerPage, {
-                    loggedUser: user
-                });
-                MyApp.getFavourites(user.id, this.provider, this.geo, this.notif);
+                try {
+                    let user = ApiProvider.getUser(data['loggedUser'], data['address']);
+                    MyApp.loggedUser = user;
+                    this.storage.set('loggedUser', user);
+                    this.navCtrl.setRoot(data['loggedUser']['isFarmer'] ? HomeFarmerPage : HomeCustomerPage, {
+                        loggedUser: user
+                    });
+                    MyApp.getFavourites(user.id, this.provider, this.geo, this.notif);
+                } catch(e) {
+                    let alert = this.alert.create({
+                        title: 'Chyba',
+                        subTitle: 'Niekde sa stala chyba, skontrolujte svoje prihlasovacie údaje.',
+                        buttons: ['OK']
+                    });
+                    alert.present();
+                }
             }
         });
     }
