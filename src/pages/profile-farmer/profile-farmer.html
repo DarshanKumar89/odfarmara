@@ -84,6 +84,9 @@
                   {{ user.scopeExtra.opening_hours[day][0] }} -
                   {{ user.scopeExtra.opening_hours[day][1] }}
                 </strong>
+                <strong *ngIf="!user.scopeExtra.opening_hours[day]">
+                  Zatvorené
+                </strong>
               </div>
             </div>
           </div>

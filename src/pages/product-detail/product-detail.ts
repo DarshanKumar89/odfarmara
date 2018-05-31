@@ -28,6 +28,7 @@ export class ProductDetailPage extends Wrapper {
     private prices;
     private isFav = false;
     private regions;
+    private now = new Date();
 
     constructor(public navCtrl: NavController, public navParams: NavParams, protected sanitizer: DomSanitizer, api: ApiProvider) {
         super(navCtrl, navParams, sanitizer);

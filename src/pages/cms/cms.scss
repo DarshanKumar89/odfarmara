@@ -1357,6 +1357,7 @@ page-cms {
       height: 360px;
       margin-bottom: 80px;
       background-color: transparent;
+      display: none !important;
     }
 
     .testi-img {
@@ -6079,12 +6080,6 @@ page-cms {
       font-family: 'Icofont';
       src: url('../fonts/icofont.eot') format('embedded-opentype'), url('../fonts/icofont.woff') format('woff'), url('../fonts/icofont.ttf') format('truetype');
       font-weight: 400;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'Fontawesome webfont';
-      src: url('../fonts/fontawesome-webfont.ttf') format('truetype');
-      font-weight: 200;
       font-style: normal;
     }
 

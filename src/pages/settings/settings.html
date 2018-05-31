@@ -26,10 +26,21 @@
   <form (submit)="submitPassword()" class="container bg bg-gray offset offset-top padding">
     <div class="form-group">
       <ion-label class="text text-bold text-grey text-uppercase">{{ 'NEW_PASSWORD' | translate }}</ion-label>
-      <ion-input type="password" [(ngModel)]="settings.password" name="password" placeholder="{{ 'NEW_PASSWORD' | translate }}"></ion-input>
+      <ion-input type="password" [(ngModel)]="settings.password" name="password" placeholder="{{ 'NEW_PASSWORD' | translate }}" (focus)="scrollToPass()"></ion-input>
     </div>
     <div class="form-group">
       <button ion-button class="btn btn-primary" type="submit">{{ 'SAVE' | translate }}</button>
     </div>
   </form>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 </ion-content>

@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {AlertController, NavController, NavParams} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {AlertController, NavController, NavParams, Content} from 'ionic-angular';
 import {Wrapper} from "../../app/Helpers/Wrapper";
 import {ApiProvider} from "../../providers/api/api";
 import {DomSanitizer} from "@angular/platform-browser";
@@ -19,7 +19,7 @@ import {HomeFarmerPage} from "../home-farmer/home-farmer";
     templateUrl: 'settings.html',
 })
 export class SettingsPage extends Wrapper {
-
+    @ViewChild(Content) content: Content;
     protected settings: { email: string, password: string };
 
     constructor(navCtrl: NavController, navParams: NavParams, sanitizer: DomSanitizer, private provider: ApiProvider, private alertCtrl: AlertController) {
@@ -73,6 +73,10 @@ export class SettingsPage extends Wrapper {
 
     goHome() {
         this.navCtrl.setRoot(MyApp.loggedUser.farmer ? HomeFarmerPage : HomeCustomerPage);
+    }
+
+    scrollToPass() {
+        this.content.scrollToBottom();
     }
 
 }

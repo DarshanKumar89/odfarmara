@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {AlertController, NavController, NavParams} from 'ionic-angular';
+import {Component, NgZone} from '@angular/core';
+import {AlertController, Events, NavController, NavParams} from 'ionic-angular';
 import {MyApp} from "../../app/app.component";
 import {ApiProvider} from "../../providers/api/api";
 import {Data} from "../../app/Entity/Data";
@@ -67,6 +67,8 @@ export class AccountCustomerPage {
                 public regionsAutocmp: RegionAutocompleteProvider,
                 private camera: Camera,
                 private alert: AlertController,
+                public events: Events,
+                private zone: NgZone,
                 private storage: Storage) {
         this.avatar = this.data.NeoShopUser.photo;
         this.zip = MyApp.loggedUser.zip;
@@ -98,20 +100,19 @@ export class AccountCustomerPage {
         this.data[0].NeoShopAddress.zip = this.data.NeoShopUser.zip = (this.zip != '' ? this.zip : village ? village['zip'].toString() : '');
         this.data[0].NeoShopAddress.city = this.data.NeoShopUser.city;
         this.data[0].NeoShopAddress.address = this.data.NeoShopUser.address;
-        console.log('IMAGES');
-        console.log(JSON.stringify(this.data));
         this.api.editUser(this.data).then(response => {
-            MyApp.loggedUser.name = this.data.NeoShopUser.name;
-            MyApp.loggedUser.description = this.data.NeoShopUser.description;
-            MyApp.loggedUser.avatar = this.avatar;
             this.data.NeoUploadFile[0].url.main = this.avatar;
-            MyApp.loggedUser.region = this.data[0].NeoShopAddress.region_id;
-            MyApp.loggedUser.city = this.data[0].NeoShopAddress.city;
             this.showAlert(response['status']);
             this.data['User'] = response['loggedUser']['User'];
             this.data['isFarmer'] = false;
             MyApp.loggedUser = ApiProvider.getUser(this.data, this.data[0]);
+            MyApp.loggedUser.name = this.data.NeoShopUser.name;
+            MyApp.loggedUser.description = this.data.NeoShopUser.description;
+            MyApp.loggedUser.avatar = this.avatar;
+            MyApp.loggedUser.region = this.data[0].NeoShopAddress.region_id;
+            MyApp.loggedUser.city = this.data[0].NeoShopAddress.city;
             this.storage.set('loggedUser', MyApp.loggedUser);
+            this.events.publish('updateScreen');
         });
     }
 
@@ -155,9 +156,7 @@ export class AccountCustomerPage {
     uploadPhotos(bs) {
 
         let ft = this.transfer.create();
-        console.log(JSON.stringify(MyApp.loggedUser));
-        this.api.uploadBase64(bs, 'NeoShopUser', MyApp.loggedUser.scopeId).then(data => {
-            console.log(JSON.stringify(data));
+        this.api.uploadBase64(bs, 'NeoShopUser', MyApp.loggedUser.scopeId, true).then(data => {
             this.avatar = ApiProvider.URL + data['path'];
             this.data.NeoShopUser.photo = data['id'];
         });

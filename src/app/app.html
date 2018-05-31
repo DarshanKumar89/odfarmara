@@ -11,7 +11,7 @@
       <div *ngIf="getLoggedUser() != null">
         <ion-item (click)="openProfile(getLoggedUser().slug)" menuClose>
           <ion-avatar>
-            <custom-img src="{{ getLoggedUser().avatar }}" alt="{{ getLoggedUser().name }}"></custom-img>
+            <img [src]="getLoggedUser().avatar" [alt]="getLoggedUser().name"/>
           </ion-avatar>
           <div class="text text-gray text-uppercase text-bold text-nl">{{ getLoggedUser().name }}</div>
         </ion-item>
@@ -174,7 +174,7 @@
     </button>
   </ion-toolbar>
   <ion-toolbar *ngIf="getOffer() != null">
-    <button *ngIf="getLoggedUser().id != getAuthor()"
+    <button *ngIf="getLoggedUser().id != getAuthor() && now >= getOffer().validFrom && now <= getOffer().validUntil"
             ion-button
             class="btn btn-primary"
             (click)="order(getOffer(), getDemandQuantity())">

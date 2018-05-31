@@ -54,21 +54,22 @@
         </div>
       </div>
       <div col-12>
-        <label class="text text-heading">{{ 'PROFILE_PHOTO' | translate }}</label>
+        <label class="text text-heading">{{ 'PROFILE_PHOTO' | translate }}</label><br><br>
         <div class="d-block">
           <ion-avatar *ngIf="avatar != null">
             <img [src]="avatar" alt="Avatar"/>
-          </ion-avatar>
+          </ion-avatar><br>
           <button type="button" ion-button class="btn btn-gray" (click)="choosePhoto('avatar')">{{ 'UPLOAD_PHOTO' |
                                                                                                 translate }}
           </button>
         </div>
         <div class="clearfix"></div>
-        <label class="text text-heading">{{ 'COVER_PHOTO' | translate }}</label>
+        <br>
+        <label class="text text-heading">{{ 'COVER_PHOTO' | translate }}</label><br><br>
         <div class="d-block">
           <ion-avatar *ngIf="poster != null">
             <img [src]="poster" alt="Plagát"/>
-          </ion-avatar>
+          </ion-avatar><br>
           <button ion-button type="button" class="btn btn-gray" (click)="choosePhoto('poster')">{{ 'UPLOAD_PHOTO' |
                                                                                                 translate }}
           </button>
@@ -150,14 +151,14 @@
                     [(ngModel)]="data.NeoContentFarmersProfile.package_type"
                     name="package_type"
                     placeholder="{{ 'PACKAGE_TYPE' | translate }}">
-          <ion-option value="0" [selected]="data.NeoContentFarmersProfile.package_type == 0">{{ 'KG' | translate }}
+          <ion-option value="1" [selected]="data.NeoContentFarmersProfile.package_type == 1">{{ 'KG' | translate }}
           </ion-option>
-          <ion-option value="1" [selected]="data.NeoContentFarmersProfile.package_type == 1">{{ 'G' | translate }}
-          </ion-option>
-          <ion-option value="2" [selected]="data.NeoContentFarmersProfile.package_type == 2">
-            {{ 'PACKAGES' | translate }}
+          <ion-option value="2" [selected]="data.NeoContentFarmersProfile.package_type == 2">{{ 'G' | translate }}
           </ion-option>
           <ion-option value="3" [selected]="data.NeoContentFarmersProfile.package_type == 3">
+            {{ 'PACKAGES' | translate }}
+          </ion-option>
+          <ion-option value="4" [selected]="data.NeoContentFarmersProfile.package_type == 4">
             {{ 'PIECES' | translate }}
           </ion-option>
         </ion-select>

@@ -52,6 +52,10 @@ export class MessagesPage {
             this.loaded = this.mLoaded && this.dLoaded;
         });
         this.api.getDemands(MyApp.loggedUser.id).then(data => {
+            if(data['demands'].length === 0) {
+                this.dLoaded = true;
+                this.loaded = this.mLoaded && this.dLoaded;
+            }
             data['demands'].map(item => {
                 this.api.fetchDemand(item['NeoContentDemand']['id_demand']).then(response => {
                     this.conversations.push(ApiProvider.getDemand(response['demand'], response['messages'], ApiProvider.getProduct(response['offer']), ApiProvider.getUser(response['opponent'], response['opponent'])));

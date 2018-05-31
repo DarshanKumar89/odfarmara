@@ -5,6 +5,8 @@ import {MyApp} from "../../app/app.component";
 import {HomeCustomerPage} from "../home-customer/home-customer";
 import {HomeFarmerPage} from "../home-farmer/home-farmer";
 import {LoginPage} from "../login/login";
+import {Wrapper} from "../../app/Helpers/Wrapper";
+import {DomSanitizer} from "@angular/platform-browser";
 
 /**
  * Generated class for the CmsPage page.
@@ -17,12 +19,14 @@ import {LoginPage} from "../login/login";
     selector: 'page-cms',
     templateUrl: 'cms.html',
 })
-export class CmsPage {
+export class CmsPage extends Wrapper {
 
     page: { id: number, title: string, component: any, content: string, slug: string };
-
-    constructor(public navCtrl: NavController, public navParams: NavParams, private provider: ApiProvider) {
+    url;
+    constructor(public navCtrl: NavController, public navParams: NavParams, private provider: ApiProvider, public sanitizer: DomSanitizer) {
+        super(navCtrl, navParams, sanitizer);
         this.page = this.navParams.data.page;
+        //this.url = this.sanitizeURL(ApiProvider.URL + `/cms/${this.page.id}-${this.page.slug}?mobile=1`);
         this.provider.getCmsPage(this.page.id, this.page.slug).then((response) => {
             this.page.content = response['content']
                 .replace(/(<a\s)/g, '<a target="_system" ')

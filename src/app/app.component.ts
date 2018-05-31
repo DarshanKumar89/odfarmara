@@ -1,5 +1,5 @@
-import {Component, Pipe, ViewChild} from '@angular/core';
-import {AlertController, Content, ModalController, Nav, Platform} from 'ionic-angular';
+import {Component, NgZone, Pipe, ViewChild} from '@angular/core';
+import {AlertController, Content, Events, ModalController, Nav, Platform} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {_} from 'underscore';
@@ -115,6 +115,7 @@ export class MyApp {
     private product: string = '';
     private segment: string = '';
     public static mustAgree = false;
+    private now = new Date();
     constructor(public platform: Platform,
                 public statusBar: StatusBar,
                 public splashScreen: SplashScreen,
@@ -127,6 +128,8 @@ export class MyApp {
                 private notif: LocalNotifications,
                 private translate: TranslateService,
                 private network: Network,
+                public events: Events,
+                private zone: NgZone,
                 private geo: Geolocation) {
         this.initializeApp();
         this.translate.setDefaultLang(MyApp.lang);
@@ -228,6 +231,11 @@ export class MyApp {
                 });
             }
         });
+        this.events.subscribe('updateScreen', () => {
+            this.zone.run(() => {
+                console.log('force update the screen');
+            });
+        });
     }
 
     getCategories() {
@@ -268,7 +276,7 @@ export class MyApp {
                         text: `Farma ${offer.author.name}, ktorá vyrába kategóriu, ktorú sledujete (${offer.category.name}) je v okruhu ${km}km.`,
                         sound: null,
                         at: new Date(new Date().getTime() + 1),
-                        data: {farm: offer.author}
+                        data: {farm: offer.author.scopeId}
                     });
                 }
             });
@@ -291,6 +299,7 @@ export class MyApp {
                     return cat['NeoContentCategory']['id'];
                 });
                 if (MyApp.loggedUser && !MyApp.loggedUser.farmer) {
+                    MyApp.loggedUser = ApiProvider.getUser(resolve['loggedUser'], resolve['loggedUser']);
                     setInterval(() => {
                         MyApp.getNewFarmers(geo, api, notif);
                     }, 1000 * 60);

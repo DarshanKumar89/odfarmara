@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button class="btn btn-transparent btn-menu-home"(click)="goHome()">
+    <button ion-button class="btn btn-transparent btn-menu-home" (click)="goHome()">
       <ion-icon name="home"></ion-icon>
     </button>
 
@@ -21,7 +21,8 @@
     <h1 class="text text-left">{{ product.name }}</h1>
     <div class="row">
       <div class="user" col-9>
-        <ion-avatar [style.background-image]="sanitize(product.author.avatar)" (click)="openFarmer(product.author.scopeId)">
+        <ion-avatar [style.background-image]="sanitize(product.author.avatar)"
+                    (click)="openFarmer(product.author.scopeId)">
         </ion-avatar>
         <div class="user-info">
           <strong class="text text-uppercase text-heading" (click)="openFarmer(product.author.scopeId)">
@@ -55,7 +56,8 @@
         </div>
       </div>
       <div class="d-inline-block padding">
-        Ponuka platná do <strong>{{ product.validUntil | date:'dd.MM.yyyy' }}</strong>
+        Ponuka platná od <strong>{{ product.validFrom | date:'dd.MM.yyyy' }}</strong> do
+        <strong>{{ product.validUntil | date:'dd.MM.yyyy' }}</strong>
       </div>
       <div class="border border-top padding">
         <strong class="d-inline-block vertical middle text text-uppercase text-heading">{{ 'QTY' | translate }}</strong>
@@ -81,10 +83,10 @@
     </div>
   </div>
 </ion-content>
-<ion-footer align="center" *ngIf="loggedUser != null && loggedUser.id != product.author.id">
-  <ion-toolbar>
+<!--<ion-footer align="center" *ngIf="loggedUser != null && loggedUser.id != product.author.id">
+  <ion-toolbar *ngIf="now >= product.validFrom && now <= product.validUntil">
     <button ion-button class="btn btn-primary">
       {{ 'SEND_DEMAND' | translate }}
     </button>
   </ion-toolbar>
-</ion-footer>
+</ion-footer>-->

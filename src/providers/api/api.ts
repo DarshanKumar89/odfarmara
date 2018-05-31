@@ -175,9 +175,10 @@ export class ApiProvider {
                 return a['description'] == 'cover' ? 1 : -1;
             });
         }
+        let index = user['isFarmer'] ? 0 : (user['NeoUploadFile'] ? user['NeoUploadFile'].length - 1 : 0);
         return new User(
             typeof user['id'] === 'undefined' ? user['User']['id'] : user['id'],
-            user['NeoUploadFile'] && user['NeoUploadFile'].length > 0 ? (user['NeoUploadFile'][0]['url'] ? user['NeoUploadFile'][0]['url']['main'] : (ApiProvider.URL + '/neo_files/' + user['NeoUploadFile'][0]['plugin'] + '/' + user['NeoUploadFile'][0]['model'] + '/' + user['NeoUploadFile'][0]['foreign_key'] + '/' + user['NeoUploadFile'][0]['filename'])) : null,
+            user['NeoUploadFile'] && user['NeoUploadFile'].length > 0 ? (user['NeoUploadFile'][index]['url'] ? user['NeoUploadFile'][index]['url']['main'] : (ApiProvider.URL + '/neo_files/' + user['NeoUploadFile'][index]['plugin'] + '/' + user['NeoUploadFile'][index]['model'] + '/' + user['NeoUploadFile'][index]['foreign_key'] + '/' + user['NeoUploadFile'][index]['filename'])) : null,
             user['NeoUploadFile'] && user['NeoUploadFile'].length > 1 ? (user['NeoUploadFile'][1]['url'] ? user['NeoUploadFile'][1]['url']['main'] : (ApiProvider.URL + '/neo_files/' + user['NeoUploadFile'][1]['plugin'] + '/' + user['NeoUploadFile'][1]['model'] + '/' + user['NeoUploadFile'][1]['foreign_key'] + '/' + user['NeoUploadFile'][1]['filename'])) : null,
             (user['isFarmer'] ? (user['NeoContentFarmersProfile'] ? user['NeoContentFarmersProfile']['name'] : '') : (user['NeoShopUser'] ? user['NeoShopUser']['name'] : '')) == '' ? user['username'] : user['isFarmer'] ? user['NeoContentFarmersProfile']['name'] : user['NeoShopUser']['name'],
             user['isFarmer'] ? user['NeoContentFarmersProfile']['region_id'] : user['NeoShopUser']['region_id'],
@@ -417,7 +418,7 @@ export class ApiProvider {
         );
     }
 
-    uploadBase64(content, model = 'NeoContentOffer', id = 0) {
+    uploadBase64(content, model = 'NeoContentOffer', id = 0, remove = false) {
         return new Promise((resolve, reject) => {
             console.log('REQUEST');
             console.log(JSON.stringify({
@@ -437,7 +438,8 @@ export class ApiProvider {
                     },
                     content: content,
                     model: model,
-                    id: id
+                    id: id,
+                    remove: remove
                 }
             }).then(response => {
                 resolve(response);
