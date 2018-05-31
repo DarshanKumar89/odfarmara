@@ -132,7 +132,8 @@ export class AccountFarmerPage extends Wrapper {
             this.data.NeoContentFarmersProfile.zip = this.zip;
         }
         this.api.editUser(this.data).then(response => {
-            MyApp.loggedUser = ApiProvider.getUser(this.data, this.data);
+            //MyApp.loggedUser = ApiProvider.getUser(this.data, this.data);
+            this.showAlert(response['status']);
             MyApp.loggedUser.name = this.data.NeoContentFarmersProfile.name;
             MyApp.loggedUser.description = this.data.NeoContentFarmersProfile.short_description;
             MyApp.loggedUser.avatar = this.data.NeoContentFarmersProfile.photo;
@@ -147,7 +148,6 @@ export class AccountFarmerPage extends Wrapper {
             MyApp.loggedUser.scopeExtra['post_send'] = this.data.NeoContentFarmersProfile.post_send == '1';
             MyApp.loggedUser.scopeExtra['phone'] = this.data.NeoContentFarmersProfile.phone;
             MyApp.loggedUser.scopeExtra['package_type'] = this.data.NeoContentFarmersProfile.package_type;
-            this.showAlert(response['status']);
             MyApp.loggedUser.scopeId = this.data.NeoContentFarmersProfile.id;
             this.storage.set('loggedUser', MyApp.loggedUser);
             this.resetData();
