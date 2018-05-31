@@ -420,17 +420,8 @@ export class ApiProvider {
 
     uploadBase64(content, model = 'NeoContentOffer', id = 0, remove = false) {
         return new Promise((resolve, reject) => {
-            console.log('REQUEST');
-            console.log(JSON.stringify({
-                data: {
-                    force: {
-                        loggedUserIdBASE64: btoa(`user_:(${MyApp.loggedUser.id})`)
-                    },
-                    content: content,
-                    model: model,
-                    id: id
-                }
-            }));
+            console.log('MODEL_ID');
+            console.log(id);
             this.post(`/neo_upload/neo_upload_handler/apiUpload`, {
                 data: {
                     force: {
@@ -444,7 +435,7 @@ export class ApiProvider {
             }).then(response => {
                 resolve(response);
             }).catch(err => {
-                reject(err);
+                throw err;
             });
         });
     }

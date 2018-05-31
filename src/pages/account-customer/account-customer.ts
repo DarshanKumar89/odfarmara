@@ -24,35 +24,7 @@ import {HomeFarmerPage} from "../home-farmer/home-farmer";
 })
 export class AccountCustomerPage {
     loading = false;
-    private data = {
-        '0': {
-            NeoShopAddress: {
-                address: MyApp.loggedUser.street,
-                city: MyApp.loggedUser.city,
-                region_id: MyApp.loggedUser.region,
-                zip: MyApp.loggedUser.zip,
-                name: MyApp.loggedUser.scopeExtra['name'],
-                id: MyApp.loggedUser.scopeExtra['idAddress'],
-            }
-        },
-        NeoShopUser: {
-            name: MyApp.loggedUser.name,
-            description: MyApp.loggedUser.description,
-            photo: MyApp.loggedUser.avatar,
-            region_id: MyApp.loggedUser.region,
-            city: MyApp.loggedUser.city,
-            zip: MyApp.loggedUser.zip,
-            address: MyApp.loggedUser.street,
-            phone: MyApp.loggedUser.scopeExtra['phone']
-        },
-        NeoUploadFile: [
-            {
-                url: {
-                    main: MyApp.loggedUser.avatar
-                }
-            }
-        ]
-    };
+    private data;
 
     avatar: string;
 
@@ -70,6 +42,40 @@ export class AccountCustomerPage {
                 public events: Events,
                 private zone: NgZone,
                 private storage: Storage) {
+        this.resetData();
+    }
+
+    resetData() {
+        this.data = {
+            '0': {
+                NeoShopAddress: {
+                    address: MyApp.loggedUser.street,
+                    city: MyApp.loggedUser.city,
+                    region_id: MyApp.loggedUser.region,
+                    zip: MyApp.loggedUser.zip,
+                    name: MyApp.loggedUser.scopeExtra['name'],
+                    id: MyApp.loggedUser.scopeExtra['idAddress'],
+                }
+            },
+            NeoShopUser: {
+                id: MyApp.loggedUser.scopeId,
+                name: MyApp.loggedUser.name,
+                description: MyApp.loggedUser.description,
+                photo: MyApp.loggedUser.avatar,
+                region_id: MyApp.loggedUser.region,
+                city: MyApp.loggedUser.city,
+                zip: MyApp.loggedUser.zip,
+                address: MyApp.loggedUser.street,
+                phone: MyApp.loggedUser.scopeExtra['phone']
+            },
+            NeoUploadFile: [
+                {
+                    url: {
+                        main: MyApp.loggedUser.avatar
+                    }
+                }
+            ]
+        };
         this.avatar = this.data.NeoShopUser.photo;
         this.zip = MyApp.loggedUser.zip;
         this.account = new FormGroup({
@@ -111,8 +117,10 @@ export class AccountCustomerPage {
             MyApp.loggedUser.avatar = this.avatar;
             MyApp.loggedUser.region = this.data[0].NeoShopAddress.region_id;
             MyApp.loggedUser.city = this.data[0].NeoShopAddress.city;
+            MyApp.loggedUser.scopeId = this.data.NeoShopUser.id;
             this.storage.set('loggedUser', MyApp.loggedUser);
             this.events.publish('updateScreen');
+            this.resetData();
         });
     }
 
