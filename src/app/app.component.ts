@@ -1,5 +1,5 @@
-import {Component, NgZone, Pipe, ViewChild} from '@angular/core';
-import {AlertController, Content, Events, ModalController, Nav, Platform} from 'ionic-angular';
+import {Component, NgZone, ViewChild} from '@angular/core';
+import {AlertController, Events, ModalController, Nav, Platform} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {_} from 'underscore';
@@ -30,7 +30,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {Geolocation} from "@ionic-native/geolocation";
 import {ProductDetailPage} from "../pages/product-detail/product-detail";
 import {Message} from "./Entity/Message";
-import { Network } from '@ionic-native/network';
+import {Network} from '@ionic-native/network';
 
 
 @Component({
@@ -70,7 +70,7 @@ export class MyApp {
 
     static children = {};
 
-    regions: Array<{ id: number|string, name: string, shortcut: string, image: any }>;
+    regions: Array<{ id: number | string, name: string, shortcut: string, image: any }>;
     static regions: Array<{ id: number, name: string, shortcut: string, image: any }>;
 
     public static loggedUser: User = null;
@@ -116,6 +116,7 @@ export class MyApp {
     private segment: string = '';
     public static mustAgree = false;
     private now = new Date();
+
     constructor(public platform: Platform,
                 public statusBar: StatusBar,
                 public splashScreen: SplashScreen,
@@ -198,7 +199,7 @@ export class MyApp {
             }
         ];
         this.regions = [{id: '', name: 'Bez regiónu', image: '', shortcut: ''}];
-        for(let region of MyApp.regions) {
+        for (let region of MyApp.regions) {
             this.regions.push(region);
         }
         this.storage.get('loggedUser').then((data) => {
@@ -217,7 +218,7 @@ export class MyApp {
             this.splashScreen.hide();
         });
         this.storage.get('categories').then(categories => {
-            if(categories) {
+            if (categories) {
                 this.categories = MyApp.categories = categories;
             }
         });
@@ -240,7 +241,7 @@ export class MyApp {
 
     getCategories() {
         let cats = [{id: '', name: 'Bez kategórie'}];
-        for(let cat of MyApp.categories) {
+        for (let cat of MyApp.categories) {
             cats.push(cat);
         }
         return cats;
@@ -275,7 +276,7 @@ export class MyApp {
                         title: 'Farma v okolí',
                         text: `Farma ${offer.author.name}, ktorá vyrába kategóriu, ktorú sledujete (${offer.category.name}) je v okruhu ${km}km.`,
                         sound: null,
-                        at: new Date(new Date().getTime() + 1),
+                        trigger: {at: new Date(new Date().getTime() + 1)},
                         data: {farm: offer.author.scopeId}
                     });
                 }
@@ -298,7 +299,7 @@ export class MyApp {
                 MyApp.following = resolve['following'].map(cat => {
                     return cat['NeoContentCategory']['id'];
                 });
-                if (MyApp.loggedUser && !MyApp.loggedUser.farmer) {
+                if (MyApp.loggedUser && !MyApp.loggedUser.farmer) {
                     MyApp.loggedUser = ApiProvider.getUser(resolve['loggedUser'], resolve['loggedUser']);
                     setInterval(() => {
                         MyApp.getNewFarmers(geo, api, notif);
@@ -331,14 +332,14 @@ export class MyApp {
     initializeApp() {
         this.platform.ready().then(() => {
             MyApp.nav = this.nav;
-            this.notif.on('click', (notification) => {
-                if(notification['data']) {
-                    let data = notification['data'];
-                    if(data['offer']) {
+            this.notif.on('click').subscribe((notification) => {
+                if (notification['data']) {
+                    let data = notification['data'] instanceof String ? JSON.parse(notification['data']) : notification['data'];
+                    if (data['offer']) {
                         this.nav.push(ProductDetailPage, {
                             product: data['offer']
                         });
-                    } else if(notification['data']['farm']) {
+                    } else if (notification['data']['farm']) {
                         this.nav.push(ProfileFarmerPage, {
                             id: data['farm']
                         });
@@ -377,7 +378,7 @@ export class MyApp {
                         title: notification['title'],
                         text: notification['text'],
                         sound: null,
-                        at: new Date(new Date().getTime() + 1),
+                        trigger: {at: new Date(new Date().getTime() + 1)},
                         data: JSON.parse(notification['data'])
                     });
                 }
@@ -414,10 +415,10 @@ export class MyApp {
                 return ApiProvider.getProduct(offer, ApiProvider.getUser(offer['author'], offer['author']));
             });
             let error = undefined;
-            if(this.locality == '' && this.product == '' && this.segment == '') {
+            if (this.locality == '' && this.product == '' && this.segment == '') {
                 error = 'Zadajte aspoň jeden parameter pre vyhľadávanie.';
             }
-            if(this.nav.getActive().component == OfferListPage) {
+            if (this.nav.getActive().component == OfferListPage) {
                 this.nav.pop();
             }
             this.nav.push(OfferListPage, {
@@ -448,7 +449,7 @@ export class MyApp {
         this.nav.push(SettingsPage, {});
     }
 
-    showList(offers: string | Array<{}>, title: string, refreshCounts:boolean = true) {
+    showList(offers: string | Array<{}>, title: string, refreshCounts: boolean = true) {
         this.nav.push(OfferListPage, {
             offers: offers,
             title: title,

@@ -36,6 +36,9 @@ export class DemandsPage {
                     }
                 });
             });
+            if(data['demands'].length === 0) {
+                this.loaded = true;
+            }
             //MyApp.counts.demands = data['demands'].length;
             this.counts = MyApp.counts;
         });
