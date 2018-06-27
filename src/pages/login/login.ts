@@ -38,10 +38,6 @@ export class LoginPage {
 
     doLogin() {
         this.login.disabled = true;
-        console.log('EMAIL');
-        console.log(this.login.email);
-        console.log('PASS');
-        console.log(this.login.password);
         this.provider.login(this.login.email, this.login.password).then(data => {
             this.login.disabled = false;
             if (data['status'] == 0) {

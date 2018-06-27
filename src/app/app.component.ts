@@ -409,7 +409,7 @@ export class MyApp {
     }
 
     formSearch() {
-        this.api.get(`/neo_content/neo_content_offers/search?region=${this.locality}&produkt=${this.product}&segment[${this.segment}]=1`).then(data => {
+        this.api.get(`/neo_content/neo_content_offers/search?region=${this.locality}&produkt=${this.product}&segment[${this.segment}]=1`, {}, true).then(data => {
             let offers = data['neoContentOffers'].map(offer => {
                 offer['author']['isFarmer'] = true;
                 return ApiProvider.getProduct(offer, ApiProvider.getUser(offer['author'], offer['author']));
@@ -496,7 +496,7 @@ export class MyApp {
                     loggedUserIdBASE64: btoa(`user_:(${MyApp.loggedUser.id})`)
                 }
             }
-        }).then(response => {
+        }, 0, true).then(response => {
             alert.present();
         });
     }

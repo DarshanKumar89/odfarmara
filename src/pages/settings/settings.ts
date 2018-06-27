@@ -66,7 +66,7 @@ export class SettingsPage extends Wrapper {
                     username: this.settings.email
                 }
             }
-        }).then(response => {
+        }, 0, true).then(response => {
             this.showAlert(response['status'])
         })
     }

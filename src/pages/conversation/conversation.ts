@@ -34,7 +34,7 @@ export class ConversationPage {
             idDemand: this.navParams.get('idDemand'),
         };
         if(navParams.get('idDemand')) {
-            this.api.fetchDemand(navParams.get('idDemand')).then(item => {
+            this.api.fetchDemand(navParams.get('idDemand'), true).then(item => {
                 MyApp.mustAgree = item['mustAgree'];
                 MyApp.conversation = item['messages'].map(it => {
                     let msg = ApiProvider.getMessage(it);
@@ -48,7 +48,9 @@ export class ConversationPage {
         } else {
             this.api.getConversation(
                 MyApp.loggedUser.id,
-                navParams.get('idUser')
+                navParams.get('idUser'),
+                null,
+                true
             ).then(data => {
                 MyApp.conversation = data['messages'].map(it => {
                     let msg = ApiProvider.getMessage(it);

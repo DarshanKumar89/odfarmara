@@ -23,14 +23,15 @@ export class ApiProvider {
 
     public static URL = 'https://odfarmara.sk';
     alertPresented = false;
+
     constructor(private http: Http, private storage: Storage, private alerts: AlertController) {
     }
 
-    get(url, data = {}) {
-        return this.doAjax('get', url);
+    get(url, data = {}, error = false) {
+        return this.doAjax('get', url, {}, error);
     }
 
-    getOffers(url, id, data = {}) {
+    getOffers(url, id, data = {}, error = false) {
         return this.post(url, _.extend({
             _method: 'put',
             data: {
@@ -38,10 +39,10 @@ export class ApiProvider {
                     loggedUserIdBASE64: btoa(`user_:(${id}de)`)
                 }
             }
-        }, data), id);
+        }, data), id, error);
     }
 
-    post(url, data, id: number = 0, error = true) {
+    post(url, data, id: number = 0, error = false) {
         if (id > 0) {
             data = _.extend(data, {
                 data: {
@@ -54,7 +55,7 @@ export class ApiProvider {
         return this.doAjax('post', url, data, error);
     }
 
-    private doAjax(type, url, data = {}, error = true) {
+    private doAjax(type, url, data = {}, error = false) {
         let params = {
             headers: {
                 'Accept': 'application/json',
@@ -69,37 +70,53 @@ export class ApiProvider {
         }
         return new Promise((resolve, reject) => {
             let t = setTimeout(() => {
-                if(error) {
+                if (error) {
                     this.error({}, reject);
                 }
+
             }, 30 * 1000);
             //console.log(ApiProvider.URL + url);
             //console.log(new Error().stack);
-            this.http[type](ApiProvider.URL + url, data, params).subscribe(data => {
-                try {
-                    resolve(JSON.parse(data['_body']));
-                } catch (e) {
-                    resolve(data['_body']);
-                }
-                clearTimeout(t);
-            }, error => {
-                let err;
-                try {
-                    err = JSON.parse(error['_body']);
-                } catch (e) {
-                    err = {};
-                }
-                if (err['errCode'] == 8888) {
-                    this.storage.set('loggedUser', null).catch(error => {
-                        console.error(error);
-                    });
-                }
-            })
+            this.storage.get(ApiProvider.URL + url + (type === 'get' ? '' : JSON.stringify(data)))
+                .then(cached => {
+                    if (cached === null) {
+                        this.loadFresh(type, url, data, params, resolve, t);
+                    } else {
+                        resolve(cached);
+                    }
+                }).catch(() => {
+                this.loadFresh(type, url, data, params, resolve, t);
+            });
         });
     }
 
+    private loadFresh(type, url, data, params, resolve, t) {
+        this.http[type](ApiProvider.URL + url, data, params).subscribe(resp => {
+            try {
+                this.storage.set(ApiProvider.URL + url + (type === 'get' ? '' : JSON.stringify(data)), JSON.parse(resp['_body']));
+                resolve(JSON.parse(resp['_body']));
+            } catch (e) {
+                this.storage.set(ApiProvider.URL + url + (type === 'get' ? '' : JSON.stringify(data)), resp['_body']);
+                resolve(resp['_body']);
+            }
+            clearTimeout(t);
+        }, error => {
+            let err;
+            try {
+                err = JSON.parse(error['_body']);
+            } catch (e) {
+                err = {};
+            }
+            if (err['errCode'] == 8888) {
+                this.storage.set('loggedUser', null).catch(error => {
+                    console.error(error);
+                });
+            }
+        })
+    }
+
     private error(err, reject) {
-        if(!this.alertPresented) {
+        if (!this.alertPresented) {
             this.alertPresented = true;
             this.alerts.create({
                 title: 'Chyba pripojenia',
@@ -124,7 +141,8 @@ export class ApiProvider {
                     loggedUserIdBASE64: btoa(`user_:(${MyApp.loggedUser.id})`)
                 }
             }
-        }, 0, false) : new Promise<any>(res => {});
+        }, 0, false) : new Promise<any>(res => {
+        });
     }
 
     getCmsPage(id, slug) {
@@ -139,11 +157,11 @@ export class ApiProvider {
                     password: password
                 }
             }
-        });
+        }, 0, true);
     }
 
     register(email, password, isFarmer) {
-        if(!isFarmer) {
+        if (!isFarmer) {
             return this.post('/neo_shop/neo_shop_users/add', {
                 data: {
                     agreement: true,
@@ -152,7 +170,7 @@ export class ApiProvider {
                         password: password
                     }
                 }
-            });
+            }, 0, true);
         } else {
             return this.post('/neo_content/neo_content_farmers_profiles/register', {
                 data: {
@@ -162,15 +180,15 @@ export class ApiProvider {
                         password: password
                     }
                 }
-            });
+            }, 0, true);
         }
     }
 
     static getUser(user, address) {
-        if(user['isFarmer'] == undefined) {
+        if (user['isFarmer'] == undefined) {
             user['isFarmer'] = user['NeoShopUser'] == undefined || user['NeoShopUser']['id'] == undefined;
         }
-        if(user['NeoUploadFile'] != undefined) {
+        if (user['NeoUploadFile'] != undefined) {
             user['NeoUploadFile'] = user['NeoUploadFile'].sort((a, b) => {
                 return a['description'] == 'cover' ? 1 : -1;
             });
@@ -250,7 +268,7 @@ export class ApiProvider {
                     loggedUserIdBASE64: btoa(`user_:(${id})`)
                 }
             }
-        });
+        }, 0, true);
     }
 
     getMessages(id) {
@@ -260,7 +278,7 @@ export class ApiProvider {
                     loggedUserIdBASE64: btoa(`user_:(${id})`)
                 }
             }
-        });
+        }, 0, true);
     }
 
     getDemands(id) {
@@ -270,17 +288,17 @@ export class ApiProvider {
                     loggedUserIdBASE64: btoa(`user_:(${id})`)
                 }
             }
-        });
+        }, 0, true);
     }
 
-    getConversation(id, idOpponent, idDemand = null) {
+    getConversation(id, idOpponent, idDemand = null, error = false) {
         return this.post(`/neo_content/neo_content_inbox/view/${idOpponent}`, {
             data: {
                 force: {
                     loggedUserIdBASE64: btoa(`user_:(${id})`)
                 }
             }
-        });
+        }, 0, error);
     }
 
     static getProduct(product, user: User = null) {
@@ -297,7 +315,10 @@ export class ApiProvider {
             new Date(product['NeoContentOffer']['end_date']),
             product['NeoUploadFile'],
             product['main'],
-            product['NeoContentCategory'] ? ApiProvider.getCategory(product['NeoContentCategory'][0] ? {"NeoContentCategory": product['NeoContentCategory'][0], "ParentNeoContentCategory": product['ParentNeoContentCategory']} : product) : null,
+            product['NeoContentCategory'] ? ApiProvider.getCategory(product['NeoContentCategory'][0] ? {
+                "NeoContentCategory": product['NeoContentCategory'][0],
+                "ParentNeoContentCategory": product['ParentNeoContentCategory']
+            } : product) : null,
             product['NeoContentOffer']['unit_coef']
         );
     }
@@ -346,7 +367,7 @@ export class ApiProvider {
     }
 
     editUser(data) {
-        if(typeof data['NeoShopUser'] != 'undefined') {
+        if (typeof data['NeoShopUser'] != 'undefined') {
             return this.post('/neo_shop/neo_shop_users/edit', {
                 _method: 'put',
                 data: {
@@ -356,7 +377,7 @@ export class ApiProvider {
                     NeoShopUser: data.NeoShopUser,
                     '0': data[0]
                 }
-            });
+            }, 0, true);
         } else {
             return this.post('/neo_content/neo_content_farmers_profiles/edit', {
                 _method: 'put',
@@ -366,11 +387,11 @@ export class ApiProvider {
                     },
                     NeoContentFarmersProfile: data.NeoContentFarmersProfile
                 }
-            });
+            }, 0, true);
         }
     }
 
-    fetchDemand(id) {
+    fetchDemand(id, error = false) {
         return this.post('/neo_content/neo_content_demand/view/' + id, {
             _method: 'put',
             data: {
@@ -378,12 +399,12 @@ export class ApiProvider {
                     loggedUserIdBASE64: btoa(`user_:(${MyApp.loggedUser.id})`)
                 }
             }
-        });
+        }, 0, error);
     }
 
     static getDemand(data, messages, product: Product = null, userEnt: User = null) {
         let user;
-        if(userEnt != null) {
+        if (userEnt != null) {
             user = MyApp.loggedUser.farmer ? messages[0]['UserFrom'] : messages[0]['UserTo'];
             data = _.extend(data, user);
             // data['isFarmer'] = !MyApp.loggedUser.farmer;

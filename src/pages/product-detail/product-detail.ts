@@ -72,7 +72,7 @@ export class ProductDetailPage extends Wrapper {
                         loggedUserIdBASE64: btoa(`user_:(${MyApp.loggedUser.id})`)
                     }
                 }
-            }).then(response => {
+            }, 0, true).then(response => {
                 response['neoContentFarmer']['isFarmer'] = true;
                 this.product = ApiProvider.getProduct(response['neoContentOffer'], ApiProvider.getUser(response['neoContentFarmer'], response['neoContentFarmer']));
                 MyApp.idDetailAuthor = this.product.author.id;

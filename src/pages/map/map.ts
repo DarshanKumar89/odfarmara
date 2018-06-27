@@ -87,7 +87,7 @@ export class MapPage extends Wrapper {
             this.url = this.sanitizeURL(`${baseURL}/sub_page/apiMap?t=${t}${this.rurl}&radius=${this.area}`);
         }
         url += `&page=${this.page}`;
-        this.api.get(`/sub_page/apiMap?t=${t}${url}`).then(response => {
+        this.api.get(`/sub_page/apiMap?t=${t}${url}`, {}, true).then(response => {
             response['farms'].map(item => {
                 item['isFarmer'] = true;
                 let user = ApiProvider.getUser(item, item);

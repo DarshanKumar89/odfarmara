@@ -119,7 +119,7 @@ export class OfferListPage extends Wrapper {
             area: this.area,
             lat: this.lat,
             lng: this.lng
-        }).then(result => {
+        }, true).then(result => {
             this.offers = result[result['offers'] ? 'offers' : 'neoContentOffers'].map(offer => {
                 let author = offer['author'], user;
                 if(author instanceof Array) {

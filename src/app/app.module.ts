@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {ErrorHandler, NgModule} from '@angular/core';
-import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
+import {IonicApp, IonicModule} from 'ionic-angular';
 
 import {MyApp} from './app.component';
 import {CmsPage} from "../pages/cms/cms";
@@ -19,7 +19,7 @@ import {OfferListPage} from "../pages/offer-list/offer-list";
 import {HomeCustomerPage} from "../pages/home-customer/home-customer";
 import {HomeFarmerPage} from "../pages/home-farmer/home-farmer";
 import {ApiProvider} from '../providers/api/api';
-import {ConnectionBackend, Http, HttpModule} from "@angular/http";
+import {HttpModule} from "@angular/http";
 import {IonicStorageModule} from "@ionic/storage";
 import {OfferViewComponent} from '../components/offer-view/offer-view';
 import {OfferMiniComponent} from '../components/offer-mini/offer-mini';
@@ -36,9 +36,9 @@ import {RegionAutocompleteProvider} from '../providers/region-autocomplete/regio
 import {Deeplinks} from '@ionic-native/deeplinks';
 import {BackgroundMode} from '@ionic-native/background-mode';
 import {LocalNotifications} from '@ionic-native/local-notifications';
-import {TranslateModule, TranslateLoader, TranslateService} from '@ngx-translate/core'
+import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core'
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {HttpClient, HttpClientModule, HttpHandler} from "@angular/common/http";
+import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {ForgotPasswordPage} from "../pages/forgot-password/forgot-password";
 import {Camera} from "@ionic-native/camera";
 import {RegisterPage} from "../pages/register/register";
