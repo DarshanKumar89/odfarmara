@@ -52,11 +52,12 @@
     <div class="bg bg-grey-darker border bg bg-gray offset offset-top text text-sm">
       <div class="padding d-inline-block">
         <div class="border border-right padding padding-right">
-          Ponuka <strong>{{ product.quantity }} {{ prices[product.priceType] }}</strong>
+          {{ 'OFFER' | translate }} <strong>{{ product.quantity }} {{ prices[product.priceType] }}</strong>
         </div>
       </div>
       <div class="d-inline-block padding">
-        Ponuka platná od <strong>{{ product.validFrom | date:'dd.MM.yyyy' }}</strong> do
+        {{ 'OFFER_VALIED_FROM' | translate }} <strong>{{ product.validFrom | date:'dd.MM.yyyy' }}</strong>
+        {{ 'UNTIL' | translate }}
         <strong>{{ product.validUntil | date:'dd.MM.yyyy' }}</strong>
       </div>
       <div class="border border-top padding">

@@ -103,5 +103,9 @@
   "SUNDAY": "Nedeľa",
   "NO_MY_OFFERS": "Nemáte žiadne produkty.",
   "SEGMENTS": "Sledované kategórie",
-  "OFFERS_COUNT": "ponúk"
+  "OFFERS_COUNT": "ponúk",
+  "CLOSED": "Zatvorené",
+  "OFFER_VALID_FROM": "Ponuka platná od",
+  "UNTIL": "do",
+  "NO_OFFERS_MATCHED_CRITERIA": "Zadaným kritériám nevyhovujú žiadne položky."
 }

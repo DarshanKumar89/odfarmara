@@ -33,6 +33,7 @@ export class ConversationPage {
             idTo: this.navParams.get('idUser'),
             idDemand: this.navParams.get('idDemand'),
         };
+        MyApp.conversation = [];
         if(navParams.get('idDemand')) {
             this.api.fetchDemand(navParams.get('idDemand'), true).then(item => {
                 MyApp.mustAgree = item['mustAgree'];

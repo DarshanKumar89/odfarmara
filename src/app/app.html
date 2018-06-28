@@ -1,5 +1,5 @@
 <ion-menu [content]="content">
-  <ion-content>
+  <ion-content class="menu-cnt">
     <ion-buttons end class="buttons-main">
       <button menuClose class="btn btn-transparent">
         <i class="fa fa-times"></i>
@@ -78,6 +78,9 @@
       </ion-item>
       <ion-item>
         <button class="btn btn-transparent" (click)="langToggle()">{{ getLang() == 'sk' ? 'CZ' : 'SK' }}</button>
+      </ion-item>
+      <ion-item>
+        <small>v1.0.8</small>
       </ion-item>
     </ion-list>
   </ion-content>

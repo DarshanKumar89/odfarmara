@@ -10,6 +10,7 @@ import {HomeFarmerPage} from "../home-farmer/home-farmer";
 import {HomeCustomerPage} from "../home-customer/home-customer";
 import {MyApp} from "../../app/app.component";
 import {Network} from "@ionic-native/network";
+import {User} from "../../app/Entity/User";
 
 /**
  * Generated class for the MapPage page.
@@ -88,7 +89,9 @@ export class MapPage extends Wrapper {
         }
         url += `&page=${this.page}`;
         this.api.get(`/sub_page/apiMap?t=${t}${url}`, {}, true).then(response => {
-            response['farms'].map(item => {
+            response['farms'].filter(item => {
+                return item.User.active === '1';
+            }).map(item => {
                 item['isFarmer'] = true;
                 let user = ApiProvider.getUser(item, item);
                 this.farmers.push(user);

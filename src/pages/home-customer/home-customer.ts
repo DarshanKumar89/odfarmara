@@ -92,7 +92,7 @@ export class HomeCustomerPage extends Wrapper {
     loadOffers(lat, lng) {
         this.provider.getOffers('/neo_content/neo_content_offers/show_favourites', MyApp.loggedUser.id, {
             lat: lat, lng: lng, area: this.area
-        }).then(resp => {
+        }, false).then(resp => {
             this.near = resp['offers'].map(item => {
                 item['author']['isFarmer'] = true;
                 return ApiProvider.getProduct(item, ApiProvider.getUser(item['author'], item['author']));

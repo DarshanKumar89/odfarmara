@@ -30,10 +30,11 @@ export class CmsPage extends Wrapper {
         this.provider.getCmsPage(this.page.id, this.page.slug).then((response) => {
             this.page.content = response['content']
                 .replace(/(<a\s)/g, '<a target="_system" ')
-                .replace(/href="\/(.+)"/g, 'href="https://odfarmara.sk/$1"')
+                .replace(/href=(["'])\/(.+?)(["'])/g, 'href=$1https://odfarmara.sk/$2$3')
+                .replace(/src=(["'])\/(.+?)(["'])/g, 'src=$1https://odfarmara.sk/$2$3')
                 .replace('$countFarmers', 0)
                 .replace('$countClients', 0)
-                .replace('$countOrders', 0)
+                .replace('$countOrders', 0);
         });
     }
 

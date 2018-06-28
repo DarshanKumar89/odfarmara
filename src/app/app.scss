@@ -668,7 +668,9 @@ ion-footer {
     &.btn-primary {
       color: #fff !important;
     }
-    margin: 0 10px;
+    @media screen and (min-width: 330px) {
+      margin: 0 10px;
+    }
     .fa {
       font-size: 18px;
       font-weight: 700;
@@ -813,4 +815,14 @@ ion-alert .alert-radio-group {
     content: '';
     display: block;
   }
+}
+
+.menu-cnt {
+  .scroll-content {
+    margin-bottom: 0;
+  }
+}
+
+.platform-ios ion-navbar.toolbar {
+  padding-top: 10px;
 }

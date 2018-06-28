@@ -69,12 +69,17 @@ export class ApiProvider {
             data = JSON.stringify(data);
         }
         return new Promise((resolve, reject) => {
-            let t = setTimeout(() => {
+            let t = setTimeout((type, url, data, error) => {
                 if (error) {
+                    console.log(type);
+                    console.log(url);
+                    console.log(data);
+                    console.log(error);
+                    console.log((new Error()).stack);
                     this.error({}, reject);
                 }
 
-            }, 30 * 1000);
+            }, 30 * 1000, type, url, data, error);
             //console.log(ApiProvider.URL + url);
             //console.log(new Error().stack);
             this.storage.get(ApiProvider.URL + url + (type === 'get' ? '' : JSON.stringify(data)))
@@ -258,7 +263,7 @@ export class ApiProvider {
                     loggedUserIdBASE64: btoa(`user_:(${id})`)
                 }
             }
-        });
+        }, 0, false);
     }
 
     getMyOffers(id) {
@@ -278,7 +283,7 @@ export class ApiProvider {
                     loggedUserIdBASE64: btoa(`user_:(${id})`)
                 }
             }
-        }, 0, true);
+        }, 0, false);
     }
 
     getDemands(id) {
