@@ -23,6 +23,7 @@ export class ApiProvider {
 
     public static URL = 'https://odfarmara.sk';
     alertPresented = false;
+    errors = [];
 
     constructor(private http: Http, private storage: Storage, private alerts: AlertController) {
     }
@@ -80,6 +81,7 @@ export class ApiProvider {
                 }
 
             }, 30 * 1000, type, url, data, error);
+            this.errors.push(t);
             //console.log(ApiProvider.URL + url);
             //console.log(new Error().stack);
             this.storage.get(ApiProvider.URL + url + (type === 'get' ? '' : JSON.stringify(data)))
@@ -135,6 +137,10 @@ export class ApiProvider {
                     }
                 ]
             }).present();
+            for (let i in this.errors) {
+                clearTimeout(this.errors[i]);
+            }
+            this.errors = [];
         }
         reject(err);
     }

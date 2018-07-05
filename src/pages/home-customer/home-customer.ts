@@ -102,6 +102,7 @@ export class HomeCustomerPage extends Wrapper {
             });
             this.loadingNearby = false;
             this.counts.near = resp['offers'].length;
+            this.near = this.near.slice(0, 10);
         });
     }
 
