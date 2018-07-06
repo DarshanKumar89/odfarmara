@@ -139,13 +139,14 @@ export class OfferFormComponent extends Wrapper {
                 if (data['insertId']) {
                     this.alert.create({
                         title: 'Ponuka pridaná',
-                        message: 'Ponuka bola úspešne pridaná. Počkajte na schválenie ponuky administrátorom.',
+                        message: 'Ponuka bola úspešne pridaná. Počkajte na schválenie ponuky administrátorom. '
+                        + (!data['userActive'] ? 'Na to aby sa zobrazovala, musíte si vyplniť potrebné údaje v profile.' : ''),
                         buttons: ['OK']
                     }).present();
                 } else {
                     this.alert.create({
                         title: 'Ponuka upravená',
-                        message: '',
+                        message: (!data['userActive'] ? 'Na to aby sa zobrazovala, musíte si vyplniť potrebné údaje v profile.' : ''),
                         buttons: ['OK']
                     }).present();
                 }

@@ -44,8 +44,8 @@
       </div>
 
       <div col-3>
-        <img *ngIf="regions[product.author.region]"
-             src="https://odfarmara.sk/theme/Odfarmara/img/{{ regions[product.author.region]['image'] }}"
+        <img *ngIf="regions[product.author.region - 1]"
+             src="https://odfarmara.sk/theme/Odfarmara/img/{{ regions[product.author.region - 1]['image'] }}"
              alt="Region">
       </div>
     </div>

@@ -82,7 +82,8 @@ export class ApiProvider {
 
             }, 30 * 1000, type, url, data, error);
             this.errors.push(t);
-            //console.log(ApiProvider.URL + url);
+            this.loadFresh(type, url, data, params, resolve, t);
+            /*//console.log(ApiProvider.URL + url);
             //console.log(new Error().stack);
             this.storage.get(ApiProvider.URL + url + (type === 'get' ? '' : JSON.stringify(data)))
                 .then(cached => {
@@ -92,8 +93,7 @@ export class ApiProvider {
                         resolve(cached);
                     }
                 }).catch(() => {
-                this.loadFresh(type, url, data, params, resolve, t);
-            });
+            });*/
         });
     }
 
@@ -123,7 +123,7 @@ export class ApiProvider {
     }
 
     private error(err, reject) {
-        if (!this.alertPresented) {
+        /*if (!this.alertPresented) {
             this.alertPresented = true;
             this.alerts.create({
                 title: 'Chyba pripojenia',
@@ -141,7 +141,7 @@ export class ApiProvider {
                 clearTimeout(this.errors[i]);
             }
             this.errors = [];
-        }
+        }*/
         reject(err);
     }
 
