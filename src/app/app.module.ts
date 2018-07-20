@@ -46,6 +46,8 @@ import {MessageComponent} from "../components/message/message";
 import {PipesModule} from "../pipes/pipes.module";
 import {Network} from "@ionic-native/network";
 import {CustomImgComponent} from "../components/custom-img/custom-img";
+import {GooglePlus} from "@ionic-native/google-plus";
+import {Facebook} from "@ionic-native/facebook";
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '-1.json');
@@ -149,6 +151,8 @@ class MyEH implements ErrorHandler {
         HttpClientModule,
         Camera,
         Network,
+        GooglePlus,
+        Facebook,
     ]
 })
 export class AppModule {

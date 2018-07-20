@@ -36,6 +36,14 @@
       <button ion-button class="btn btn-primary d-inline-block" type="button" (click)="registerPage()">
         {{ 'REGISTER_N' | translate }}
       </button>
+      <br>
+      <strong>Prihlásiť cez</strong><br>
+      <button ion-button class="btn btn-primary d-inline-block" type="button" (click)="loginGooglePlus()">
+        Google konto
+      </button>
+      <button ion-button class="btn btn-primary d-inline-block" type="button" (click)="loginFacebook()">
+        Facebook
+      </button>
     </div>
     <div class="form-group">
       <button ion-button type="button" class="btn btn-gray" (click)="forgotPassword()">

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="sk.odfarmara" version="1.0.9" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="sk.odfarmara" version="1.0.11" xmlns="http://www.w3.org/ns/widgets">
     <name>OdFarmara.sk</name>
     <description>Android aplikácia pre portál odfarmara.sk</description>
     <author email="info@odfarmara.sk" href="https://odfarmara.sk/">OdFarmara.sk</author>
@@ -47,6 +47,10 @@
         <splash density="land-xhdpi" src="res/screens/android/drawable-land-xhdpi/screen.png" />
         <splash density="land-xxhdpi" src="res/screens/android/drawable-land-xxhdpi/screen.png" />
         <splash density="land-xxxhdpi" src="res/screens/android/drawable-land-xxxhdpi/screen.png" />
+        <config-file parent="/resources" target="./res/values/strings.xml">
+            <string name="fb_app_id">547570072300015</string>
+            <string name="fb_app_name">odfarmara.sk</string>
+        </config-file>
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
@@ -105,6 +109,14 @@
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
     <allow-navigation href="http://192.168.31.115:8100" />
+    <plugin name="cordova-plugin-googleplus" spec="^5.3.0">
+        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.192661445961-nre0pnmkqahi06856ipf3dogq5si3ltr" />
+    </plugin>
+    <plugin name="cordova-plugin-facebook4" spec="^2.2.0">
+        <variable name="APP_ID" value="547570072300015" />
+        <variable name="APP_NAME" value="odfarmara.sk" />
+        <variable name="ANDROID_SDK_VERSION" value="4.+" />
+    </plugin>
     <engine name="android" spec="7.0.0" />
     <engine name="browser" spec="5.0.3" />
 </widget>
