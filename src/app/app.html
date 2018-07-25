@@ -177,7 +177,7 @@
     </button>
   </ion-toolbar>
   <ion-toolbar *ngIf="getOffer() != null">
-    <button *ngIf="getLoggedUser().id != getAuthor() && now >= getOffer().validFrom && now <= getOffer().validUntil"
+    <button *ngIf="getLoggedUser().id != getAuthor() && !getLoggedUser().farmer && now >= getOffer().validFrom && now <= getOffer().validUntil"
             ion-button
             class="btn btn-primary"
             (click)="order(getOffer(), getDemandQuantity())">
@@ -193,7 +193,7 @@
         <ion-input [(ngModel)]="messageBody" placeholder="{{ 'RESPOND' | translate }}..."></ion-input>
       </div>
     </div>
-    <div *ngIf="!!hasToAgree()">
+    <div *ngIf="!!hasToAgree() && getLoggedUser().farmer">
       <ion-row class="bottom-input bg bg-white">
         <div col-6>
           <button ion-button class="btn btn-primary" (click)="agree()">Potvrdiť dopyt</button>
