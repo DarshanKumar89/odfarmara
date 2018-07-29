@@ -48,6 +48,8 @@ export class HomeFarmerPage {
                         this.conversations.push({message: dem.lastMessage, opponent: dem.user, idDemand: dem.id});
                         this.conversations = this.conversations.sort((a, b) => {
                             return a.message.seen ? 1 : -1;
+                        }).sort((a, b) => {
+                            return a.message.created < b.message.created ? 1 : -1;
                         }).slice(0, 5);
                     });
                 });
