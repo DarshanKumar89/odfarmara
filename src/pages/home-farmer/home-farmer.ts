@@ -9,6 +9,7 @@ import {MessagesPage} from "../messages/messages";
 import {OfferFormComponent} from "../../components/offer-form/offer-form";
 import {ConversationPage} from "../conversation/conversation";
 import {Demand} from "../../app/Entity/Demand";
+import {AccountFarmerPage} from "../account-farmer/account-farmer";
 
 /**
  * Generated class for the HomeFarmerPage page.
@@ -28,6 +29,9 @@ export class HomeFarmerPage {
     private me = MyApp.loggedUser;
 
     constructor(public navCtrl: NavController, public navParams: NavParams, private api: ApiProvider, private modalCtrl: ModalController, public alerts: AlertController) {
+        if (this.navParams.get('immediatelyPush')) {
+            this.navCtrl.push(this.navParams.get('immediatelyPush'));
+        }
         api.getMessages(MyApp.loggedUser.id).then(data => {
             this.conversations = Object.keys(data['messages']).filter(key => {
                 return key != '';

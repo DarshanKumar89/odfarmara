@@ -11,6 +11,8 @@ import {Geolocation} from "@ionic-native/geolocation";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {GooglePlus} from "@ionic-native/google-plus";
 import {Facebook, FacebookLoginResponse} from "@ionic-native/facebook";
+import {AccountFarmerPage} from "../account-farmer/account-farmer";
+import moment from 'moment';
 
 /**
  * Generated class for the LoginPage page.
@@ -62,8 +64,11 @@ export class LoginPage {
                     let user = ApiProvider.getUser(data['loggedUser'], data['address']);
                     MyApp.loggedUser = user;
                     this.storage.set('loggedUser', user);
+                    console.log(data['loggedUser']['isFarmer'], moment(data['loggedUser']['User']['modified']).valueOf(), moment(data['loggedUser']['User']['created']).valueOf());
                     this.navCtrl.setRoot(data['loggedUser']['isFarmer'] ? HomeFarmerPage : HomeCustomerPage, {
-                        loggedUser: user
+                        loggedUser: user,
+                        immediatelyPush: data['loggedUser']['isFarmer'] && moment(data['loggedUser']['User']['modified']).valueOf() == moment(data['loggedUser']['User']['created']).valueOf() ?
+                            AccountFarmerPage : undefined
                     });
                     MyApp.getFavourites(user.id, this.provider, this.geo, this.notif);
                 } catch (e) {

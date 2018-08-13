@@ -137,6 +137,7 @@ export class MyApp {
         this.deeplinks.route({
             '/farmer/:id': ProfileFarmerPage
         });
+        this.notif.requestPermission();
         // used for an example of ngFor and navigation
         MyApp.pages = this.pages = [
             {id: 21, slug: 'ako-nakupovat', title: 'Ako nakupovať?', component: CmsPage},
@@ -146,7 +147,7 @@ export class MyApp {
             {id: 16, slug: 'kontakt', title: 'Kontakt', component: CmsPage}
         ];
 
-        MyApp.categories = [];
+        MyApp.categories = [];:()
 
         MyApp.regions = [
             {

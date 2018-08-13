@@ -204,6 +204,7 @@ export class ApiProvider {
                 return a['description'] == 'cover' ? 1 : -1;
             });
         }
+        console.log(moment(user['User']['created']).valueOf(), moment(user['User']['modified']).valueOf());
         let index = user['isFarmer'] ? 0 : (user['NeoUploadFile'] ? user['NeoUploadFile'].length - 1 : 0);
         return new User(
             typeof user['id'] === 'undefined' ? user['User']['id'] : user['id'],
@@ -232,7 +233,8 @@ export class ApiProvider {
                 name: address ? address['NeoShopAddress']['name'] : '',
                 phone: user['NeoShopUser']['phone'],
                 idAddress: address ? address['NeoShopAddress']['id'] : 0
-            }
+            },
+            moment(user['User']['created']).valueOf() == moment(user['User']['modified']).valueOf()
         );
     }
 

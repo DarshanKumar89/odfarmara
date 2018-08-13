@@ -10,6 +10,7 @@ import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {LoginPage} from "../login/login";
 import {Geolocation} from "@ionic-native/geolocation";
 import {LocalNotifications} from "@ionic-native/local-notifications";
+import {AccountFarmerPage} from "../account-farmer/account-farmer";
 
 /**
  * Generated class for the RegisterPage page.
@@ -108,7 +109,8 @@ export class RegisterPage {
                 MyApp.loggedUser = user;
                 this.storage.set('loggedUser', user);
                 this.navCtrl.setRoot(data['loggedUser']['isFarmer'] ? HomeFarmerPage : HomeCustomerPage, {
-                    loggedUser: user
+                    loggedUser: user,
+                    immediatelyPush: data['loggedUser']['isFarmer'] ? AccountFarmerPage : undefined
                 });
                 MyApp.getFavourites(user.id, this.provider, this.geo, this.notif);
             }

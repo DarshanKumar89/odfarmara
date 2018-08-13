@@ -17,7 +17,8 @@ export class User {
         public farmer: boolean = true,
         public slug: string = '',
         public scopeId: number = 0,
-        public scopeExtra: any = {}
+        public scopeExtra: any = {},
+        public isFirstLogin?: boolean
     ) {
     }
 }

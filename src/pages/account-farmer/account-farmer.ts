@@ -51,6 +51,7 @@ export class AccountFarmerPage extends Wrapper {
     regionImage: string;
     loading = false;
     zip: string;
+    loggedUser = MyApp.loggedUser;
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
                 sanitizer: DomSanitizer,
