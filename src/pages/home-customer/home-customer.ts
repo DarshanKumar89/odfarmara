@@ -90,7 +90,7 @@ export class HomeCustomerPage extends Wrapper {
     }
 
     loadOffers(lat, lng) {
-        this.provider.getOffers('/neo_content/neo_content_offers/show_favourites', MyApp.loggedUser.id, {
+        this.provider.getOffers('/neo_content/neo_content_offers/getNearby', MyApp.loggedUser.id, {
             lat: lat, lng: lng, area: this.area
         }, false).then(resp => {
             this.near = resp['offers'].map(item => {

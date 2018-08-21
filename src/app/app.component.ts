@@ -147,7 +147,7 @@ export class MyApp {
             {id: 16, slug: 'kontakt', title: 'Kontakt', component: CmsPage}
         ];
 
-        MyApp.categories = [];:()
+        MyApp.categories = [];
 
         MyApp.regions = [
             {
@@ -340,7 +340,7 @@ export class MyApp {
                         this.nav.push(ProductDetailPage, {
                             product: data['offer']
                         });
-                    } else if (notification['data']['farm']) {
+                    } else if (data['farm']) {
                         this.nav.push(ProfileFarmerPage, {
                             id: data['farm']
                         });
@@ -370,16 +370,28 @@ export class MyApp {
     notifications() {
         setInterval(() => {
             this.api.notifications().then(data => {
+                console.log('INTERVAL');
+                console.log(JSON.stringify(data));
                 MyApp.counts.demands = this.count = data['demands'];
                 MyApp.counts.messages = this.count = data['messages'] + MyApp.counts.demands;
                 for (let i = 0; i < data['notifications'].length; i++) {
                     let notification = data['notifications'][i];
+                    console.log('NOTIFICATIONS');
+                    console.log(JSON.stringify(notification));
+                    console.log(JSON.stringify({
+                        id: 1,
+                        title: notification['title'],
+                        text: notification['text'],
+                        sound: null,
+                        //trigger: {at: new Date(new Date().getTime() + 1)},
+                        data: JSON.parse(notification['data'])
+                    }));
                     this.notif.schedule({
                         id: 1,
                         title: notification['title'],
                         text: notification['text'],
                         sound: null,
-                        trigger: {at: new Date(new Date().getTime() + 1)},
+                        //trigger: {at: new Date(new Date().getTime() + 1)},
                         data: JSON.parse(notification['data'])
                     });
                 }
