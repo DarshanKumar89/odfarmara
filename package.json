@@ -1,6 +1,6 @@
 {
   "name": "sk.odfarmara",
-  "version": "1.0.12",
+  "version": "1.0.14",
   "author": "Ionic Framework",
   "homepage": "http://ionicframework.com/",
   "private": true,
@@ -39,7 +39,7 @@
     "cordova-browser": "5.0.3",
     "cordova-plugin-background-mode": "^0.7.2",
     "cordova-plugin-badge": "^0.8.7",
-    "cordova-plugin-camera": "git+https://github.com/apache/cordova-plugin-camera.git",
+    "cordova-plugin-camera": "https://github.com/apache/cordova-plugin-camera.git",
     "cordova-plugin-deeplinks": "^1.1.0",
     "cordova-plugin-device": "^1.1.4",
     "cordova-plugin-facebook4": "^2.2.0",
@@ -67,7 +67,7 @@
     "zone.js": "0.8.18"
   },
   "devDependencies": {
-    "@ionic/app-scripts": "^3.1.10",
+    "@ionic/app-scripts": "3.1.11",
     "typescript": "^2.9.2"
   },
   "description": "An Ionic project",
