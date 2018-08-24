@@ -106,11 +106,6 @@
     <plugin name="cordova-plugin-badge" spec="^0.8.7" />
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <allow-navigation href="http://192.168.31.115:8100" />
-    <plugin name="cordova-plugin-facebook4" spec="^2.2.0">
-        <variable name="APP_ID" value="547570072300015" />
-        <variable name="APP_NAME" value="odfarmara.sk" />
-        <variable name="ANDROID_SDK_VERSION" value="4.+" />
-    </plugin>
     <plugin name="cordova-plugin-ionic" spec="^3.1.3">
         <variable name="APP_ID" value="193a70ae" />
         <variable name="CHANNEL_NAME" value="Production" />
@@ -125,4 +120,9 @@
     </plugin>
     <plugin name="cordova-plugin-ionic-webview" spec="^1.2.1" />
     <engine name="ios" spec="~4.5.5" />
+    <plugin name="cordova-plugin-facebook4" spec="^2.3.0">
+        <variable name="APP_ID" value="547570072300015" />
+        <variable name="APP_NAME" value="odfarmara.sk" />
+        <variable name="ANDROID_SDK_VERSION" value="4.+" />
+    </plugin>
 </widget>
