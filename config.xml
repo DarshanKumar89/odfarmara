@@ -106,7 +106,6 @@
     <plugin name="cordova-plugin-badge" spec="^0.8.7" />
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <allow-navigation href="http://192.168.31.115:8100" />
-    <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
     <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
     <engine name="android" spec="7.0.0" />
     <engine name="browser" spec="5.0.3" />
@@ -125,4 +124,5 @@
         <variable name="CHANNEL_NAME" value="Production" />
         <variable name="UPDATE_METHOD" value="background" />
     </plugin>
+    <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
 </widget>
