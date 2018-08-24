@@ -108,7 +108,7 @@
     <allow-navigation href="http://192.168.31.115:8100" />
     <engine name="android" spec="7.0.0" />
     <engine name="browser" spec="5.0.3" />
-    <plugin name="cordova-plugin-ionic-webview" spec="^1.2.1" />
+    <plugin name="cordova-plugin-ionic-webview" spec="^2.1.0" />
     <engine name="ios" spec="~4.5.5" />
     <plugin name="cordova-plugin-facebook4" spec="^2.3.0">
         <variable name="APP_ID" value="547570072300015" />
