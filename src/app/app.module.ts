@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {ErrorHandler, NgModule} from '@angular/core';
-import {IonicApp, IonicModule} from 'ionic-angular';
+import {ErrorHandler, Injectable, Injector, NgModule} from '@angular/core';
+import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 
 import {MyApp} from './app.component';
 import {CmsPage} from "../pages/cms/cms";
@@ -48,17 +48,39 @@ import {Network} from "@ionic-native/network";
 import {CustomImgComponent} from "../components/custom-img/custom-img";
 import {GooglePlus} from "@ionic-native/google-plus";
 import {Facebook} from "@ionic-native/facebook";
+import {Pro} from '@ionic/pro';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '-1.json');
 }
 
+Pro.init('193a70ae', {
+    appVersion: '1.0.14'
+});
+
+@Injectable()
 class MyEH implements ErrorHandler {
+    ionicErrorHandler: IonicErrorHandler;
+
+    constructor(injector: Injector) {
+        try {
+            this.ionicErrorHandler = injector.get(IonicErrorHandler);
+        } catch (e) {
+            // Unable to get the IonicErrorHandler provider, ensure
+            // IonicErrorHandler has been added to the providers list below
+        }
+    }
+
+
     handleError(error: any): void {
         console.error('ERROR');
         console.error(error);
         console.error(error.message);
         console.error(error.stack);
+        Pro.monitoring.handleNewError(error);
+        // Remove this if you want to disable Ionic's auto exception handling
+        // in development mode.
+        this.ionicErrorHandler && this.ionicErrorHandler.handleError(error);
     }
 
 }
@@ -153,6 +175,7 @@ class MyEH implements ErrorHandler {
         Network,
         GooglePlus,
         Facebook,
+        IonicErrorHandler
     ]
 })
 export class AppModule {
