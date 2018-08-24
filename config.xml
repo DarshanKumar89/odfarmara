@@ -97,5 +97,8 @@
         <variable name="APP_ID" value="193a70ae" />
         <variable name="CHANNEL_NAME" value="Production" />
         <variable name="UPDATE_METHOD" value="background" />
+        <variable name="WARN_DEBUG" value="false" />
+        <variable name="UPDATE_API" value="https://api.ionicjs.com" />
+        <variable name="MAX_STORE" value="2" />
     </plugin>
 </widget>
