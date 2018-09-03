@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="sk.odfarmara" version="1.0.17" xmlns="http://www.w3.org/ns/widgets">
+<widget id="sk.odfarmara" version="1.0.18" xmlns="http://www.w3.org/ns/widgets">
     <name>OdFarmara.sk</name>
     <description>Android aplikácia pre portál odfarmara.sk</description>
     <author email="info@odfarmara.sk" href="https://odfarmara.sk/">OdFarmara.sk</author>
@@ -62,7 +62,7 @@
         <config-file parent="NSLocationAlwaysUsageDescription" platform="ios" target="*-Info.plist">
             <string>Oznámenie o farme v okolí.</string>
         </config-file>
-        <config-file parent="NSLocationWhenInUseUsageDescription " platform="ios" target="*-Info.plist">
+        <config-file parent="NSLocationWhenInUseUsageDescription" platform="ios" target="*-Info.plist">
             <string>Zobrazovanie fariem a produktov v okolí v reálnom čase.</string>
         </config-file>
         <allow-intent href="itms:*" />
